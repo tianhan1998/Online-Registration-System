@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<script language="JavaScript" src="js/jquery.min.js"></script>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -16,11 +15,12 @@
             性别：
             <label><input type="radio" value="1" name="sex">男生</label>
             <label><input type="radio" value="0" name="sex">女生</label>
-            安全邮箱:<input type="email"/>
+            安全邮箱:<input type="email" name="email"/>
             <input type="submit" onclick="checkForm($('#regform'))" value="提交">
         </form>
     <label style="color: red" id="result"></label>
     </body>
+<script language="JavaScript" src="js/jquery.min.js"></script>
 <script language="JavaScript">
     flag=false;
     function checkForm(form){
@@ -42,26 +42,21 @@
     }
     function checkId(id){
         if(id!="") {
-            // var targeturl='localhost:8080/ORS/signUp';
-            // $.ajax({
-            //     url: targeturl,
-            //     type: 'get',
-            //     datatype: 'JSON',
-            //     data: {'id': id},
-            //     success: function (result) {
-            //         if (result.success == "true") {
-            //             $('#tip').css("color", "green");
-            //             $('#tip').html(result.Message);
-            //         } else {
-            //             $('#tip').css("color", "red");
-            //             $('#tip').html(result.Error);
-            //         }
-            //     }
-            // })
-            $.get(
-                'localhost:8080/ORS/signUp',{"id":id},function (result) {alert(result.Message);
+            $.ajax({
+                url:'/ORS/signUp',
+                type: 'get',
+                datatype: 'JSON',
+                data: {'id': id},
+                success: function (result) {
+                    if (result.success == "true") {
+                        $('#tip').css("color", "green");
+                        $('#tip').html(result.Message);
+                    } else {
+                        $('#tip').css("color", "red");
+                        $('#tip').html(result.Error);
+                    }
                 }
-            )
+            })
         }else{
             $('#tip').html("");
         }

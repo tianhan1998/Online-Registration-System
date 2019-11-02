@@ -3,7 +3,7 @@
 <mapper namespace="cn.edu.aynu.onlineRegistrationSystem.mapper.SignUpMapper">
 
     <insert id="signUp" parameterType="User">
-        insert into mem_info(mem_name, mem_email, mem_sex, mem_password) values(#{username},#{email},#{sex},#{password})
+        insert into mem_info(mem_id,mem_name, mem_email, mem_sex, mem_password) values(#{id},#{username},#{email},#{sex},#{password})
     </insert>
 
     <select id="checkId" parameterType="int" resultType="User">
