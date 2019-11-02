@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.edu.aynu.onlineRegistrationSystem.mapper.SignUpMapper">
+
+    <insert id="signUp" parameterType="User">
+        insert into mem_info(mem_name, mem_email, mem_sex, mem_password) values(#{username},#{email},#{sex},#{password})
+    </insert>
+
+    <select id="checkId" parameterType="int" resultType="User">
+        select mem_id from mem_info where mem_id=#{id}
+    </select>
+</mapper>
