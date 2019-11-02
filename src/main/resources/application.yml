@@ -1,0 +1,10 @@
+server:
+  port: 8080
+  profiles:
+    active: home
+  servlet:
+    context-path: /ORS
+
+mybatis:
+  mapper-locations: classpath:mapper/*Mapper.xml
+  type-aliases-package: cn.edu.aynu.onlineRegistrationSystem.entity
