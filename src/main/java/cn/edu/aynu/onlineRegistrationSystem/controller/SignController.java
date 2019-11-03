@@ -35,8 +35,19 @@ public class SignController {
      * @return json{code:200,meg:xxx,object:[]}
      */
     @RequestMapping(value = "/signUp",method = RequestMethod.POST)
-    public JSONObject signUp(String memId, String memName, String memPassowrd, String memEmail)  {
+    public JSONObject signUp(String memId, String memName, String memPassowrd, String memEmail, String memSex)  {
 
+        memInfo memInfo = new memInfo(Integer.valueOf(memId),memName,memEmail,"M",memPassowrd);
+
+        if(service.singUp(memInfo)){
+            String obj = JSONObject.toJSONString(memInfo);
+            json.put("code",200);
+            json.put("meg","注册成功");
+            json.put("object",obj);
+        }else{
+            json.put("success","404");
+            json.put("meg","用户已存在！");
+        }
 
         return json;
     }
