@@ -4,3 +4,5 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     password: wang123
     username: root
+  resources:
+    static-locations: classpath:/static/

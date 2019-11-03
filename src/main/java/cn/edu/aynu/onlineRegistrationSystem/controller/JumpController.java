@@ -15,4 +15,9 @@ public class JumpController {
     public String jumpHello(){
         return "login";
     }
+
+    @RequestMapping(value = "/register",method = RequestMethod.GET)
+    public String jumpRegister() {
+        return "register";
+    }
 }

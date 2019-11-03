@@ -25,7 +25,6 @@
     <!-- Tweaks for older IEs--><!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
-    
   </head>
     <div class="page-holder d-flex align-items-center">
       <div class="container">
@@ -65,7 +64,7 @@
       </div>
     </div>
     <!-- JavaScript files-->
-    <script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+    <script src="js/jquery.js"></script>
     <script src="vendor/popper.js/umd/popper.min.js"> </script>
     <script src="https://www.jq22.com/jquery/bootstrap-4.2.1.js"></script>
     <script src="vendor/jquery.cookie/jquery.cookie.js"> </script>
@@ -83,16 +82,16 @@
 		    });
 		    $("#register").click(function(){
 		    	//$("#change").html(lo_html);
-		    	var username=$("input[name='username']").val();
-		    	var password=$("input[name='password']").val();
-		    	var check_password=$("input[name='check_password']").val();
+		    	var username=$("input[name='memId']").val();
+		    	var password=$("input[name='memPassowrd']").val();
+		    	var check_password=$("input[name='memPassowrd2']").val();
 		    	
 		    	if(username.length<8){
-		    		$.MsgBox.Alert("提示", "用户名长度不少于8位！");
+		    		$.MsgBox.Alert("提示", "学号长度不少于8位！");
 		    		return;
 		    	}
-		    	if(password.length<8){
-		    		$.MsgBox.Alert("提示", "密码长度不少于8位！");
+		    	if(password.length<6){
+		    		$.MsgBox.Alert("提示", "密码长度不少于6位！");
 		    		return;
 		    	}
 		    	if(password!=check_password){
@@ -102,15 +101,15 @@
 		    	//ajax注册
 		    	
 		    	$.ajax({
-		    		type:"post",
-		    		url:"./register",
-		    		data:"{}",
-		    		success:function(data){
-		    			console.log("注册成功！"+data);
-		    		},
-		    		error:function(data){
-		    			console.log("注册失败！"+data);
-		    		},
+                    type:"post",
+                    url:"./signUp",
+                    data:"{}",
+                    success:function(data){
+                        console.log("注册成功！"+data);
+                    },
+                    error:function(data){
+                        console.log("注册失败！"+data);
+                    },
 		    		async:true
 		    	});
 		    	
