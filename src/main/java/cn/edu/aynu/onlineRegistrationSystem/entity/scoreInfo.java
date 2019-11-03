@@ -9,6 +9,16 @@ public class scoreInfo {
 
     private Double memScore;
 
+    public scoreInfo(Integer matchId) {
+        this.matchId = matchId;
+    }
+
+    public scoreInfo(Integer matchId, Integer memId, Double memScore) {
+        this.matchId = matchId;
+        this.memId = memId;
+        this.memScore = memScore;
+    }
+
     public Integer getId() {
         return id;
     }

@@ -11,6 +11,17 @@ public class memInfo {
 
     private String memPassword;
 
+    public memInfo() {
+    }
+
+    public memInfo(Integer memId, String memName, String memEmail, String memSex, String memPassword) {
+        this.memId = memId;
+        this.memName = memName;
+        this.memEmail = memEmail;
+        this.memSex = memSex;
+        this.memPassword = memPassword;
+    }
+
     public Integer getMemId() {
         return memId;
     }

@@ -7,6 +7,14 @@ public class teamMatch {
 
     private Integer matchId;
 
+    public teamMatch() {
+    }
+
+    public teamMatch(Integer teamId, Integer matchId) {
+        this.teamId = teamId;
+        this.matchId = matchId;
+    }
+
     public Integer getId() {
         return id;
     }

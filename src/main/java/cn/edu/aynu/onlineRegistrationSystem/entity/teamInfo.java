@@ -17,6 +17,19 @@ public class teamInfo {
 
     private String teamEmail;
 
+    public teamInfo() {
+    }
+
+    public teamInfo(String teamName, String teamAccount, String teamPassword, Integer memId1, Integer memId2, Integer memId3, String teamEmail) {
+        this.teamName = teamName;
+        this.teamAccount = teamAccount;
+        this.teamPassword = teamPassword;
+        this.memId1 = memId1;
+        this.memId2 = memId2;
+        this.memId3 = memId3;
+        this.teamEmail = teamEmail;
+    }
+
     public Integer getTeamId() {
         return teamId;
     }

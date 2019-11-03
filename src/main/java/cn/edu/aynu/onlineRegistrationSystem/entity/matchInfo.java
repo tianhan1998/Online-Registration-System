@@ -17,6 +17,18 @@ public class matchInfo {
 
     private Integer matchStatus;
 
+    public matchInfo() {
+    }
+
+    public matchInfo(String matchTitle, Date matchStarTime, Date matchEndTime, String matchMode, String matchPassword, Integer matchStatus) {
+        this.matchTitle = matchTitle;
+        this.matchStarTime = matchStarTime;
+        this.matchEndTime = matchEndTime;
+        this.matchMode = matchMode;
+        this.matchPassword = matchPassword;
+        this.matchStatus = matchStatus;
+    }
+
     public Integer getMatchId() {
         return matchId;
     }

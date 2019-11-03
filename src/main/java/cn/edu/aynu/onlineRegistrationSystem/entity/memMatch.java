@@ -7,6 +7,14 @@ public class memMatch {
 
     private Integer matchId;
 
+    public memMatch() {
+    }
+
+    public memMatch(Integer memId, Integer matchId) {
+        this.memId = memId;
+        this.matchId = matchId;
+    }
+
     public Integer getId() {
         return id;
     }

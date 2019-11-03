@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface matchInfoMapper {
+
     long countByExample(matchInfoExample example);
 
     int deleteByExample(matchInfoExample example);
