@@ -38,9 +38,10 @@ public class SqlTest {
     /**
      * 插入个人信息
      */
+    @Test
     public void insertMemInfo(){
         memInfoMapper mem=sqlSession.getMapper(memInfoMapper.class);
-        mem.insert(new memInfo());
+        mem.insert(new memInfo(174804155,"岳阳","15993343299@163.com","M","123456"));
     }
 }
 class SqlFactory{
