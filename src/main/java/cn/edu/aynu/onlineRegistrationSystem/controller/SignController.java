@@ -7,7 +7,10 @@ import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -20,6 +23,9 @@ public class SignController {
     @Autowired
     SignService service;
 
+
+    @Autowired
+    JSONObject json;
     /**
      *
      * @param memId 学号
@@ -30,7 +36,8 @@ public class SignController {
      */
     @RequestMapping(value = "/signUp",method = RequestMethod.POST)
     public JSONObject signUp(String memId, String memName, String memPassowrd, String memEmail)  {
-        JSONObject json=new JSONObject();
+
+
         return json;
     }
 
@@ -41,7 +48,6 @@ public class SignController {
      */
     @RequestMapping(value = "/signUp",method = RequestMethod.GET)
     public JSONObject checkId(Integer memId){
-        JSONObject json=new JSONObject();
         return json;
     }
 
@@ -53,7 +59,6 @@ public class SignController {
      */
     @RequestMapping(value = "/signIn",method = RequestMethod.POST)
     public JSONObject signIn(String id,String password){
-        JSONObject json=new JSONObject();
         List<memInfo> list=null;
         list=service.signIn(Integer.valueOf(id),password);
         System.out.println(list);

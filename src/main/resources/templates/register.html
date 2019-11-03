@@ -103,7 +103,7 @@
 		    	$.ajax({
                     type:"post",
                     url:"./signUp",
-                    data:"{}",
+                    data:$('#loginForm').serialize(),
                     success:function(data){
                         console.log("注册成功！"+data);
                     },
