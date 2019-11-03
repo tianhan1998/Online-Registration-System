@@ -9,7 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -25,15 +24,18 @@ import java.io.InputStream;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@EnableAutoConfiguration
 public class SqlTest {
     @Autowired
-    memInfoMapper memMapper=null;
+    memInfoMapper map;
+
+
+
     /**
      * 插入个人信息
      */
     @Test
     public void insertMemInfo(){
-        memMapper.insert(new memInfo(174804155,"岳阳","15993343299@163.com","M","123456"));
+        map.insert(new memInfo(174804131,"tianhan","892265525@qq.com","0","123456789"));
     }
 }
+
