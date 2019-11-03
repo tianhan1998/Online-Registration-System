@@ -15,13 +15,13 @@
     <!-- Google fonts - Popppins for copy-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,800">
     <!-- orion icons-->
-    <link rel="stylesheet" href="../static/css/orionicons.css">
+    <link rel="stylesheet" href="css/orionicons.css">
     <!-- theme stylesheet-->
-    <link rel="stylesheet" href="../static/css/style.default.css" id="theme-stylesheet">
+    <link rel="stylesheet" href="css/style.default.css" id="theme-stylesheet">
     <!-- Custom stylesheet - for your changes-->
-    <link rel="stylesheet" href="../static/css/custom.css">
+    <link rel="stylesheet" href="css/custom.css">
     <!-- Favicon-->
-    <link rel="shortcut icon" href="../static/img/favicon.png?3">
+    <link rel="shortcut icon" href="img/favicon.png?3">
     <!-- Tweaks for older IEs--><!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
@@ -31,7 +31,7 @@
       <div class="container">
         <div class="row align-items-center py-5">
           <div class="col-5 col-lg-7 mx-auto mb-5 mb-lg-0">
-            <div class="pr-lg-5"><img src="../static/img/illustration1.svg" alt="" class="img-fluid"></div>
+            <div class="pr-lg-5"><img src="img/illustration1.svg" alt="" class="img-fluid"></div>
           </div>
           <div class="col-lg-5 px-lg-4">
             <h1 class="text-base text-primary text-uppercase mb-4">安阳师范学院</h1>
@@ -40,13 +40,19 @@
             <form id="loginForm" action="index.html" class="mt-4">
             	<div id="change">
 	              <div class="form-group mb-4">
-	                <input type="text" name="username" placeholder="用户名或邮箱" class="form-control border-0 shadow form-control-lg">
+	                <input type="text" name="memId" placeholder="学号" class="form-control border-0 shadow form-control-lg">
 	              </div>
 	              <div class="form-group mb-4">
-	                <input type="password" name="password" placeholder="密码" class="form-control border-0 shadow form-control-lg text-violet">
+	                <input type="password" name="memName" placeholder="姓名" class="form-control border-0 shadow form-control-lg text-violet">
 	              </div>
 	              <div class="form-group mb-4">
-	                <input type="password" name="check_password" placeholder="确认密码" class="form-control border-0 shadow form-control-lg text-violet">
+	                <input type="password" name="memEmail" placeholder="邮箱" class="form-control border-0 shadow form-control-lg text-violet">
+	              </div>
+	               <div class="form-group mb-4">
+	                <input type="password" name="memPassowrd" placeholder="密码" class="form-control border-0 shadow form-control-lg text-violet">
+	              </div>
+	              <div class="form-group mb-4">
+	                <input type="password" name="memPassowrd2" placeholder="确认密码" class="form-control border-0 shadow form-control-lg text-violet">
 	              </div>
 	            </div>
               <button type="button" class="btn btn-primary shadow px-5" id="register">注册</button>
@@ -60,20 +66,20 @@
     </div>
     <!-- JavaScript files-->
     <script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
-    <script src="../static/vendor/popper.js/umd/popper.min.js"> </script>
+    <script src="vendor/popper.js/umd/popper.min.js"> </script>
     <script src="https://www.jq22.com/jquery/bootstrap-4.2.1.js"></script>
-    <script src="../static/vendor/jquery.cookie/jquery.cookie.js"> </script>
+    <script src="vendor/jquery.cookie/jquery.cookie.js"> </script>
     <script src="https://cdn.bootcss.com/Chart.js/2.7.2/Chart.min.js"></script>
-    <script src="../static/js/js.cookie.min.js"></script>
-    <script src="../static/js/front.js"></script>
-    <script src="../static/js/tishi.js"></script>
+    <script src="js/js.cookie.min.js"></script>
+    <script src="js/front.js"></script>
+    <script src="js/tishi.js"></script>
     <script>
     	$(document).ready(function() {
     		var lo_html=$("#change").html();
 			  $("#login").click(function(){
 		  		//var htm='<div class="form-group mb-4"><input type="text" name="username" placeholder="用户名或邮箱" class="form-control border-0 shadow form-control-lg"></div><div class="form-group mb-4"><input type="password" name="passowrd" placeholder="密码" class="form-control border-0 shadow form-control-lg text-violet"></div><div class="form-group mb-4"><input type="password" name="check_passowrd" placeholder="确认密码" class="form-control border-0 shadow form-control-lg text-violet"></div>';
 	    		//$("#change").html(htm);
-	    		window.location.href="login.html";
+	    		window.location.href="./login.html";
 		    });
 		    $("#register").click(function(){
 		    	//$("#change").html(lo_html);
