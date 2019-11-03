@@ -9,4 +9,4 @@ mybatis:
 
 spring:
   profiles:
-    active: home
+    active: dev
