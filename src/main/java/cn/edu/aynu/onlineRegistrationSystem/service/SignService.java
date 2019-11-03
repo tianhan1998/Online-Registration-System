@@ -17,12 +17,13 @@ import java.util.List;
 public class SignService {
     @Autowired
     memInfoMapper mapper;
-    public List<memInfo> findUser(Integer id){
+    public List<memInfo> signIn(Integer id,String password){
         memInfoExample example=new memInfoExample();
         example.setOrderByClause("mem_id desc");
         example.setDistinct(false);
         memInfoExample.Criteria criteria=example.createCriteria();
         criteria.andMemIdEqualTo(id);
+        criteria.andMemPasswordEqualTo(password);
         return mapper.selectByExample(example);
 
     }
