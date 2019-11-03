@@ -25,7 +25,7 @@ public class SignUpController {
             json.put("success","true");
         }else{
             json.put("success","false");
-            json.put("Error","注册失败");
+            json.put("Error","奥术大师多");
         }
         return json;
     }
