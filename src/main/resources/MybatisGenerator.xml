@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+
+    <!--    配置数据库连接-->
+    <context id="DB2Tables" targetRuntime="MyBatis3">
+        <commentGenerator>
+            <property name="suppressDate" value="true"/>
+            <property name="suppressAllComments" value="true" />
+        </commentGenerator>
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://119.3.219.4:3306/ors"
+                        userId="root"
+                        password="wang123">
+        </jdbcConnection>
+
+        <!--        java类型解析不需要动-->
+        <javaTypeResolver >
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+
+        <!--        指定javabean生成位置-->
+        <javaModelGenerator targetPackage="cn.edu.aynu.onlineRegistrationSystem.entity"
+                            targetProject=".\src\main\java">
+            <property name="enableSubPackages" value="true" />
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+        <!--        映射文件生成位置-->
+        <sqlMapGenerator targetPackage="mapper"
+                         targetProject=".\src\main\resources">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+        <!--        指定dao接口生成位置-->
+        <javaClientGenerator type="XMLMAPPER"
+                             targetPackage="cn.edu.aynu.onlineRegistrationSystem.mapper"
+                             targetProject=".\src\main\java">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+
+        <!--        指定每个表的生成策略-->
+        <table tableName="match_info" domainObjectName="matchInfo"/>
+        <table tableName="mem_info" domainObjectName="memInfo"/>
+        <table tableName="mem_match" domainObjectName="memMatch"/>
+        <table tableName="score_info" domainObjectName="scoreInfo"/>
+        <table tableName="team_info" domainObjectName="teamInfo"/>
+        <table tableName="team_match" domainObjectName="teamMatch"/>
+
+    </context>
+</generatorConfiguration>
