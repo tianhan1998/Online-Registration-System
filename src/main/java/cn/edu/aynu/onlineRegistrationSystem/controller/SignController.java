@@ -27,7 +27,7 @@ public class SignController {
     @Autowired
     JSONObject json;
     /**
-     *
+     *注册post提交用户表单
      * @param memId 学号
      * @param memName 姓名
      * @param memPassowrd 密码
@@ -53,7 +53,7 @@ public class SignController {
     }
 
     /***
-     *
+     *注册ajax检测id是否重复
      * @param memId 检查id重复
      * @return json{code:200,meg:"此学号可以注册"}
      */
@@ -63,7 +63,7 @@ public class SignController {
     }
 
     /***
-     *
+     *post传入登录表单
      * @param id 前端学号
      * @param password 密码
      * @return json{code:200,meg:登陆成功,object:登录用户对象}
@@ -72,14 +72,13 @@ public class SignController {
     public JSONObject signIn(String id,String password){
         List<memInfo> list=null;
         list=service.signIn(Integer.valueOf(id),password);
-        System.out.println(list);
         if(list.size()!=0){
             String jsonstring=JSONArray.toJSONString(list.get(0));
             json.put("object",jsonstring);
-            json.put("code","200");
+            json.put("code",200);
             json.put("meg","登陆成功");
         }else{
-            json.put("success","404");
+            json.put("success",404);
             json.put("meg","学号不存在或密码错误");
         }
         return json;
