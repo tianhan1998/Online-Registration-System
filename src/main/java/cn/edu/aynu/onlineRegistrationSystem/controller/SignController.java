@@ -7,10 +7,8 @@ import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -27,7 +25,7 @@ public class SignController {
     @Autowired
     JSONObject json;
     /**
-     *注册post提交用户表单
+     *个人注册
      * @param memId 学号
      * @param memName 姓名
      * @param memPassowrd 密码
@@ -53,7 +51,7 @@ public class SignController {
     }
 
     /***
-     *注册ajax检测id是否重复
+     *个人注册ajax检测id是否重复
      * @param memId 检查id重复
      * @return json{code:200,msg:"此学号可以注册"}
      */
@@ -63,7 +61,7 @@ public class SignController {
     }
 
     /***
-     *post传入登录表单
+     *个人post传入登录表单
      * @param id 前端学号
      * @param password 密码
      * @return json{code:200,msg:登陆成功,data:登录用户对象}
