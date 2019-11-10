@@ -1,5 +1,11 @@
 package cn.edu.aynu.onlineRegistrationSystem.controller;
 
+import org.springframework.web.bind.annotation.RestController;
+
+/**
+ * 第二级页面信息
+ */
+@RestController
 public class IndexController {
     /**
      * 获取所有比赛列表，包括个人比赛和团队比赛
@@ -26,7 +32,7 @@ public class IndexController {
      * 根据传入的学号和比赛的id进行比赛报名（如果个人报名账号类型和比赛要求类型不匹配就失败,或者比赛有邀请码且不一致，也加入失败）
      * @param memId 学号
      * @param matchId 待报名比赛的Id号
-     * @param type 0是个人账号，1团推账号
+     * @param type 0是个人账号，1团队账号
      * @param matchPassword 比赛邀请码，如果数据库没有比赛邀请码则不需填写
      * @param pn 页码
      * @param length 每页显示记录数
