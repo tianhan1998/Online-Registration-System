@@ -38,7 +38,7 @@ public class SignController {
     public JSONObject signUp(String memId, String memName, String memPassowrd, String memEmail, String memSex)  {
 
         memInfo memInfo = new memInfo(Integer.valueOf(memId),memName,memEmail,"M",memPassowrd);
-s
+
         if(service.singUp(memInfo)){
             String obj = JSONObject.toJSONString(memInfo);
             json.put("code",200);
