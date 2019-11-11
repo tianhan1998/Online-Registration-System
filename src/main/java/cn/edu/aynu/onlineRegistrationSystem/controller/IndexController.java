@@ -2,16 +2,16 @@ package cn.edu.aynu.onlineRegistrationSystem.controller;
 
 import cn.edu.aynu.onlineRegistrationSystem.entity.*;
 import cn.edu.aynu.onlineRegistrationSystem.service.IndexService;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -52,6 +52,7 @@ public class IndexController {
         HttpSession session =request.getSession();
         Integer id= (Integer) session.getAttribute("mem_id");
         List<matchInfo> matches;
+        System.out.println("我登陆了但是失败了"+id);
         try {
             if(id==null){//判断登录态
                 response.sendRedirect("login");

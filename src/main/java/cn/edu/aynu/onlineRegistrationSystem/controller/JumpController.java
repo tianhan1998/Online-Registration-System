@@ -20,4 +20,13 @@ public class JumpController {
     public String jumpRegister() {
         return "register";
     }
+    @RequestMapping(value = "/tables",method = RequestMethod.GET)
+    public String jumpTables() {
+        return "tables";
+    }
+
+    @RequestMapping(value = "/tables_all",method = RequestMethod.GET)
+    public String jumpTablesAll() {
+        return "tables_all";
+    }
 }
