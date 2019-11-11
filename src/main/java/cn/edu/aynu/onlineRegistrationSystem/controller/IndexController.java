@@ -80,7 +80,7 @@ public class IndexController {
      * @return 成功返回成功的JSON信息，失败返回失败的JSON信息
      */
     @PostMapping(value = "/enroll",produces = "application/json;charset=utf-8")
-    public JSONObject memEnrollByid(Integer memId,Integer matchId,Integer type,String matchPassword,Integer pn,Integer length){
+    public JSONObject memEnrollById(Integer memId,Integer matchId,Integer type,String matchPassword,Integer pn,Integer length){
         JSONObject json=new JSONObject();
         memInfo user;
         matchInfo match;
@@ -140,7 +140,7 @@ public class IndexController {
      * @return 获取id为${id}这个团队里面所有的成员信息打包返回JSON
      */
     @GetMapping(value = "/member",produces = "application/json;charset=utf-8")
-    public JSONObject getTeamMemInfoByid(Integer teamId){
+    public JSONObject getTeamMemInfoById(Integer teamId){
         JSONObject json=new JSONObject();
         List<memInfo> lists;
         try {
@@ -168,12 +168,15 @@ public class IndexController {
      * @param memId 个人账号id
      * @return 返回成功或者失败的JSON信息
      */
-    public JSONObject joinTeamByid(Integer teamId,Integer memId){
+    @PostMapping(value = "/joinTeam",produces = "application/json;charset=utf-8")
+    public JSONObject joinTeamById(Integer teamId,Integer memId){
         JSONObject json=new JSONObject();
+        teamInfo team;
         memInfo user;
         List<Integer> ids;//队伍中的人数
         try {
             user=service.getMemInfoById(memId);
+            team=service.getTeamInfoById(teamId);
             ids=service.getMemidsByTeamId(teamId);//方法内存在队伍是否存在检测，所以不需要if判断
             if(user==null){
                 json.put("code",404);
@@ -181,21 +184,27 @@ public class IndexController {
             }else if(ids.size()==3){
                 json.put("code",404);
                 json.put("msg","队伍人数已满");
-            }else if(ids.size()>0) {
-                ids.forEach(id -> {
-                    if (id == memId){
-                        json.put("code","404");
-                        json.put("msg","您已在该队伍中");
+            }else {
+                if (ids.size() > 0) {
+                    for(int i:ids){
+                        if(i==memId) {
+                            throw new Exception("您已加入此队伍");
+                        }
                     }
-                });
-            }else{
-
+                }
+                if (service.joinTeamByid(team, memId) > 0) {
+                    json.put("code", 200);
+                    json.put("msg", "加入队伍成功");
+                } else {
+                    json.put("code", 404);
+                    json.put("msg", "加入队伍失败");
+                }
             }
         }catch(Exception e){
             json.put("code",500);
             json.put("msg","数据库错误"+e.getMessage());
         }
-        return null;
+        return json;
     }
 
 }

@@ -21,6 +21,10 @@ public class IndexService {
     @Autowired
     teamInfoMapper teamInfoMapper;
 
+    public int joinTeamByid(teamInfo team,Integer memId){
+        return teamInfoMapper.joinTeam(team, memId);
+    }
+
     /**
      * 批量学号取得mems实体类
      * @param ids list存储的学号组

@@ -11,12 +11,22 @@
     <result column="mem_id3" jdbcType="INTEGER" property="memId3" />
     <result column="team_email" jdbcType="VARCHAR" property="teamEmail" />
   </resultMap>
-  <update id="joinTeamByid">
+  <update id="joinTeam">
     update team_info set
     <choose>
-      <when test="team.mem_id1==null or team.mem_id1==''">
-        mem_id1=#{memId} and team_id=#{team.team_id}
+      <when test="team.memId1==null or team.memId1==''">
+        mem_id1=#{memId} where team_id=#{team.teamId}
       </when>
+      <otherwise>
+        <choose>
+          <when test="team.memId2==null or team.memId2==''">
+             mem_id2=#{memId} where team_id=#{team.teamId}
+          </when>
+            <otherwise>
+              mem_id3=#{memId} where team_id=#{team.teamId}
+            </otherwise>
+        </choose>
+      </otherwise>
     </choose>
 
   </update>

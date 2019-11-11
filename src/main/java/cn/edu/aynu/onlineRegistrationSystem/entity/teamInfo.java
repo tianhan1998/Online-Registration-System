@@ -20,7 +20,8 @@ public class teamInfo {
     public teamInfo() {
     }
 
-    public teamInfo(String teamName, String teamAccount, String teamPassword, Integer memId1, Integer memId2, Integer memId3, String teamEmail) {
+    public teamInfo(Integer teamId,String teamName, String teamAccount, String teamPassword, Integer memId1, Integer memId2, Integer memId3, String teamEmail) {
+        this.teamId=teamId;
         this.teamName = teamName;
         this.teamAccount = teamAccount;
         this.teamPassword = teamPassword;

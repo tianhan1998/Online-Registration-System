@@ -1,7 +1,7 @@
 package cn.edu.aynu.onlineRegistrationSystem;
 
-import cn.edu.aynu.onlineRegistrationSystem.controller.IndexController;
 import cn.edu.aynu.onlineRegistrationSystem.controller.InfoController;
+import cn.edu.aynu.onlineRegistrationSystem.controller.IndexController;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +19,14 @@ public class IndexTest {
     }
     @Test
     public void memEnrollByid(){
-        controller.memEnrollByid(174804131,2,0,"123456",1,1);
+        controller.memEnrollById(174804131,2,0,"123456",1,1);
     }
     @Test
-    public void getTeamMemInfoByid(){
-        controller.getTeamMemInfoByid(1);
+    public void getTeamMemInfoByid() {
+        controller.getTeamMemInfoById(1);
+    }
+    @Test
+    public void joinTeamById(){
+        controller.joinTeamById(1,174804127);
     }
 }
