@@ -9,6 +9,8 @@ public class scoreInfo {
 
     private Double memScore;
 
+    //TODO 加了一个无参的构造方法
+    public scoreInfo() {}
     public scoreInfo(Integer matchId) {
         this.matchId = matchId;
     }

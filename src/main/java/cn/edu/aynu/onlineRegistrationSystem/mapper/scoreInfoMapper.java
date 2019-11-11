@@ -4,7 +4,9 @@ import cn.edu.aynu.onlineRegistrationSystem.entity.scoreInfo;
 import cn.edu.aynu.onlineRegistrationSystem.entity.scoreInfoExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface scoreInfoMapper {
     long countByExample(scoreInfoExample example);
 

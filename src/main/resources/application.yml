@@ -9,7 +9,7 @@ mybatis:
 
 spring:
   profiles:
-    active: home
+    active: dev
   http:
     encoding:
       charset: utf-8
