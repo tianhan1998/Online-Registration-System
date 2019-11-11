@@ -6,6 +6,9 @@
     <result column="team_id" jdbcType="INTEGER" property="teamId" />
     <result column="match_id" jdbcType="INTEGER" property="matchId" />
   </resultMap>
+  <select id="checkExistInTeamMatch" parameterType="int" resultType="int">
+    select count(*) from team_match where match_id=#{match_id} and team_id=#{team_id}
+  </select>
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">

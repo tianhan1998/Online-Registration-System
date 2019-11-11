@@ -1,10 +1,13 @@
 package cn.edu.aynu.onlineRegistrationSystem.mapper;
 
+import cn.edu.aynu.onlineRegistrationSystem.entity.matchInfo;
 import cn.edu.aynu.onlineRegistrationSystem.entity.memMatch;
 import cn.edu.aynu.onlineRegistrationSystem.entity.memMatchExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface memMatchMapper {
     long countByExample(memMatchExample example);
 
@@ -27,4 +30,6 @@ public interface memMatchMapper {
     int updateByPrimaryKeySelective(memMatch record);
 
     int updateByPrimaryKey(memMatch record);
+
+    int checkExistInMemMatch(Integer mem_id, Integer match_id);
 }

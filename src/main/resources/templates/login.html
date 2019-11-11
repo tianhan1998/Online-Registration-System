@@ -9,22 +9,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="all,follow">
     <!-- Bootstrap CSS-->
-    <link rel="stylesheet" href="/ORS/css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
     <!-- Font Awesome CSS-->
-    <link rel="stylesheet" href="/ORS/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <!-- Google fonts - Popppins for copy-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,800">
     <!-- orion icons-->
-    <link rel="stylesheet" href="/ORS/css/orionicons.css">
+    <link rel="stylesheet" href="css/orionicons.css">
     <!-- theme stylesheet-->
-    <link rel="stylesheet" href="/ORS/css/style.default.css" id="theme-stylesheet">
+    <link rel="stylesheet" href="css/style.default.css" id="theme-stylesheet">
     <!-- Custom stylesheet - for your changes-->
-    <link rel="stylesheet" href="/ORS/css/custom.css">
+    <link rel="stylesheet" href="css/custom.css">
     <!-- Favicon-->
-    <link rel="shortcut icon" href="/ORS/img/favicon.png?3">
+    <link rel="shortcut icon" href="img/favicon.png?3">
     <!-- Tweaks for older IEs--><!--[if lt IE 9]>
-        <script src="/ORS/js/html5shiv.min.js"></script>
-        <script src="/ORS/js/respond.min.js"></script><![endif]-->
+        <script src="js/html5shiv.min.js"></script>
+        <script src="js/respond.min.js"></script><![endif]-->
     
   </head>
     <div class="page-holder d-flex align-items-center">
@@ -70,9 +70,8 @@
     <!-- JavaScript files-->
     <script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
     <script src="/ORS/vendor/popper.js/umd/popper.min.js"> </script>
-    <script src="/ORS/js/bootstrap.js"></script>
     <script src="/ORS/vendor/jquery.cookie/jquery.cookie.js"> </script>
-    <script src="/ORS/js/Chart.min.js"></script>
+    <script src="js/Chart.min.js"></script>
     <script src="/ORS/js/js.cookie.min.js"></script>
     <script src="/ORS/js/front.js"></script>
     <script src="/ORS/js/tishi.js"></script>
@@ -82,7 +81,7 @@
 			  $("#register").click(function(){
 		  		//var htm='<div class="form-group mb-4"><input type="text" name="username" placeholder="用户名或邮箱" class="form-control border-0 shadow form-control-lg"></div><div class="form-group mb-4"><input type="password" name="passowrd" placeholder="密码" class="form-control border-0 shadow form-control-lg text-violet"></div><div class="form-group mb-4"><input type="password" name="check_passowrd" placeholder="确认密码" class="form-control border-0 shadow form-control-lg text-violet"></div>';
 	    		//$("#change").html(htm);
-	    		window.location.href="register.html";
+	    		window.location.href="register";
 		    });
 		    $("#login").click(function(){
 		    	//$("#change").html(lo_html);
@@ -104,7 +103,7 @@
 		    		url:"./signIn",
 		    		data:$('#loginForm').serialize(),
 		    		success:function(data){
-		    			console.log("登录成功！"+data.object);
+		    			console.log("登录成功！"+data.data);
 		    		},
 		    		error:function(data){
 		    			console.log("登录失败！"+data);

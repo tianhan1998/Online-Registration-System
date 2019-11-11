@@ -10,6 +10,16 @@
     <result column="match_password" jdbcType="VARCHAR" property="matchPassword" />
     <result column="match_status" jdbcType="INTEGER" property="matchStatus" />
   </resultMap>
+
+  <select id="getMatchListByTeamId" resultMap="BaseResultMap" parameterType="int">
+    select match_info.match_id,match_title,match_star_time,match_end_time,match_mode,match_status from match_info,team_match where team_match.match_id=match_info.match_id and team_match.id=#{id}
+  </select>
+  <select id="getMatchListByMemId" resultMap="BaseResultMap" parameterType="int">
+    select match_info.match_id,match_title,match_star_time,match_end_time,match_mode,match_status from match_info,mem_match where mem_match.match_id=match_info.match_id and mem_match.id=#{id}
+  </select>
+  <select id="getMatchList" resultMap="BaseResultMap">
+    select match_id,match_title,match_star_time,match_end_time,match_mode,match_status from match_info
+  </select>
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">

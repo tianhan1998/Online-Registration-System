@@ -4,7 +4,9 @@ import cn.edu.aynu.onlineRegistrationSystem.entity.matchInfo;
 import cn.edu.aynu.onlineRegistrationSystem.entity.matchInfoExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface matchInfoMapper {
 
     long countByExample(matchInfoExample example);
@@ -28,4 +30,11 @@ public interface matchInfoMapper {
     int updateByPrimaryKeySelective(matchInfo record);
 
     int updateByPrimaryKey(matchInfo record);
+
+    List<matchInfo> getMatchList();
+
+    List<matchInfo> getMatchListByMemId(Integer id);
+
+    List<matchInfo> getMatchListByTeamId(Integer id);
+
 }

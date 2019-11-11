@@ -6,6 +6,9 @@
     <result column="mem_id" jdbcType="INTEGER" property="memId" />
     <result column="match_id" jdbcType="INTEGER" property="matchId" />
   </resultMap>
+  <select id="checkExistInMemMatch" parameterType="int" resultType="int">
+    select count(*) from mem_match where mem_id=#{mem_id} and match_id=#{match_id}
+  </select>
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">

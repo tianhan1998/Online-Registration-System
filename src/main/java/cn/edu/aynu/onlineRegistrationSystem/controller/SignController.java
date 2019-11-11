@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -65,19 +67,30 @@ public class SignController {
      * @param id 前端学号
      * @param password 密码
      * @return json{code:200,msg:登陆成功,data:登录用户对象}
+     * 登陆成功向session中存入mem_id和用户类型（mem类型）
      */
     @RequestMapping(value = "/signIn",method = RequestMethod.POST)
-    public JSONObject signIn(String id,String password){
-        List<memInfo> list=null;
-        list=service.signIn(Integer.valueOf(id),password);
-        if(list.size()!=0){
-            String jsonstring=JSONArray.toJSONString(list.get(0));
-            json.put("data",jsonstring);
-            json.put("code",200);
-            json.put("msg","登陆成功");
-        }else{
-            json.put("success",404);
-            json.put("msg","学号不存在或密码错误");
+    public JSONObject signIn(String id, String password, HttpServletRequest request){
+        List<memInfo> list;
+        try {
+            list = service.signIn(Integer.valueOf(id), password);
+            if (list.size() != 0) {
+                memInfo user=list.get(0);
+                HttpSession session=request.getSession();
+                session.setAttribute("mem_id",user.getMemId());
+                session.setAttribute("type","mem");
+                String jsonstring = JSONArray.toJSONString(list.get(0));
+                json.put("data", jsonstring);
+                json.put("code", 200);
+                json.put("msg", "登陆成功");
+
+            } else {
+                json.put("success", 404);
+                json.put("msg", "学号不存在或密码错误");
+            }
+        }catch(Exception e){
+            json.put("code",500);
+            json.put("msg","数据库查询失败"+e.getMessage());
         }
         return json;
     }

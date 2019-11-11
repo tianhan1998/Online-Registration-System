@@ -1,19 +1,46 @@
 package cn.edu.aynu.onlineRegistrationSystem.controller;
 
+import cn.edu.aynu.onlineRegistrationSystem.entity.matchInfo;
+import cn.edu.aynu.onlineRegistrationSystem.entity.memInfo;
+import cn.edu.aynu.onlineRegistrationSystem.entity.memMatch;
+import cn.edu.aynu.onlineRegistrationSystem.entity.teamMatch;
+import cn.edu.aynu.onlineRegistrationSystem.service.IndexService;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * 第二级页面信息
  */
 @RestController
 public class IndexController {
+    @Autowired
+    IndexService service;
     /**
      * 获取所有比赛列表，包括个人比赛和团队比赛
      * @return 返回所有比赛信息的JSON
      */
-    public String getMatchList(){
-
-        return null;
+    @GetMapping(value = "/matchList",produces = "application/json;charset=utf-8")
+    public JSONObject getMatchList() {
+        JSONObject json = new JSONObject();
+        try {
+            List<matchInfo> lists = service.getMatchList();
+            json.put("data",lists);
+            json.put("code",200);
+            json.put("msg","查询成功");
+        }catch (Exception e){
+            json.put("code",500);
+            json.put("msg","数据库查询失败"+e.getMessage());
+        }
+        return json;
     }
 
     /**
@@ -23,9 +50,25 @@ public class IndexController {
      * @param length 每页显示记录数
      * @return 已经报名的比赛信息
      */
-    public String getMatchListById(Integer id,Integer pn,Integer length){
-
-        return null;
+    @PostMapping(value = "/matchList",produces = "application/json;charset=utf-8")
+    public JSONObject getMatchListById(Integer id, Integer pn, Integer length, HttpServletRequest request){
+        JSONObject json=new JSONObject();
+        HttpSession session =request.getSession();
+        List<matchInfo> matches;
+        try {
+            if ("mem".equals(session.getAttribute("type"))) {
+                matches = service.getMatchListByMemId(id);
+            } else {
+                matches = service.getMatchListByTeamId(id);
+            }
+            json.put("code", 200);
+            json.put("data", matches);
+            json.put("msg", "查询成功");
+        }catch (Exception e) {
+            json.put("code", 500);
+            json.put("msg", "数据库查询失败" + e.getMessage());
+        }
+        return json;
     }
 
     /**
@@ -36,11 +79,61 @@ public class IndexController {
      * @param matchPassword 比赛邀请码，如果数据库没有比赛邀请码则不需填写
      * @param pn 页码
      * @param length 每页显示记录数
-     * @return 成功返回成功想JSON信息，失败返回失败的JSON信息
+     * @return 成功返回成功的JSON信息，失败返回失败的JSON信息
      */
-    public String memEnrollByid(Integer memId,Integer matchId,Integer type,String matchPassword,Integer pn,Integer length){
-
-        return null;
+    @PostMapping(value = "/enroll",produces = "application/json;charset=utf-8")
+    public JSONObject memEnrollByid(Integer memId,Integer matchId,Integer type,String matchPassword,Integer pn,Integer length){
+        JSONObject json=new JSONObject();
+        memInfo user;
+        matchInfo match;
+        try{
+            user=service.getMemInfoById(memId);
+            match=service.getMatchInfoById(matchId);
+            if(user==null){
+                json.put("code",404);
+                json.put("msg","用户不存在");
+            }
+            else if(match==null){
+                json.put("code",404);
+                json.put("msg","比赛不存在");
+            }
+            else if(type!=Integer.parseInt(match.getMatchMode())){
+                json.put("code",404);
+                json.put("msg","用户对应的比赛不正确");
+            }else if(!matchPassword.equals(match.getMatchPassword())){
+                json.put("code",404);
+                json.put("msg","比赛邀请码不正确");
+            }
+            else if(type==0){
+                if(service.checkExistInMemMatch(memId,matchId)==0) {
+                    if (service.insertMemMatch(new memMatch(memId, matchId)) > 0) {
+                        json.put("code", 200);
+                        json.put("msg", "报名成功");
+                    } else {
+                        throw new Exception("插入个人报名失败");
+                    }
+                }else{
+                    json.put("code",404);
+                    json.put("msg","您已报名过比赛");
+                }
+            }else {
+                if (service.checkExistInTeamMatch(memId, matchId) == 0) {
+                    if (service.insertTeamMatch(new teamMatch(memId, matchId)) > 0) {
+                        json.put("code", 200);
+                        json.put("msg", "报名成功");
+                    } else {
+                        throw new Exception("插入队伍报名失败");
+                    }
+                }else{
+                    json.put("code",404);
+                    json.put("msg","您已报名过比赛");
+                }
+            }
+        }catch(Exception e){
+            json.put("code",500);
+            json.put("msg","数据库错误"+e.getMessage());
+        }
+        return json;
     }
 
     /**

@@ -17,6 +17,19 @@ public class matchInfo {
 
     private Integer matchStatus;
 
+    @Override
+    public String toString() {
+        return "matchInfo{" +
+                "matchId=" + matchId +
+                ", matchTitle='" + matchTitle + '\'' +
+                ", matchStarTime=" + matchStarTime +
+                ", matchEndTime=" + matchEndTime +
+                ", matchMode='" + matchMode + '\'' +
+                ", matchPassword='" + matchPassword + '\'' +
+                ", matchStatus=" + matchStatus +
+                '}';
+    }
+
     public matchInfo() {
     }
 

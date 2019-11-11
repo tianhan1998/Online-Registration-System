@@ -4,7 +4,9 @@ import cn.edu.aynu.onlineRegistrationSystem.entity.teamMatch;
 import cn.edu.aynu.onlineRegistrationSystem.entity.teamMatchExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface teamMatchMapper {
     long countByExample(teamMatchExample example);
 
@@ -27,4 +29,6 @@ public interface teamMatchMapper {
     int updateByPrimaryKeySelective(teamMatch record);
 
     int updateByPrimaryKey(teamMatch record);
+
+    int checkExistInTeamMatch(Integer team_id,Integer match_id);
 }
