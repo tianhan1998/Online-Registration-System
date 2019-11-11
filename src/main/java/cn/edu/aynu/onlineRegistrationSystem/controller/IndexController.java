@@ -54,10 +54,6 @@ public class IndexController {
         List<matchInfo> matches;
         System.out.println("我登陆了但是失败了"+id);
         try {
-            if(id==null){//判断登录态
-                response.sendRedirect("login");
-                return null;
-            }
             if ("mem".equals(session.getAttribute("type"))) {
                 matches = service.getMatchListByMemId(id);
             } else {
