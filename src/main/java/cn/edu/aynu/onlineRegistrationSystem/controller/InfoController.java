@@ -1,5 +1,6 @@
 package cn.edu.aynu.onlineRegistrationSystem.controller;
 
+import cn.edu.aynu.onlineRegistrationSystem.entity.teamInfo;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -14,7 +15,6 @@ public class InfoController {
      * @return 返回JSON详细信息，如果有成绩就返回成绩，没有成绩成绩一栏返回null
      */
     public String getMemInfo(Integer memId){
-
         return null;
     }
 

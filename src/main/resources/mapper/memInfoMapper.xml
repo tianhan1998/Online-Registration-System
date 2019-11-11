@@ -8,6 +8,17 @@
     <result column="mem_sex" jdbcType="CHAR" property="memSex" />
     <result column="mem_password" jdbcType="VARCHAR" property="memPassword" />
   </resultMap>
+  <select id="getMemInfoByIds" parameterType="list" resultMap="BaseResultMap">
+    select mem_id,mem_name,mem_email,mem_sex from mem_info
+    <where>
+      <foreach collection="ids" item="id" open="and mem_id in(" close=")" separator=",">
+        #{id}
+      </foreach>
+    </where>
+  </select>
+  <select id="getMemeberByTeamId" resultMap="BaseResultMap" parameterType="int">
+    select mem_id from team_info,mem_info where
+  </select>
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">

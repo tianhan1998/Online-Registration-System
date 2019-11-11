@@ -11,6 +11,15 @@
     <result column="mem_id3" jdbcType="INTEGER" property="memId3" />
     <result column="team_email" jdbcType="VARCHAR" property="teamEmail" />
   </resultMap>
+  <update id="joinTeamByid">
+    update team_info set
+    <choose>
+      <when test="team.mem_id1==null or team.mem_id1==''">
+        mem_id1=#{memId} and team_id=#{team.team_id}
+      </when>
+    </choose>
+
+  </update>
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">

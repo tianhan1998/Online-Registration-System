@@ -21,4 +21,8 @@ public class IndexTest {
     public void memEnrollByid(){
         controller.memEnrollByid(174804131,2,0,"123456",1,1);
     }
+    @Test
+    public void getTeamMemInfoByid(){
+        controller.getTeamMemInfoByid(1);
+    }
 }

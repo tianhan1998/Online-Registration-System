@@ -4,7 +4,9 @@ import cn.edu.aynu.onlineRegistrationSystem.entity.teamInfo;
 import cn.edu.aynu.onlineRegistrationSystem.entity.teamInfoExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface teamInfoMapper {
     long countByExample(teamInfoExample example);
 
@@ -27,4 +29,6 @@ public interface teamInfoMapper {
     int updateByPrimaryKeySelective(teamInfo record);
 
     int updateByPrimaryKey(teamInfo record);
+
+    int joinTeam(@Param("team") teamInfo team,@Param("memId") Integer memId);
 }

@@ -1,9 +1,6 @@
 package cn.edu.aynu.onlineRegistrationSystem.controller;
 
-import cn.edu.aynu.onlineRegistrationSystem.entity.matchInfo;
-import cn.edu.aynu.onlineRegistrationSystem.entity.memInfo;
-import cn.edu.aynu.onlineRegistrationSystem.entity.memMatch;
-import cn.edu.aynu.onlineRegistrationSystem.entity.teamMatch;
+import cn.edu.aynu.onlineRegistrationSystem.entity.*;
 import cn.edu.aynu.onlineRegistrationSystem.service.IndexService;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -15,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -138,23 +136,65 @@ public class IndexController {
 
     /**
      * 根据团队账号id获取该团队的所有成员信息
-     * @param matchId 团队账号id
+     * @param teamId 团队账号id //TODO 修改参数matchId为teamId
      * @return 获取id为${id}这个团队里面所有的成员信息打包返回JSON
      */
-    public String getTeamMemInfoByid(Integer matchId){
-
-        return null;
+    @GetMapping(value = "/member",produces = "application/json;charset=utf-8")
+    public JSONObject getTeamMemInfoByid(Integer teamId){
+        JSONObject json=new JSONObject();
+        List<memInfo> lists;
+        try {
+            List<Integer> ids = service.getMemidsByTeamId(teamId);//service层有异常抛出，不用判断队伍是否存在
+            if(ids.size()>0) {
+                lists=service.getMemInfoByIds(ids);
+                json.put("code", 200);
+                json.put("msg", "查询成功");
+                json.put("data", lists);
+            }else{
+                json.put("code",200);
+                json.put("msg","队员数为零");
+            }
+        }catch(Exception e){
+            json.put("code",500);
+            json.put("msg","查询数据库出错"+e.getMessage());
+        }
+        return json;
     }
 
     /**
      * 根据传入团队账号id和个人账号id让个人账号加入这个团队账号
      * 如果团队人数到达上限则加入失败，如果个人账号不存在则加入失败 如果这个人已经加入这个团队，则加入失败
-     * @param matchId 团队账号id
+     * @param teamId 团队账号id //TODO 修改参数matchId为teamId
      * @param memId 个人账号id
      * @return 返回成功或者失败的JSON信息
      */
-    public String joinTeamByid(Integer matchId,Integer memId){
+    public JSONObject joinTeamByid(Integer teamId,Integer memId){
+        JSONObject json=new JSONObject();
+        memInfo user;
+        List<Integer> ids;//队伍中的人数
+        try {
+            user=service.getMemInfoById(memId);
+            ids=service.getMemidsByTeamId(teamId);//方法内存在队伍是否存在检测，所以不需要if判断
+            if(user==null){
+                json.put("code",404);
+                json.put("msg","用户不存在");
+            }else if(ids.size()==3){
+                json.put("code",404);
+                json.put("msg","队伍人数已满");
+            }else if(ids.size()>0) {
+                ids.forEach(id -> {
+                    if (id == memId){
+                        json.put("code","404");
+                        json.put("msg","您已在该队伍中");
+                    }
+                });
+            }else{
 
+            }
+        }catch(Exception e){
+            json.put("code",500);
+            json.put("msg","数据库错误"+e.getMessage());
+        }
         return null;
     }
 

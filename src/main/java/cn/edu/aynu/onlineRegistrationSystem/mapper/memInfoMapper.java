@@ -29,4 +29,6 @@ public interface memInfoMapper {
     int updateByPrimaryKeySelective(memInfo record);
 
     int updateByPrimaryKey(memInfo record);
+
+    List<memInfo> getMemInfoByIds(@Param("ids") List<Integer> ids);
 }

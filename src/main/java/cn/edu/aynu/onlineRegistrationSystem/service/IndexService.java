@@ -1,13 +1,11 @@
 package cn.edu.aynu.onlineRegistrationSystem.service;
 
 import cn.edu.aynu.onlineRegistrationSystem.entity.*;
-import cn.edu.aynu.onlineRegistrationSystem.mapper.matchInfoMapper;
-import cn.edu.aynu.onlineRegistrationSystem.mapper.memInfoMapper;
-import cn.edu.aynu.onlineRegistrationSystem.mapper.memMatchMapper;
-import cn.edu.aynu.onlineRegistrationSystem.mapper.teamMatchMapper;
+import cn.edu.aynu.onlineRegistrationSystem.mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,7 +18,57 @@ public class IndexService {
     memInfoMapper memInfoMapper;
     @Autowired
     teamMatchMapper teamMatchMapper;
+    @Autowired
+    teamInfoMapper teamInfoMapper;
 
+    /**
+     * 批量学号取得mems实体类
+     * @param ids list存储的学号组
+     * @return 返回学生实体类数组
+     */
+    public List<memInfo> getMemInfoByIds(List<Integer>ids){
+        return memInfoMapper.getMemInfoByIds(ids);
+    }
+
+    /**
+     * 通过teamid获取学号数组，不是mem实体类
+     * @param teamid 队伍id
+     * @return 返回学号的集合
+     */
+    public List<Integer> getMemidsByTeamId(Integer teamid) throws Exception{
+        teamInfo team=teamInfoMapper.selectByPrimaryKey(teamid);
+        if(team!=null) {
+            List<Integer> lists = new ArrayList<>();
+            if (team.getMemId1() != null) {
+                lists.add(team.getMemId1());
+            }
+            if (team.getMemId2() != null) {
+                lists.add(team.getMemId2());
+            }
+            if (team.getMemId3() != null) {
+                lists.add(team.getMemId3());
+            }
+            return lists;
+        }else{
+            throw new Exception("队伍不存在");
+        }
+    }
+
+    /**
+     * 通过队伍id获取实体类
+     * @param id
+     * @return
+     */
+    public teamInfo getTeamInfoById(Integer id){
+        return teamInfoMapper.selectByPrimaryKey(id);
+    }
+
+    /**
+     * 检查团队是否参加过比赛
+     * @param team_id  队伍id
+     * @param match_id 比赛id
+     * @return
+     */
     public int checkExistInTeamMatch(Integer team_id,Integer match_id){
         return teamMatchMapper.checkExistInTeamMatch(team_id, match_id);
     }
