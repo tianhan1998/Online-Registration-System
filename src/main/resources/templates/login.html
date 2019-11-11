@@ -103,10 +103,11 @@
 		    		url:"./signIn",
 		    		data:$('#loginForm').serialize(),
 		    		success:function(data){
-		    			console.log("登录成功！"+data.data);
+		    			console.log("登录成功！"+data.msg);
+						window.location.href="/ORS/tables";
 		    		},
 		    		error:function(data){
-		    			console.log("登录失败！"+data);
+		    			console.log("登录失败！"+data.msg);
 		    		},
 		    		async:true
 		    	});

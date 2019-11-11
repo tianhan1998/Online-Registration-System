@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
   <body>
   <head>
     <meta charset="utf-8">
@@ -39,11 +39,15 @@
             <form id="loginForm" action="index.html" class="mt-4">
             	<div id="change">
 	              <div class="form-group mb-4">
-	                <input type="text" name="memId" placeholder="学号" class="form-control border-0 shadow form-control-lg">
+	                <input type="text" name="memId" id="memId" placeholder="学号" class="form-control border-0 shadow form-control-lg">
 	              </div>
 	              <div class="form-group mb-4">
 	                <input type="text" name="memName" placeholder="姓名" class="form-control border-0 shadow form-control-lg text-violet">
 	              </div>
+				  <select class="form-control border-0 shadow form-control-lg text-violet">
+				      <option value="F">男</option>
+				      <option value="M">女</option>
+				  </select>
 	              <div class="form-group mb-4">
 	                <input type="text" name="memEmail" placeholder="邮箱" class="form-control border-0 shadow form-control-lg text-violet">
 	              </div>
@@ -73,7 +77,24 @@
     <script src="js/front.js"></script>
     <script src="js/tishi.js"></script>
     <script>
+		//失去焦点的时候验证学号是否已经注册
     	$(document).ready(function() {
+			$("#memId").blur(function(){
+				var username=$("input[name='memId']").val();
+				$.ajax({
+				    type:"get",
+				    url:"./signUp",
+				    data:{"memId"=username}},
+				    success:function(data){
+				        console.log("账号没有重复！"+data);
+						window.location.href="/ORS/tables.html";
+				    },
+				    error:function(data){
+				        console.log("注册失败账号重复！"+data.msg);
+				    },
+					async:true
+				});
+			});
     		var lo_html=$("#change").html();
 			  $("#login").click(function(){
 		  		//var htm='<div class="form-group mb-4"><input type="text" name="username" placeholder="用户名或邮箱" class="form-control border-0 shadow form-control-lg"></div><div class="form-group mb-4"><input type="password" name="passowrd" placeholder="密码" class="form-control border-0 shadow form-control-lg text-violet"></div><div class="form-group mb-4"><input type="password" name="check_passowrd" placeholder="确认密码" class="form-control border-0 shadow form-control-lg text-violet"></div>';
@@ -100,12 +121,14 @@
 		    	}
 		    	//ajax注册
 		    	
+				
 		    	$.ajax({
                     type:"post",
                     url:"./signUp",
                     data:$('#loginForm').serialize(),
                     success:function(data){
                         console.log("注册成功！"+data);
+						window.location.href="/ORS/tables.html";
                     },
                     error:function(data){
                         console.log("注册失败！"+data);

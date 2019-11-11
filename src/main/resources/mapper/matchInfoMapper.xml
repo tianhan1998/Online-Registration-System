@@ -12,10 +12,10 @@
   </resultMap>
 
   <select id="getMatchListByTeamId" resultMap="BaseResultMap" parameterType="int">
-    select match_info.match_id,match_title,match_star_time,match_end_time,match_mode,match_status from match_info,team_match where team_match.match_id=match_info.match_id and team_match.id=#{id}
+    select match_info.match_id,match_title,match_star_time,match_end_time,match_mode,match_status from match_info,team_match where team_match.match_id=match_info.match_id and team_match.team_id=#{id}
   </select>
   <select id="getMatchListByMemId" resultMap="BaseResultMap" parameterType="int">
-    select match_info.match_id,match_title,match_star_time,match_end_time,match_mode,match_status from match_info,mem_match where mem_match.match_id=match_info.match_id and mem_match.id=#{id}
+    select match_info.match_id,match_title,match_star_time,match_end_time,match_mode,match_status from match_info,mem_match where mem_match.match_id=match_info.match_id and mem_match.mem_id=#{id}
   </select>
   <select id="getMatchList" resultMap="BaseResultMap">
     select match_id,match_title,match_star_time,match_end_time,match_mode,match_status from match_info

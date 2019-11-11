@@ -35,11 +35,13 @@ public class SignController {
      * @return json{code:200,msg:xxx,data:[]}
      */
     @RequestMapping(value = "/signUp",method = RequestMethod.POST)
-    public JSONObject signUp(String memId, String memName, String memPassowrd, String memEmail, String memSex)  {
+    public JSONObject signUp(String memId, String memName, String memPassowrd, String memEmail, String memSex, HttpServletRequest request)  {
 
         memInfo memInfo = new memInfo(Integer.valueOf(memId),memName,memEmail,"M",memPassowrd);
-
         if(service.singUp(memInfo)){
+            HttpSession session=request.getSession();
+            session.setAttribute("mem_id",memId);
+            session.setAttribute("type","mem");
             String obj = JSONObject.toJSONString(memInfo);
             json.put("code",200);
             json.put("msg","注册成功");

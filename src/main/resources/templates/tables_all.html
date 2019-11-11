@@ -148,11 +148,10 @@
 	<script>
 		$(function(){
 			$.ajax({
-				type:"post",
+				type:"get",
 				url:"./matchList",
-				data:{pn:0,length:5},
 				success:function(result){
-					console.log("获取所有比赛列表成功！"+result);
+					console.log("获取所有比赛列表成功！");
 					for(var i=0; i<result.data.length;i++){
 						/*<tr>
 						  <th scope="row">1</th>
@@ -162,7 +161,7 @@
 						  <th>2017年12月12日</th>
 						  <th>团队赛</th>
 						</tr>*/
-						var string = "<tr><th scope='row'>"+i+1+"</th><th>"+result.data[i].matchTitle+"</th><th>"+result.data[i].matchStatus+"</th><th>"+result.data[i].matchStarTime+"</th><th>"+result.data[i].matchEndTime+"</th><th>"+result.data[i].matchId+"</th><th><button>查看信息</button></th></tr>";
+						var string = "<tr><th scope='row'>"+i+1+"</th><th>"+result.data[i].matchTitle+"</th><th>"+result.data[i].matchStatus+"</th><th>"+result.data[i].matchStarTime+"</th><th>"+result.data[i].matchEndTime+"</th><th>"+result.data[i].matchId+"</th><th><button>报名</button></th></tr>";
 						$("table").append(string);
 					}
 				},

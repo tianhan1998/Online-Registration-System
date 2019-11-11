@@ -2,17 +2,16 @@ package cn.edu.aynu.onlineRegistrationSystem.controller;
 
 import cn.edu.aynu.onlineRegistrationSystem.entity.*;
 import cn.edu.aynu.onlineRegistrationSystem.service.IndexService;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -42,18 +41,23 @@ public class IndexController {
     }
 
     /**
-     * 根据传入的id号获取该id已经报名的所有比赛信息
-     * @param id 学号或者团队号id
+     * 获取当前已经登录账号报名的所有比赛信息//TODO 修改参数
      * @param pn 页码
      * @param length 每页显示记录数
      * @return 已经报名的比赛信息
      */
     @PostMapping(value = "/matchList",produces = "application/json;charset=utf-8")
-    public JSONObject getMatchListById(Integer id, Integer pn, Integer length, HttpServletRequest request){
+    public JSONObject getMatchListById(Integer pn, Integer length, HttpServletRequest request, HttpServletResponse response) {
         JSONObject json=new JSONObject();
         HttpSession session =request.getSession();
+        Integer id= (Integer) session.getAttribute("mem_id");
         List<matchInfo> matches;
+        System.out.println("我登陆了但是失败了"+id);
         try {
+            if(id==null){//判断登录态
+                response.sendRedirect("login");
+                return null;
+            }
             if ("mem".equals(session.getAttribute("type"))) {
                 matches = service.getMatchListByMemId(id);
             } else {
@@ -139,8 +143,8 @@ public class IndexController {
      * @param teamId 团队账号id //TODO 修改参数matchId为teamId
      * @return 获取id为${id}这个团队里面所有的成员信息打包返回JSON
      */
-    @GetMapping(value = "/member",produces = "application/json;charset=utf-8")
-    public JSONObject getTeamMemInfoById(Integer teamId){
+    @GetMapping(value = "/member/{teamId}",produces = "application/json;charset=utf-8")
+    public JSONObject getTeamMemInfoById(@PathVariable("teamId") Integer teamId){
         JSONObject json=new JSONObject();
         List<memInfo> lists;
         try {

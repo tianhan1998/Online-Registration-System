@@ -21,6 +21,12 @@ public class IndexService {
     @Autowired
     teamInfoMapper teamInfoMapper;
 
+    /**
+     * 个人加入团队
+     * @param team 队伍实体
+     * @param memId 个人学号
+     * @return
+     */
     public int joinTeamByid(teamInfo team,Integer memId){
         return teamInfoMapper.joinTeam(team, memId);
     }
@@ -88,7 +94,7 @@ public class IndexService {
     }
 
     /**
-     * 插入一条队伍报名信
+     * 插入一条队伍报名信息
      * @param teamMatch
      * @return
      */
