@@ -24,8 +24,45 @@
     <!-- Tweaks for older IEs--><!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+	<!-- 模态框 -->
+	<style>
+	        .hide{
+	            display:none;
+	        }
+	        .modal{
+	            position:fixed;
+	            left:50%;
+	            top:50%;
+	            width:500px;
+	            height:400px;
+	            margin-left:-200px;
+	            margin-top:-250px;
+	            z-index:10;
+	            background-color:white;
+	        }
+	        .shade{
+	            position:fixed;
+	            left:0;
+	            right:0;
+	            top:0;
+	            bottom:0;
+	            opacity:0.6;
+	            background-color:black;
+	            z-index:9;
+	        }
+	        p{
+	            text-align:center;
+	        }
+	    </style>
   </head>
   <body>
+	<div id="log" class="modal hide">
+		<div class="msg">如果没有邀请码任意输入提交即可</div>
+		<input name="code" type="hidden" value="">
+	    <p>比赛邀请码：<input id="code" type="text"></p>
+	    <p><input type="button" id="con" value="确认"></p>
+		<p><input type="button" id="cancel" value="取消"></p>
+	</div>
     <!-- navbar-->
     <header class="header">
       <nav class="navbar navbar-expand-lg px-4 py-2 bg-white shadow"><a href="#" class="sidebar-toggler text-gray-500 mr-4 mr-lg-5 lead"><i class="fas fa-align-left"></i></a><a href="index.html" class="navbar-brand font-weight-bold text-uppercase text-base">Bubbly Dashboard</a>
@@ -82,15 +119,15 @@
         <ul class="sidebar-menu list-unstyled">
               <li class="sidebar-list-item"><a href="tables" class="sidebar-link text-muted"><i class="o-home-1 mr-3 text-gray"></i><span>我报名的比赛</span></a></li>
               <li class="sidebar-list-item"><a href="tables_all" class="sidebar-link text-muted"><i class="o-sales-up-1 mr-3 text-gray"></i><span>所有比赛</span></a></li>
-          <li class="sidebar-list-item"><a href="#" data-toggle="collapse" data-target="#pages" aria-expanded="false" aria-controls="pages" class="sidebar-link text-muted"><i class="o-wireframe-1 mr-3 text-gray"></i><span>Pages</span></a>
-            <div id="pages" class="collapse">
+          <li class="sidebar-list-item"><a href="#" data-toggle="collapse" data-target="#pages" aria-expanded="false" aria-controls="pages" class="sidebar-link text-muted"><i class="o-wireframe-1 mr-3 text-gray"></i><span>退出登录</span></a>
+            <!-- <div id="pages" class="collapse">
               <ul class="sidebar-menu list-unstyled border-left border-primary border-thick">
                 <li class="sidebar-list-item"><a href="#" class="sidebar-link text-muted pl-lg-5">Page one</a></li>
                 <li class="sidebar-list-item"><a href="#" class="sidebar-link text-muted pl-lg-5">Page two</a></li>
                 <li class="sidebar-list-item"><a href="#" class="sidebar-link text-muted pl-lg-5">Page three</a></li>
                 <li class="sidebar-list-item"><a href="#" class="sidebar-link text-muted pl-lg-5">Page four</a></li>
               </ul>
-            </div>
+            </div> -->
           </li>
               <li class="sidebar-list-item"><a href="login.html" class="sidebar-link text-muted"><i class="o-exit-1 mr-3 text-gray"></i><span>Login</span></a></li>
         </ul>
@@ -147,6 +184,7 @@
     <script src="../static/js/front.js"></script>
 	<script>
 		$(function(){
+			//获取所有的比赛信息
 			$.ajax({
 				type:"get",
 				url:"./matchList",
@@ -161,7 +199,7 @@
 						  <th>2017年12月12日</th>
 						  <th>团队赛</th>
 						</tr>*/
-						var string = "<tr><th scope='row'>"+i+1+"</th><th>"+result.data[i].matchTitle+"</th><th>"+result.data[i].matchStatus+"</th><th>"+result.data[i].matchStarTime+"</th><th>"+result.data[i].matchEndTime+"</th><th>"+result.data[i].matchId+"</th><th><button>报名</button></th></tr>";
+						var string = "<tr id='"+result.data[i].matchId+"'><th scope='row'>"+result.data[i].matchId+"</th><th>"+result.data[i].matchTitle+"</th><th>"+result.data[i].matchStatus+"</th><th>"+result.data[i].matchStarTime+"</th><th>"+result.data[i].matchEndTime+"</th><th>"+result.data[i].matchMode+"</th><th><button class='baoming'>报名</button></th></tr>";
 						$("table").append(string);
 					}
 				},
@@ -169,6 +207,36 @@
 					console.log("获取所有比赛列表失败！"+result);
 				},
 				async:true
+			});
+			
+			//模态框处理
+			//打开模态框
+			$('.baoming').click(function(){
+			    $('#log').show();
+				var id=$('.baoming').parent().sliblings('.id').text();
+				console.log(id);
+			});
+			//关闭模态框
+			$('#cancel').click(function(){
+			   $('#log').hide();
+			});
+			//提交模态框数据
+			$('#con').click(function(){
+				var code=$("#code").val();//获取用户输入的邀请码
+				$.ajax({
+					type:"post",
+					url:"./enroll",
+					data:{"memId":"","matchId":"","type":"","matchPassword":"","pn":0,"length":5},
+					success:function(result){
+						
+					},
+					error:function(result){
+						
+					},
+					async:true
+				});
+				
+				$('.modal,.shade').addClass('hide');
 			});
 		});
 	</script>

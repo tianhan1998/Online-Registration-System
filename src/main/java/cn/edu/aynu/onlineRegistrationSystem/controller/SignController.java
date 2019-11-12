@@ -57,7 +57,7 @@ public class SignController {
     }
 
     /***
-     *个人注册ajax检测id是否重复//TODO 新增个人检测
+     *个人注册ajax检测id是否重复
      * @param memId 检查id重复
      * @return json{code:200,msg:"此学号可以注册"}
      */
@@ -129,6 +129,7 @@ public class SignController {
                         memInfo user = list.get(0);
                         session.setAttribute("mem_id", user.getMemId());
                         session.setAttribute("type", "mem");
+                        session.setAttribute("user",user);//TODO 登陆成功我塞进去了一个当前登陆的用户
                         json.put("data", JSONArray.toJSONString(user));
                         json.put("code", 200);
                         json.put("msg", "登陆成功");

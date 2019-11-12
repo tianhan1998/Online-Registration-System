@@ -46,9 +46,9 @@
 	                <input type="password" name="password" placeholder="密码" class="form-control border-0 shadow form-control-lg text-violet">
 	              </div>
                 <div class="form-group mb-4">
-                    <select class="form-control border-0 shadow form-control-lg text-violet">
-                        <option value="0">团队</option>
-                        <option value="1">个人</option>
+                    <select class="form-control border-0 shadow form-control-lg text-violet" name="type">
+                        <option value="0">个人</option>
+                        <option value="1">团队</option>
                     </select>
                 </div>
 	              <div class="form-group mb-4">
@@ -77,6 +77,7 @@
     <script src="/ORS/js/tishi.js"></script>
     <script>
     	$(document).ready(function() {
+
     		var lo_html=$("#change").html();
 			  $("#register").click(function(){
 		  		//var htm='<div class="form-group mb-4"><input type="text" name="username" placeholder="用户名或邮箱" class="form-control border-0 shadow form-control-lg"></div><div class="form-group mb-4"><input type="password" name="passowrd" placeholder="密码" class="form-control border-0 shadow form-control-lg text-violet"></div><div class="form-group mb-4"><input type="password" name="check_passowrd" placeholder="确认密码" class="form-control border-0 shadow form-control-lg text-violet"></div>';
@@ -97,17 +98,21 @@
 		    	}
 		    	
 		    	//ajax登录
-		    	
 		    	$.ajax({
 		    		type:"post",
 		    		url:"./signIn",
 		    		data:$('#loginForm').serialize(),
 		    		success:function(data){
-		    			console.log("登录成功！"+data.msg);
-						window.location.href="/ORS/tables";
+						if(data.code=="200"){
+							console.log("登录成功！"+data.msg);
+							window.location.href="/ORS/tables";
+						}else{
+							console.log("登录失败！"+data.msg);
+							$.MsgBox.Alert("提示",data.msg);
+						}
 		    		},
 		    		error:function(data){
-		    			console.log("登录失败！"+data.msg);
+		    			$.MsgBox.Alert("提示",data.msg);
 		    		},
 		    		async:true
 		    	});
