@@ -44,7 +44,7 @@
 	              <div class="form-group mb-4">
 	                <input type="text" name="memName" placeholder="姓名" class="form-control border-0 shadow form-control-lg text-violet">
 	              </div>
-				  <select class="form-control border-0 shadow form-control-lg text-violet">
+				  <select name="memSex" class="form-control border-0 shadow form-control-lg text-violet">
 				      <option value="F">男</option>
 				      <option value="M">女</option>
 				  </select>
@@ -81,19 +81,21 @@
     	$(document).ready(function() {
 			$("#memId").blur(function(){
 				var username=$("input[name='memId']").val();
-				$.ajax({
-				    type:"get",
-				    url:"./signUp",
-				    data:{"memId"=username}},
-				    success:function(data){
-				        console.log("账号没有重复！"+data);
-						window.location.href="/ORS/tables.html";
-				    },
-				    error:function(data){
-				        console.log("注册失败账号重复！"+data.msg);
-				    },
-					async:true
-				});
+				if(username.length>0) {
+                    $.ajax({
+                        type: "get",
+                        url: "./signUp",
+                        data: {"memId": username},//TODO 修了BUG
+                        success: function (data) {
+                            console.log("账号没有重复！" + data);
+                            // window.location.href="/ORS/tables.html";//TODO 重复不要跳转，修改页面元素提醒
+                        },
+                        error: function (data) {
+                            console.log("注册失败账号重复！" + data.msg);
+                        },
+                        async: true
+                    });
+                }
 			});
     		var lo_html=$("#change").html();
 			  $("#login").click(function(){
@@ -128,7 +130,7 @@
                     data:$('#loginForm').serialize(),
                     success:function(data){
                         console.log("注册成功！"+data);
-						window.location.href="/ORS/tables.html";
+						window.location.href="login";//TODO 注册成功进login控制器
                     },
                     error:function(data){
                         console.log("注册失败！"+data);

@@ -6,7 +6,6 @@ import cn.edu.aynu.onlineRegistrationSystem.mapper.memInfoMapper;
 import cn.edu.aynu.onlineRegistrationSystem.mapper.scoreInfoMapper;
 import cn.edu.aynu.onlineRegistrationSystem.mapper.teamInfoMapper;
 import cn.edu.aynu.onlineRegistrationSystem.mapper.teamMatchMapper;
-import com.sun.javafx.collections.MappingChange;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

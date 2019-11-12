@@ -11,6 +11,10 @@
     <result column="mem_id3" jdbcType="INTEGER" property="memId3" />
     <result column="team_email" jdbcType="VARCHAR" property="teamEmail" />
   </resultMap>
+
+  <select id="selectByTeamAccount" parameterType="String" resultMap="BaseResultMap">
+    select team_account from team_info where team_account=#{team_account}
+  </select>
   <update id="joinTeam">
     update team_info set
     <choose>

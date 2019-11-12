@@ -52,7 +52,7 @@ public class IndexController {
         HttpSession session =request.getSession();
         Integer id= (Integer) session.getAttribute("mem_id");
         List<matchInfo> matches;
-        System.out.println("我登陆了但是失败了"+id);
+//        System.out.println("我登陆了但是失败了"+id);//TODO 给你注释了
         try {
             if ("mem".equals(session.getAttribute("type"))) {
                 matches = service.getMatchListByMemId(id);

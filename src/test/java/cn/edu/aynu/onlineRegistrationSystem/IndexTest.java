@@ -19,6 +19,7 @@ public class IndexTest {
     }
     @Test
     public void memEnrollByid(){
+        controller.memEnrollById(174804131,1,0,"123456789",1,1);
         controller.memEnrollById(174804131,2,0,"123456",1,1);
     }
     @Test
@@ -27,6 +28,7 @@ public class IndexTest {
     }
     @Test
     public void joinTeamById(){
-        controller.joinTeamById(1,174804127);
+        controller.joinTeamById(1,174804131);
+        controller.joinTeamById(1,174804155);
     }
 }

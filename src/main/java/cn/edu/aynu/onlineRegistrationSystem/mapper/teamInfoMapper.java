@@ -22,6 +22,8 @@ public interface teamInfoMapper {
 
     teamInfo selectByPrimaryKey(Integer teamId);
 
+    teamInfo selectByTeamAccount(String team_account);
+
     int updateByExampleSelective(@Param("record") teamInfo record, @Param("example") teamInfoExample example);
 
     int updateByExample(@Param("record") teamInfo record, @Param("example") teamInfoExample example);
