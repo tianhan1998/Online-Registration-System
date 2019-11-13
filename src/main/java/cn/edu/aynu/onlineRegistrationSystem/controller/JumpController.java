@@ -21,12 +21,17 @@ public class JumpController {
         return "register";
     }
     @RequestMapping(value = "/mem_tables",method = RequestMethod.GET)
-    public String jumpTables() {
-        return "mem_index";
+    public String jumpTablesMem() {
+        return "mem/mem_index";
+    }
+
+    @RequestMapping(value = "/team_tables",method = RequestMethod.GET)
+    public String jumpTablesTeam() {
+        return "team/team_index";
     }
 
     @RequestMapping(value = "/mem_tables_all",method = RequestMethod.GET)
     public String jumpTablesAll() {
-        return "mem_index_all_list";
+        return "mem/mem_index_all_list";
     }
 }
