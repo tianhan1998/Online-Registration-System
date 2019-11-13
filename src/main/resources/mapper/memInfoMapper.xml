@@ -8,6 +8,9 @@
     <result column="mem_sex" jdbcType="CHAR" property="memSex" />
     <result column="mem_password" jdbcType="VARCHAR" property="memPassword" />
   </resultMap>
+  <select id="getMemInfoLists" resultMap="BaseResultMap">
+    select mem_id,mem_name,mem_email,mem_sex from mem_info
+  </select>
   <select id="getMemInfoByIds" parameterType="list" resultMap="BaseResultMap">
     select mem_id,mem_name,mem_email,mem_sex from mem_info
     <where>

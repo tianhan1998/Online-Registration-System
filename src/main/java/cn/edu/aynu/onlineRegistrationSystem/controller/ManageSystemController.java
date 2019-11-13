@@ -1,21 +1,55 @@
 package cn.edu.aynu.onlineRegistrationSystem.controller;
 
+import cn.edu.aynu.onlineRegistrationSystem.entity.memInfo;
+import cn.edu.aynu.onlineRegistrationSystem.service.ManageSystemService;
 import com.alibaba.fastjson.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * 后台管理系统
  */
+//TODO 新增方法实现
+@RestController()//方便过滤器筛选
+@RequestMapping("/admin")
+@PropertySource("classpath:admin.properties")
 public class ManageSystemController {
 
+    @Autowired
+    ManageSystemService service;
+    @Value("${admin.account}")
+    String adminac;
+    @Value("${admin.password}")
+    String adminps;
     /**
      * 后台管理员登陆判断页面，账号密码写入配置文件中
-     * @param accound 账号
+     * @param account 账号//TODO 修改参数名称
      * @param password 密码
      * @return
      */
-    public JSONObject loginIn(String accound,String password){
-
-        return null;
+    @GetMapping(value = "/login",produces = "application/json;charset=utf-8")
+    public JSONObject loginIn(String account, String password, HttpServletRequest request){
+        JSONObject json=new JSONObject();
+        HttpSession session=request.getSession();
+        if(adminac.equals(account)&&adminps.equals(password)){
+            json.put("code",200);
+            json.put("msg","管理员登陆成功");
+            session.setAttribute("type","admin");
+        }else{
+            json.put("code",404);
+            json.put("msg","用户名或密码错误");
+        }
+        return json;
     }
 
     /**
@@ -24,9 +58,26 @@ public class ManageSystemController {
      * @param length 每页显示个数
      * @return
      */
-    public JSONObject getMemList(Integer pn,Integer length){
-
-        return null;
+    @GetMapping("/memLists")
+    public JSONObject getMemList(Integer pn,Integer length,HttpServletRequest request){
+        HttpSession session=request.getSession();
+        JSONObject json=new JSONObject();
+        List<memInfo> lists;
+        try {
+            lists = service.getMemInfoLists();
+            if (lists != null) {
+                json.put("code", 200);
+                json.put("msg", "查询成功");
+                json.put("data", lists);
+            } else {
+                json.put("code", 200);
+                json.put("msg", "查询成功，但lists为null");
+            }
+        }catch(Exception e){
+            json.put("code",500);
+            json.put("msg","数据库查询失败"+e.getMessage());
+        }
+        return json;
     }
 
     /**

@@ -15,17 +15,7 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 public class OnlineRegistrationSystemApplication {
 
-    //fastjson注册器
-    @Bean
-    public HttpMessageConverters fastJsonConfigure(){
-        FastJsonHttpMessageConverter converter = new FastJsonHttpMessageConverter();
-        FastJsonConfig fastJsonConfig = new FastJsonConfig();
-        fastJsonConfig.setSerializerFeatures(SerializerFeature.PrettyFormat);
-        //日期格式化
-        fastJsonConfig.setDateFormat("yyyy-MM-dd HH:mm:ss");
-        converter.setFastJsonConfig(fastJsonConfig);
-        return new HttpMessageConverters(converter);
-    }
+
     public static void main(String[] args) {
         SpringApplication.run(OnlineRegistrationSystemApplication.class, args);
     }
