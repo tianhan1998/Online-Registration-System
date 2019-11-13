@@ -38,7 +38,7 @@
 	            margin-left:-200px;
 	            margin-top:-250px;
 	            z-index:10;
-	            background-color:white;
+	            background-color:#0c5460;
 	        }
 	        .shade{
 	            position:fixed;
@@ -157,8 +157,10 @@
                     </table>
                   </div>
                 </div>
+            </div>
           </section>
         </div>
+      </div>
         <footer class="footer bg-white shadow align-self-end py-3 px-xl-5 w-100">
           <div class="container-fluid">
             <div class="row">
@@ -174,6 +176,7 @@
         </footer>
       </div>
     </div>
+    <button class="baoming">报名</button>
     <!-- JavaScript files-->
     <script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
     <script src="../static/vendor/popper.js/umd/popper.min.js"> </script>
@@ -182,63 +185,65 @@
     <script src="https://cdn.bootcss.com/Chart.js/2.7.2/Chart.min.js"></script>
     <script src="../static/js/js.cookie.min.js"></script>
     <script src="../static/js/front.js"></script>
-	<script>
-		$(function(){
-			//获取所有的比赛信息
-			$.ajax({
-				type:"get",
-				url:"./matchList",
-				success:function(result){
-					console.log("获取所有比赛列表成功！");
-					for(var i=0; i<result.data.length;i++){
-						/*<tr>
-						  <th scope="row">1</th>
-						  <th>第3届ACM大赛</th>
-						  <th>未开始</th>
-						  <th>2017年12月12日</th>
-						  <th>2017年12月12日</th>
-						  <th>团队赛</th>
-						</tr>*/
-						var string = "<tr id='"+result.data[i].matchId+"'><th scope='row'>"+result.data[i].matchId+"</th><th>"+result.data[i].matchTitle+"</th><th>"+result.data[i].matchStatus+"</th><th>"+result.data[i].matchStarTime+"</th><th>"+result.data[i].matchEndTime+"</th><th>"+result.data[i].matchMode+"</th><th><button class='baoming'>报名</button></th></tr>";
-						$("table").append(string);
-					}
-				},
-				error:function(result){
-					console.log("获取所有比赛列表失败！"+result);
-				},
-				async:true
-			});
-			
-			//模态框处理
-			//打开模态框
-			$('.baoming').click(function(){
-			    $('#log').show();
-				var id=$('.baoming').parent().sliblings('.id').text();
-				console.log(id);
-			});
-			//关闭模态框
-			$('#cancel').click(function(){
-			   $('#log').hide();
-			});
-			//提交模态框数据
-			$('#con').click(function(){
-				var code=$("#code").val();//获取用户输入的邀请码
-				$.ajax({
-					type:"post",
-					url:"./enroll",
-					data:{"memId":"","matchId":"","type":"","matchPassword":"","pn":0,"length":5},
-					success:function(result){
-						
-					},
-					error:function(result){
-						
-					},
-					async:true
-				});
-				
-				$('.modal,.shade').addClass('hide');
-			});
-		});
+	<script>//模态框处理
+    //打开模态框
+    function mtk() {
+      $('#log').show();
+      var id=$('.baoming').parent().sliblings('.id').text();
+      console.log(id);
+      //关闭模态框
+      $('#cancel').click(function(){
+        $('#log').hide();
+      });
+      //提交模态框数据
+      $('#con').click(function(){
+        var code=$("#code").val();//获取用户输入的邀请码
+        $.ajax({
+          type:"post",
+          url:"./enroll",
+          data:{"memId":"","matchId":"","type":"","matchPassword":"","pn":0,"length":5},
+          success:function(result){
+
+          },
+          error:function(result){
+
+          },
+          async:true
+        });
+
+        $('.modal,.shade').addClass('hide');
+      });
+    }
+
+
+    $(function(){
+      //获取所有的比赛信息
+      $.ajax({
+        type:"get",
+        url:"./matchList",
+        success:function(result){
+          console.log("获取所有比赛列表成功！");
+          for(var i=0; i<result.data.length;i++){
+            /*<tr>
+              <th scope="row">1</th>
+              <th>第3届ACM大赛</th>
+              <th>未开始</th>
+              <th>2017年12月12日</th>
+              <th>2017年12月12日</th>
+              <th>团队赛</th>
+            </tr>*/
+            var string = "<tr id='"+result.data[i].matchId+"'><th scope='row'>"+result.data[i].matchId+"</th><th>"+result.data[i].matchTitle+"</th><th>"+result.data[i].matchStatus+"</th><th>"+result.data[i].matchStarTime+"</th><th>"+result.data[i].matchEndTime+"</th><th>"+result.data[i].matchMode+"</th><th><button onclick='mtk()' class='baoming'>报名</button></th></tr>";
+            $("table").append(string);
+          }
+        },
+        error:function(result){
+          console.log("获取所有比赛列表失败！"+result);
+        },
+        async:true
+      });
+
+    });
+
 	</script>
   </body>
 </html>

@@ -75,12 +75,10 @@ public class IndexController {
      * @param matchId 待报名比赛的Id号
      * @param type 0是个人账号，1团队账号
      * @param matchPassword 比赛邀请码，如果数据库没有比赛邀请码则不需填写
-     * @param pn 页码
-     * @param length 每页显示记录数
      * @return 成功返回成功的JSON信息，失败返回失败的JSON信息
      */
     @PostMapping(value = "/enroll",produces = "application/json;charset=utf-8")
-    public JSONObject memEnrollById(Integer memId,Integer matchId,Integer type,String matchPassword,Integer pn,Integer length){
+    public JSONObject memEnrollById(Integer memId,Integer matchId,Integer type,String matchPassword){
         JSONObject json=new JSONObject();
         memInfo user;
         matchInfo match;

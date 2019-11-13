@@ -109,7 +109,7 @@ public class SignController {
     /***
      *个人post传入登录表单
      * @param id 前端学号
-     * @param team_account 前端团队账号//TODO 团队用户名参数新增
+     * @param team_account 前端团队账号//TODO 团队用户名参数新增 2019/11/13 12:02
      * @param password 密码
      * @param type 0是个人，1是团队.//TODO 登录新增type参数判断类型
      * @return json{code:200,msg:登陆成功,data:登录用户对象}

@@ -1,6 +1,5 @@
 package cn.edu.aynu.onlineRegistrationSystem;
 
-import cn.edu.aynu.onlineRegistrationSystem.controller.InfoController;
 import cn.edu.aynu.onlineRegistrationSystem.controller.IndexController;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,8 +18,7 @@ public class IndexTest {
     }
     @Test
     public void memEnrollByid(){
-        controller.memEnrollById(174804131,1,0,"123456789",1,1);
-        controller.memEnrollById(174804131,2,0,"123456",1,1);
+
     }
     @Test
     public void getTeamMemInfoByid() {
