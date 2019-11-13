@@ -82,7 +82,7 @@ public class SignController {
     }
 
     /**
-     * 检测团队账户是否存在//TODO 新增团队检测
+     * 检测团队账户是否存在
      * @param team_account 前端团队账号
      * @return
      */
@@ -109,9 +109,9 @@ public class SignController {
     /***
      *个人post传入登录表单
      * @param id 前端学号
-     * @param team_account 前端团队账号//TODO 团队用户名参数新增 2019/11/13 12:02
+     * @param team_account 前端团队账号
      * @param password 密码
-     * @param type 0是个人，1是团队.//TODO 登录新增type参数判断类型
+     * @param type 0是个人，1是团队.
      * @return json{code:200,msg:登陆成功,data:登录用户对象}
      * 登陆成功向session中存入mem_id和用户类型（mem类型）
      */
@@ -129,7 +129,7 @@ public class SignController {
                         memInfo user = list.get(0);
                         session.setAttribute("mem_id", user.getMemId());
                         session.setAttribute("type", "mem");
-                        session.setAttribute("user",user);//TODO 登陆成功我塞进去了一个当前登陆的用户
+                        session.setAttribute("user",user);
                         json.put("data", JSONArray.toJSONString(user));
                         json.put("code", 200);
                         json.put("msg", "登陆成功");

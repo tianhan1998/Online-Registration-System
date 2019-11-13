@@ -41,7 +41,7 @@ public class IndexController {
     }
 
     /**
-     * 获取当前已经登录账号报名的所有比赛信息//TODO 修改参数
+     * 获取当前已经登录账号报名的所有比赛信息
      * @param pn 页码
      * @param length 每页显示记录数
      * @return 已经报名的比赛信息
@@ -52,7 +52,7 @@ public class IndexController {
         HttpSession session =request.getSession();
         Integer id= (Integer) session.getAttribute("mem_id");
         List<matchInfo> matches;
-//        System.out.println("我登陆了但是失败了"+id);//TODO 给你注释了
+//        System.out.println("我登陆了但是失败了"+id);
         try {
             if ("mem".equals(session.getAttribute("type"))) {
                 matches = service.getMatchListByMemId(id);
@@ -134,7 +134,7 @@ public class IndexController {
 
     /**
      * 根据团队账号id获取该团队的所有成员信息
-     * @param teamId 团队账号id //TODO 修改参数matchId为teamId
+     * @param teamId 团队账号id
      * @return 获取id为${id}这个团队里面所有的成员信息打包返回JSON
      */
     @GetMapping(value = "/member/{teamId}",produces = "application/json;charset=utf-8")
@@ -162,7 +162,7 @@ public class IndexController {
     /**
      * 根据传入团队账号id和个人账号id让个人账号加入这个团队账号
      * 如果团队人数到达上限则加入失败，如果个人账号不存在则加入失败 如果这个人已经加入这个团队，则加入失败
-     * @param teamId 团队账号id //TODO 修改参数matchId为teamId
+     * @param teamId 团队账号id
      * @param memId 个人账号id
      * @return 返回成功或者失败的JSON信息
      */

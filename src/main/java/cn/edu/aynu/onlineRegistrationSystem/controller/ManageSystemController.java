@@ -7,19 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
-import java.util.Properties;
 
 /**
  * 后台管理系统
  */
-//TODO 新增方法实现
+
 @RestController()//方便过滤器筛选
 @RequestMapping("/admin")
 @PropertySource("classpath:admin.properties")
@@ -33,7 +31,7 @@ public class ManageSystemController {
     String adminps;
     /**
      * 后台管理员登陆判断页面，账号密码写入配置文件中
-     * @param account 账号//TODO 修改参数名称
+     * @param account 账号
      * @param password 密码
      * @return
      */

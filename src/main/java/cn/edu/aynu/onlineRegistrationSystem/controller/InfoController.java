@@ -1,22 +1,17 @@
 package cn.edu.aynu.onlineRegistrationSystem.controller;
 
-import cn.edu.aynu.onlineRegistrationSystem.entity.memInfo;
 import cn.edu.aynu.onlineRegistrationSystem.service.InfoService;
 import com.alibaba.fastjson.JSONObject;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
  * 获取第三级页面更详细的信息
  */
-//TODO 已经写好了InfoController
+
 @RestController
 public class InfoController {
 
