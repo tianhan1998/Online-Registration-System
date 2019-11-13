@@ -4,6 +4,7 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     password: wang123
     username: root
+    type: com.zaxxer.hikari.HikariDataSource
   resources:
     static-locations: classpath:/static/
   cache: false
