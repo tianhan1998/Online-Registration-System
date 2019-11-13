@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
  * Author: Administrator
  * Create Data: 2019/11/13 0013
  */
-@Configuration//TODO 配置filter注册类
+@Configuration
 public class FilterConfig {
     /**
      * 检测管理员登录态filter

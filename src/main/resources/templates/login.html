@@ -1,124 +1,136 @@
 <!DOCTYPE html>
 <html>
-  <body>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title></title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="robots" content="all,follow">
-    <!-- Bootstrap CSS-->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <!-- Font Awesome CSS-->
-    <link rel="stylesheet" href="css/all.css">
-    <!-- Google fonts - Popppins for copy-->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,800">
-    <!-- orion icons-->
-    <link rel="stylesheet" href="css/orionicons.css">
-    <!-- theme stylesheet-->
-    <link rel="stylesheet" href="css/style.default.css" id="theme-stylesheet">
-    <!-- Custom stylesheet - for your changes-->
-    <link rel="stylesheet" href="css/custom.css">
-    <!-- Favicon-->
-    <link rel="shortcut icon" href="img/favicon.png?3">
-    <!-- Tweaks for older IEs--><!--[if lt IE 9]>
-        <script src="js/html5shiv.min.js"></script>
-        <script src="js/respond.min.js"></script><![endif]-->
-    
-  </head>
-    <div class="page-holder d-flex align-items-center">
-      <div class="container">
-        <div class="row align-items-center py-5">
-          <div class="col-5 col-lg-7 mx-auto mb-5 mb-lg-0">
-            <div class="pr-lg-5"><img src="/ORS/img/illustration1.svg" alt="" class="img-fluid"></div>
-          </div>
-          <div class="col-lg-5 px-lg-4">
-            <h1 class="text-base text-primary text-uppercase mb-4">安阳师范学院</h1>
-            <h2 class="mb-4">报名系统</h2>
-            <p class="text-muted">此系统是一个非常强的系统</p>
-            <form id="loginForm" action="index.html" class="mt-4">
-            	<div id="change">
-	              <div class="form-group mb-4">
-	                <input type="text" name="id" placeholder="学号" class="form-control border-0 shadow form-control-lg">
-	              </div>
-	              <div class="form-group mb-4">
-	                <input type="password" name="password" placeholder="密码" class="form-control border-0 shadow form-control-lg text-violet">
-	              </div>
-                <div class="form-group mb-4">
-                    <select class="form-control border-0 shadow form-control-lg text-violet" name="type">
-                        <option value="0">个人</option>
-                        <option value="1">团队</option>
-                    </select>
-                </div>
-	              <div class="form-group mb-4">
-	                <div class="custom-control custom-checkbox">
-	                  <input id="customCheck1" type="checkbox" checked class="custom-control-input">
-	                  <label for="customCheck1" class="custom-control-label">记住我</label>
-	                </div>
-	              </div>
-	            </div>
-              <button type="button" class="btn btn-primary shadow px-5" id="login">登录</button>
-              <button type="button" class="btn btn-primary shadow px-5 ml-5" id="register">去注册</button>
-            </form>
-          </div>
-        </div>
-        <p class="mt-5 mb-0 text-gray-400 text-center">Copyright &copy; 2019.Company name All rights reserved.More Templates <a href="http://www.aynu.edu.cn/" target="_blank" title="jq22">aynu</a>& Your company</p>
-        <!-- Please do not remove the backlink to us unless you support further theme's development at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)                 -->
-      </div>
-    </div>
-    <!-- JavaScript files-->
-    <script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
-    <script src="/ORS/vendor/popper.js/umd/popper.min.js"> </script>
-    <script src="/ORS/vendor/jquery.cookie/jquery.cookie.js"> </script>
-    <script src="js/Chart.min.js"></script>
-    <script src="/ORS/js/js.cookie.min.js"></script>
-    <script src="/ORS/js/front.js"></script>
-    <script src="/ORS/js/tishi.js"></script>
-    <script>
-    	$(document).ready(function() {
 
-    		var lo_html=$("#change").html();
-			  $("#register").click(function(){
-		  		//var htm='<div class="form-group mb-4"><input type="text" name="username" placeholder="用户名或邮箱" class="form-control border-0 shadow form-control-lg"></div><div class="form-group mb-4"><input type="password" name="passowrd" placeholder="密码" class="form-control border-0 shadow form-control-lg text-violet"></div><div class="form-group mb-4"><input type="password" name="check_passowrd" placeholder="确认密码" class="form-control border-0 shadow form-control-lg text-violet"></div>';
-	    		//$("#change").html(htm);
-	    		window.location.href="register";
-		    });
-		    $("#login").click(function(){
-		    	//$("#change").html(lo_html);
-		    	var username=$("input[name='id']").val();
-		    	var password=$("input[name='password']").val();
-		    	if(username.length<8){
-		    		$.MsgBox.Alert("提示", "学号长度不少于8位！");
-		    		return;
-		    	}
-		    	if(password.length<8){
-		    		$.MsgBox.Alert("提示", "密码长度不少于8位！");
-		    		return;
-		    	}
-		    	
-		    	//ajax登录
-		    	$.ajax({
-		    		type:"post",
-		    		url:"./signIn",
-		    		data:$('#loginForm').serialize(),
-		    		success:function(data){
-						if(data.code=="200"){
-							console.log("登录成功！"+data.msg);
-							window.location.href="/ORS/tables";
-						}else{
-							console.log("登录失败！"+data.msg);
-							$.MsgBox.Alert("提示",data.msg);
+	<head>
+
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<title>INSPINIA | Login</title>
+
+		<link href="../static/css/bootstrap.min.css" rel="stylesheet">
+		<link href="../static/font-awesome/css/font-awesome.css" rel="stylesheet">
+
+		<link href="../static/css/animate.css" rel="stylesheet">
+		<link href="../static/css/style.css" rel="stylesheet">
+
+	</head>
+
+	<body class="gray-bg">
+
+		<div class="middle-box text-center loginscreen animated fadeInDown">
+			<div>
+				<div>
+
+					<h1 class="logo-name">IN+</h1>
+
+				</div>
+				<h3>欢迎您使用</h3>
+				<p>
+					团队报名请登陆团队账户，个人账号报名请登陆个人账号
+				</p>
+				<div class="tabbable" id="tabs-215554">
+					<ul class="nav nav-tabs">
+						<li class="active">
+							<a href="#panel-967992" data-toggle="tab">个人账号</a>
+						</li>
+						<li>
+							<a href="#panel-884429" data-toggle="tab">团队账户</a>
+						</li>
+					</ul>
+					<div class="tab-content">
+						<div class="tab-pane active" id="panel-967992">
+							<p>
+								<form id="memForm" class="m-t" role="form" action="">
+
+									<div id="mem_log" class="alert alert-danger alert-dismissable" hidden="true">
+										<button  aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+										账号或者密码错误 <a class="alert-link" href="#">小明</a>.
+									</div>
+									<input type="hidden" value="0">
+									<div class="form-group">
+										<input id="mem_id" name="id" type="text" class="form-control" placeholder="学号" required="">
+									</div>
+									<div class="form-group">
+										<input type="password" class="form-control" placeholder="密码" required="">
+									</div>
+									<button id="mem_submit" type="button" class="btn btn-primary block full-width m-b">登陆</button>
+									<a href="#"><small>忘记密码?</small></a>
+									<p class="text-muted text-center"><small>没有账号吗？</small></p>
+									<a class="btn btn-sm btn-white btn-block" href="register.html">创建账号</a>
+								</form>
+							</p>
+						</div>
+						<div class="tab-pane" id="panel-884429">
+							<p>
+								<form id="teamForm" class="m-t" role="form" action="team/team_index.html">
+									<div class="form-group">
+										<input type="text" name="team_account" class="form-control" placeholder="账号" required="">
+									</div>
+									<input type="hidden" value="1">
+									<div class="form-group">
+										<input type="password" class="form-control" placeholder="密码" required="">
+									</div>
+									<button id="team_submit" type="button" class="btn btn-primary block full-width m-b">登陆</button>
+								
+									<a href="#"><small>忘记密码?</small></a>
+									<p class="text-muted text-center"><small>没有账号吗？</small></p>
+									<a class="btn btn-sm btn-white btn-block" href="register.html">创建账号</a>
+								</form>
+							</p>
+						</div>
+					</div>
+				</div>
+
+				
+				<p class="m-t"> <small>Inspinia we app framework base on Bootstrap 3 &copy; 2014</small> </p>
+			</div>
+		</div>
+
+		<!-- Mainly scripts -->
+		<script src="../static/js/jquery-2.1.1.js"></script>
+		<script src="../static/js/bootstrap.min.js"></script>
+
+	</body>
+	<script>
+		$(document).ready(function() {
+			//个人登陆
+			$("#mem_submit").click(function () {
+				var memId=$("#mem_id").val();
+				if(memId.length!=9){//学号长度有误
+					$("#mem_log").show().html("学号长度有误");
+				}
+				else{
+					//进行登录尝试
+					$.ajax({
+						type:"post",
+						url:"./signIn",
+						data:$("#memForm").serialise(),
+						dataType:"json",
+						success:function (result) {
+							console.log(result.msg);
+							if(result=="200"){//登录成功
+								window.location.href="./tables"
+							}else{//登录失败
+								$("#mem_log").show();
+							}
+						},
+						error:function () {
+							console.log(result.msg);
 						}
-		    		},
-		    		error:function(data){
-		    			$.MsgBox.Alert("提示",data.msg);
-		    		},
-		    		async:true
-		    	});
-		    	
-		    });
+					});
+				}
 			});
-    </script>
-  </body>
+			//团队登陆
+			$("#team_submit").click(function () {
+				var memId=$("#mem_id").val();
+				if(memId.length!=9){
+					$("#log-mem-id").show().html("<buttonaria-hidden='true' data-dismiss='alert' class='close' type='button'>×</button><p>密码长度不足</p>");
+				}
+				else{
+					window.location.href="team_index.html";
+				}
+			});
+		});
+	</script>
 </html>

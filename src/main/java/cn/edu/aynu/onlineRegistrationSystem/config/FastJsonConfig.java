@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
  * Author: Administrator
  * Create Data: 2019/11/13 0013
  */
-@Configuration//TODO 移动fastjson注册器到config包内
+@Configuration
 public class FastJsonConfig {
     //fastjson注册器
     @Bean
