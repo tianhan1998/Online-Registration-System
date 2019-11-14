@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
 
@@ -94,7 +94,7 @@
                             <ul class="dropdown-menu dropdown-alerts">
                                 <li>
                                         <div>
-                                            <i class="fa fa-envelope fa-fw"></i> 姓名：XXX
+                                            <i class="fa fa-envelope fa-fw"></i> 姓名${user.memName}
                                         </div>
                                     </a>
                                 </li>
@@ -102,7 +102,7 @@
 
                                 <li>
                                         <div>
-                                            <i class="fa fa-envelope fa-fw"></i> 学号：XXX
+                                            <i class="fa fa-envelope fa-fw"></i> 学号：${user.memId}
                                         </div>
                                     </a>
                                 </li>
@@ -154,20 +154,16 @@
                             <th>比赛结束时间</th>
                             <th>比赛模式</th>
                             <th>比赛状态</th>
-                            <th>操作</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <th>1</th>
-                            <th>第一届ACM</th>
-                            <th>2019.3.12</th>
-                            <th>2019.3.12</th>
+                        <tr th:each="match:${matches}">
+                            <th th:text="${match.matchId}">1</th>
+                            <th th:text="${match.matchTitle}">第一届ACM</th>
+                            <th th:text="${match.matchStarTime}">2019.3.12</th>
+                            <th th:text="${match.matchEndTime}">2019.3.12</th>
                             <th><span class="label label-primary">团队赛</span></th>
                             <th><span class="label label-primary">未开始</span></th>
-                            <th>
-                                <button type="button" class="btn btn-w-m btn-info btn-xs" data-toggle="modal" data-target="#myModal">报名</button>
-                            </th>
                         </tr>
                         <tr>
                             <th>2</th>
@@ -176,9 +172,6 @@
                             <th>2019.3.12</th>
                             <th><span class="label label-primary">团队赛</span></th>
                             <th><span class="label label-warning">进行中</span></th>
-                            <th>
-                                <button type="button" class="btn btn-w-m btn-info btn-xs" data-toggle="modal" data-target="#myModal">报名</button>
-                            </th>
                         </tr>
                         <tr>
                             <th>3</th>
@@ -187,9 +180,6 @@
                             <th>2019.3.12</th>
                             <th><span class="label label-info">个人赛</span></th>
                             <th><span class="label label-danger">已结束</span></th>
-                            <th>
-                                <button type="button" class="btn btn-w-m btn-info btn-xs" data-toggle="modal" data-target="#myModal">报名</button>
-                            </th>
                         </tr>
                         </tbody>
                     </table>
