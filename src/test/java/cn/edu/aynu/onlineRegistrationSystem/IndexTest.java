@@ -22,11 +22,11 @@ public class IndexTest {
     }
     @Test
     public void getTeamMemInfoByid() {
-        controller.getTeamMemInfoById(1);
+        /*controller.getTeamMemInfoById(1);*/
     }
     @Test
     public void joinTeamById(){
-        controller.joinTeamById(1,174804131);
-        controller.joinTeamById(1,174804155);
+        /*controller.joinTeamById(1,174804131);
+        controller.joinTeamById(1,174804155);*/
     }
 }

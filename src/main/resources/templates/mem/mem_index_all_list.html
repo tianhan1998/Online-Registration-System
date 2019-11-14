@@ -31,17 +31,17 @@
                 <div class="navbar-collapse collapse" id="navbar">
                     <ul class="nav navbar-nav">
                         <li class="dropdown">
-                            <a aria-expanded="false" role="button" href="mem_index.html"> 我参加的比赛</a>
+                            <a aria-expanded="false" role="button" href="mem_index"> 我参加的比赛</a>
                         </li>
 
                         <li class="active">
-                            <a aria-expanded="false" role="button" href="mem_index_all_list.html.html"> 所有比赛</a>
+                            <a aria-expanded="false" role="button" href="mem_index_all_list"> 所有比赛</a>
                         </li>
                         <li class="dropdown">
-                            <a aria-expanded="false" role="button" href="search_join_team.html"> 加入一个比赛团队</a>
+                            <a aria-expanded="false" role="button" href="search_join_team"> 加入一个比赛团队</a>
                         </li>
                         <li class="dropdown">
-                            <a aria-expanded="false" role="button" href="join_team_list.html"> 我加入的团队</a>
+                            <a aria-expanded="false" role="button" href="join_team_list"> 我加入的团队</a>
                         </li>
                     </ul>
                     <ul class="nav navbar-top-links navbar-right">
@@ -270,23 +270,28 @@
 <script>
     $(function () {
         $.ajax({
-            url:"matchList",
+            url:"mem/matchList",
             datatype:"json",
             data:[],
             type:"get",
             success: function (data) {
 
-                console.log(data.data);
                 for(var i=0;i<data.data.length;i++) {
+
                     var ms = data.data[i];
-                    var mode = ms.matchMode=='0'?"个人赛":"团队赛";
+                    var mode = "";
                     var status = "";
-                    if(ms.matchStatus == 0) {
-                        status = "未开始";
-                    }else if(ms.matchStatus == 2){
-                        status = "已结束";
+                    if(ms.matchMode == "0") {
+                        mode = "<th><span class=\"label label-info\">个人赛</span></th>";
                     }else{
-                        status = "进行中";
+                        mode = "<th><span class=\"label label-primary\">团队赛</span></th>";
+                    }
+                    if(ms.matchStatus == 0) {
+                        status = "<th><span class=\"label label-primary\">未开始</span></th>";
+                    }else if(ms.matchStatus == 2){
+                        status = "<th><span class=\"label label-danger\">已结束</span></th>";
+                    }else{
+                        status = "<th><span class=\"label label-warning\">进行中</span></th>";
                     }
 
                     $(".matchs").append("<tr>" +
@@ -294,8 +299,7 @@
                         "<th>"+ms.matchTitle+"</th>" +
                         "<th>"+ms.matchStarTime+"</th>" +
                         "<th>"+ms.matchEndTime+"</th>" +
-                        "<th>"+mode+"</th>" +
-                        "<th>"+status+"</th>"+
+                        mode + status +
                         "</tr>");
                 }
 
