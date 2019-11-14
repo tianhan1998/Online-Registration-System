@@ -1,4 +1,9 @@
 spring:
+  devtools:
+    restart:
+      enabled: true #开始热部署
+  freemarker:
+    cache: false #页面不缓存
   datasource:
     url: jdbc:mysql://119.3.219.4:3306/ors?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
     driver-class-name: com.mysql.jdbc.Driver

@@ -32,14 +32,14 @@ public class SignController {
      *个人注册
      * @param memId 学号
      * @param memName 姓名
-     * @param memPassowrd 密码
+     * @param memPassword 密码 //TODO 这个参数拼写更改了之前是memPassowrd现在是 memPassword
      * @param memEmail 安全邮箱
      * @return json{code:200,msg:xxx,data:[]}
      */
     @RequestMapping(value = "/signUp",method = RequestMethod.POST)
-    public JSONObject signUp(String memId, String memName, String memPassowrd, String memEmail, String memSex, HttpServletRequest request)  {
+    public JSONObject signUp(String memId, String memName, String memPassword, String memEmail, String memSex, HttpServletRequest request)  {
 
-        memInfo memInfo = new memInfo(Integer.valueOf(memId),memName,memEmail,"M",memPassowrd);
+        memInfo memInfo = new memInfo(Integer.valueOf(memId),memName,memEmail,memSex,memPassword);
         if(service.singUp(memInfo)){
             HttpSession session=request.getSession();
             session.setAttribute("mem_id",memId);
