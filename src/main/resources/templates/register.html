@@ -41,10 +41,10 @@
 					<div class="tab-content">
 						<div class="tab-pane active" id="panel-967992">
 							<p>
-								<form id="memForm" class="m-t" role="form" action="login.html">
+								<form id="memForm" class="m-t" role="form">
 									<div class="form-group">
 										<input id="mem-id" name="memId" type="text"  class="form-control" placeholder="学号" required="">
-										<div id="mem-id-log"class="badge badge-primary" hidden="true">该账户已被注册</div>
+										<div id="mem-id-log" class="badge badge-primary" style="display: none">该账户已被注册</div>
 									</div>
 									<div class="form-group">
 										<input id="mem-name" name="memName" type="text" class="form-control" placeholder="姓名" required="">
@@ -63,7 +63,7 @@
 									</div>
 									<div class="form-group">
 										<input id="pwd2" type="password" class="form-control" placeholder="二次密码" required="">
-										<span id="pwd-log" class="badge badge-primary" aria-hidden="true">两次密码不一致</span>
+										<div id="pwd-log" class="badge label label-danger" style="display: none">两次密码不一致</div>
 									</div>
 									<button id="memSubmit" type="button" class="btn btn-primary block full-width m-b">注册</button>
 								<p class="text-muted text-center"><small>已经有账号了吗?</small></p>
@@ -73,7 +73,7 @@
 						</div>
 						<div class="tab-pane" id="panel-884429">
 							<p>
-								<form class="m-t" role="form" action="login.html">
+								<form class="m-t" role="form">
 									<div class="form-group">
 										<input type="text" class="form-control" placeholder="账号" required="">
 									</div>
@@ -90,7 +90,7 @@
 										<input type="password" class="form-control" placeholder="二次密码" required="">
 									</div>
 
-									<button type="submit" class="btn btn-primary block full-width m-b">注册</button>
+									<button type="button" class="btn btn-primary block full-width m-b">注册</button>
 								
 									<p class="text-muted text-center"><small>已经有账号了吗?</small></p>
 									<a class="btn btn-sm btn-white btn-block" href="login">登陆</a>
@@ -111,28 +111,33 @@
 		<script>
 			$(document).ready(function() {
 
+				//学号是否通过验证
+				var flagMemId=0;
+				var flagMedPwd=0;
+
 				//个人注册
 				$("#memSubmit").click(function () {
-					$.ajax({
-						type:"post",
-						url:"./signUp",
-						dataType:"json",
-						data:$("#memForm").serialize(),
-						success:function (result) {
-							console.log(result);
-							if(result.code=="200"){//登陆成功
-								window.location.href="/ORS/matchListV2"
-							}else {//登陆失败
+					if(flagMemId==1&&flagMedPwd==1){
+						$.ajax({
+							type:"post",
+							url:"./signUp",
+							dataType:"json",
+							data:$("#memForm").serialize(),
+							success:function (result) {
+								console.log(result);
+								if(result.code=="200"){//登陆成功
+									window.location.href="/ORS/mem_tables"
+								}else {//登陆失败
+									console.log(result.msg);
+								}
+							},
+							error:function (result) {
+
 								console.log(result.msg);
 							}
-						},
-						error:function (result) {
-
-							console.log(result.msg);
-						}
-					})
+						})
+					}
 				});
-
 
 				$("#mem-id").blur(function () {//验证该账户是否被注册
 					var memId=$("#mem-id").val();
@@ -145,26 +150,45 @@
 							success:function (result) {
 								console.log(result);
 
-
-								if(result.code=="200"){//可以注册
+								if(result.msg!="此学号已被占用"){//可以注册
 									//label label-danger 失败
 									//badge badge-primary 成功
-									var log=$("#mem-id-log").show();
-									log.html("可以注册");
+									var log=$("#mem-id-log").show().removeClass().addClass("badge badge-primary");
+									log.empty().append("可以注册");
+									flagMemId=1;
 								}else{//不能注册
-									var log=$("#mem-id-log").show();
-									log.html("该学号已经被注册不能使用");
+									var log=$("#mem-id-log").show().removeClass().addClass("badge label-danger");
+									log.empty().append("该学号已经被注册不能使用");
+									flagMemId=0;
 								}
 							},
 							error:function (result) {
-								var log=$("#mem-id-log").show();
-								console.log("AJAX请求出错");
+								var log=$("#mem-id-log").show().removeClass().addClass("badge label-danger");
+								log.empty().append("学号位数过长");
+								flagMemId=0;
 							}
 						});
 					}else{//学号长度有误
-						log.html("请输入你的学号");
+						var log=$("#mem-id-log").show().removeClass().addClass("badge label-danger");
+						log.empty().append("请输入你的学号");
+						flagMemId=0;
 					}
 				});
+
+				//校验两次密码要一样
+				$("#pwd2").blur(function () {
+					var pwd1=$("#pwd1").val();
+					var pwd2=$("#pwd2").val();
+					if(pwd1!=pwd2) {
+						$("#pwd-log").show().empty().append("两次密码不一致");
+						flagMedPwd=0;
+					}else{
+						$("#pwd-log").hide();
+						flagMedPwd=1;
+					}
+				});
+
+
 			});
 		</script>
 	</body>
