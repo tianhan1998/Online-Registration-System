@@ -125,8 +125,9 @@
 							data:$("#memForm").serialize(),
 							success:function (result) {
 								console.log(result);
-								if(result.code=="200"){//登陆成功
-									window.location.href="/ORS/mem_tables"
+								if(result.code=="200"){//注册成功需要重新登录
+									window.location.href="login"
+									alert("注册成功");
 								}else {//登陆失败
 									console.log(result.msg);
 								}
