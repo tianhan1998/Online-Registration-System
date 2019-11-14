@@ -13,6 +13,7 @@
 
 		<link href="css/animate.css" rel="stylesheet">
 		<link href="css/style.css" rel="stylesheet">
+		<link rel="shortcut icon" href="#" />
 
 	</head>
 
@@ -114,7 +115,7 @@
 						success:function (result) {
 							console.log(result);
 							if(result.code=="200"){//登录成功
-								window.location.href="/ORS/matchListV2"
+								window.location.href="/ORS/mem_tables";
 							}else{//登录失败
 								$("#mem_log").show();
 							}
@@ -136,7 +137,7 @@
 					success:function (result) {
 						console.log(result);
 						if(result.code=="200"){//登录成功
-							window.location.href="/ORS/matchListV2"
+							window.location.href="/ORS/team_index";
 						}else{//登录失败
 							$("#team_log").show();
 						}

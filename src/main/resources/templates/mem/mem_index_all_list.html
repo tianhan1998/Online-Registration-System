@@ -12,6 +12,7 @@
     <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
     <link href="css/animate.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
+    <link rel="shortcut icon" href="#" />
 
 </head>
 
@@ -267,10 +268,39 @@
 
 
 <script>
-    $(document).ready(function () {
-        $("button[value='报名']").click(function () {
-            $("myModal").modal(options);
-        });
+    $(function () {
+        $.ajax({
+            url:"matchList",
+            datatype:"json",
+            data:[],
+            type:"get",
+            success: function (data) {
+
+                console.log(data.data);
+                for(var i=0;i<data.data.length;i++) {
+                    var ms = data.data[i];
+                    var mode = ms.matchMode=='0'?"个人赛":"团队赛";
+                    var status = "";
+                    if(ms.matchStatus == 0) {
+                        status = "未开始";
+                    }else if(ms.matchStatus == 2){
+                        status = "已结束";
+                    }else{
+                        status = "进行中";
+                    }
+
+                    $(".matchs").append("<tr>" +
+                        "<th>"+ms.matchId+"</th>" +
+                        "<th>"+ms.matchTitle+"</th>" +
+                        "<th>"+ms.matchStarTime+"</th>" +
+                        "<th>"+ms.matchEndTime+"</th>" +
+                        "<th>"+mode+"</th>" +
+                        "<th>"+status+"</th>"+
+                        "</tr>");
+                }
+
+            }
+        })
     });
 </script>
 

@@ -12,6 +12,7 @@
     <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
     <link href="css/animate.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
+    <link rel="shortcut icon" href="#" />
 
 </head>
 
@@ -156,31 +157,8 @@
                             <th>比赛状态</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <tr th:each="match:${matches}">
-                            <th th:text="${match.matchId}">1</th>
-                            <th th:text="${match.matchTitle}">第一届ACM</th>
-                            <th th:text="${match.matchStarTime}">2019.3.12</th>
-                            <th th:text="${match.matchEndTime}">2019.3.12</th>
-                            <th><span class="label label-primary">团队赛</span></th>
-                            <th><span class="label label-primary">未开始</span></th>
-                        </tr>
-                        <tr>
-                            <th>2</th>
-                            <th>第二届ACM</th>
-                            <th>2019.3.12</th>
-                            <th>2019.3.12</th>
-                            <th><span class="label label-primary">团队赛</span></th>
-                            <th><span class="label label-warning">进行中</span></th>
-                        </tr>
-                        <tr>
-                            <th>3</th>
-                            <th>第三届ACM</th>
-                            <th>2019.3.12</th>
-                            <th>2019.3.12</th>
-                            <th><span class="label label-info">个人赛</span></th>
-                            <th><span class="label label-danger">已结束</span></th>
-                        </tr>
+                        <tbody class="matchs">
+
                         </tbody>
                     </table>
 
@@ -256,11 +234,9 @@
 
 
 <script>
-    $(document).ready(function () {
-        $("button[value='报名']").click(function () {
-            $("myModal").modal(options);
-        });
-    });
+
+
+
 </script>
 
 </body>

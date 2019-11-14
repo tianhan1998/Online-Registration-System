@@ -1,5 +1,6 @@
 // INSPINIA Landing Page Custom scripts
-$(document).ready(function () {
+$(document).ready
+(function () {
 
     // Highlight the top nav as scrolling
     $('body').scrollspy({
