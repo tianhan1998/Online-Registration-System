@@ -51,8 +51,15 @@ public class SignService {
     public teamInfo checkTeamAccount(String team_account){
         return teamInfoMapper.selectByTeamAccount(team_account);
     }
-    public Boolean singUp(memInfo memInfo) {
+    public Boolean signUp(memInfo memInfo) {
         if(mapper.insert(memInfo)>0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public Boolean signUpTeam(teamInfo team){
+        if(teamInfoMapper.insert(team)>0){
             return true;
         }else{
             return false;

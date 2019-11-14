@@ -23,4 +23,22 @@ public class ManageSystemService {
     public List<memInfo> getMemInfoLists(){
         return memInfoMapper.getMemInfoLists();
     }
+
+    /**
+     * 修改用户，除了学号
+     * @param user
+     * @return
+     */
+    public int updateMem(memInfo user){
+        return memInfoMapper.updateByPrimaryKey(user);
+    }
+
+    /**
+     * 通过学号删除用户
+     * @param id
+     * @return
+     */
+    public int deleteMem(Integer id){
+        return memInfoMapper.deleteByPrimaryKey(id);
+    }
 }

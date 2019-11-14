@@ -29,30 +29,48 @@ public class SignController {
     @Autowired
     JSONObject json;
     /**
-     *个人注册
+     *注册
      * @param memId 学号
      * @param memName 姓名
      * @param memPassword 密码 //TODO 这个参数拼写更改了之前是memPassowrd现在是 memPassword
+     * @param memSex 性别
      * @param memEmail 安全邮箱
+     * @param team_account 队伍账号
+     * @param team_name 队伍名称
+     * @param team_password 队伍密码
+     * @param type 类型，0是个人，1是团队
      * @return json{code:200,msg:xxx,data:[]}
      */
-    @RequestMapping(value = "/signUp",method = RequestMethod.POST)
-    public JSONObject signUp(String memId, String memName, String memPassword, String memEmail, String memSex, HttpServletRequest request)  {
-
-        memInfo memInfo = new memInfo(Integer.valueOf(memId),memName,memEmail,memSex,memPassword);
-        if(service.singUp(memInfo)){
-            HttpSession session=request.getSession();
-            session.setAttribute("mem_id",memId);
-            session.setAttribute("type","mem");
-            String obj = JSONObject.toJSONString(memInfo);
-            json.put("code",200);
-            json.put("msg","注册成功");
-            json.put("data",obj);
-        }else{
-            json.put("success",404);
-            json.put("msg","用户已存在！");
+    @RequestMapping(value = "/signUp",method = RequestMethod.POST)//TODO 增加团队注册
+    public JSONObject signUp(String memId, String memName, String memPassword, String memEmail, String memSex, HttpServletRequest request,Integer type,String team_account,String team_name,String team_password,String team_email)  {
+        try {
+            if (type == 0) {
+                memInfo memInfo = new memInfo(Integer.valueOf(memId), memName, memEmail, memSex, memPassword);
+                if (service.signUp(memInfo)) {
+                    String obj = JSONObject.toJSONString(memInfo);
+                    json.put("code", 200);
+                    json.put("msg", "注册成功");
+                    json.put("data", obj);
+                } else {
+                    json.put("code", 404);
+                    json.put("msg", "用户已存在");
+                }
+            }else{
+                teamInfo team=new teamInfo(team_name,team_account,team_password,team_email);
+                if(service.signUpTeam(team)){
+                    String obj=JSONArray.toJSONString(team);
+                    json.put("code",200);
+                    json.put("msg","注册队伍成功");
+                    json.put("data",obj);
+                }else{
+                    json.put("code",404);
+                    json.put("msg","队伍已存在");
+                }
+            }
+        }catch (Exception e){
+            json.put("code",500);
+            json.put("msg",e.getMessage());
         }
-
         return json;
     }
 
@@ -107,7 +125,7 @@ public class SignController {
     }
 
     /***
-     *个人post传入登录表单
+     *post传入登录表单
      * @param id 前端学号
      * @param team_account 前端团队账号
      * @param password 密码
@@ -148,6 +166,7 @@ public class SignController {
                     teamInfo team = lists.get(0);
                     session.setAttribute("team_id", team.getTeamId());
                     session.setAttribute("team_account", team.getTeamAccount());
+                    session.setAttribute("team",team);
                     session.setAttribute("type", "team");
                     json.put("code", 200);
                     json.put("msg", "登陆成功");

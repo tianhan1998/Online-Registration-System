@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,8 +19,8 @@ import java.util.List;
  * 后台管理系统
  */
 
-@RestController()//方便过滤器筛选
-@RequestMapping("/admin")
+@RestController
+@RequestMapping("/admin")//方便过滤器筛选
 @PropertySource("classpath:admin.properties")
 public class ManageSystemController {
 
@@ -87,9 +88,23 @@ public class ManageSystemController {
      * @param email 修改后的email
      * @return JSON
      */
+    @PostMapping("/updateMem")//TODO 新增实现
     public JSONObject modifyMemInfo(Integer memId,String password,String sex,String name,String email){
-
-        return null;
+        JSONObject json=new JSONObject();
+        memInfo user=new memInfo(memId,name,email,sex,password);
+        try{
+            if(service.updateMem(user)>0){
+                json.put("code",200);
+                json.put("msg","修改成功");
+            }else{
+                json.put("code",200);
+                json.put("msg","修改失败，数据库未含有此用户");
+            }
+        }catch (Exception e){
+            json.put("msg","数据库修改失败"+e.getMessage());
+            json.put("code",500);
+        }
+        return json;
     }
 
     /**
