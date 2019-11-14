@@ -32,7 +32,7 @@ public class SignController {
      *注册
      * @param memId 学号
      * @param memName 姓名
-     * @param memPassword 密码 //TODO 这个参数拼写更改了之前是memPassowrd现在是 memPassword
+     * @param memPassword 密码
      * @param memSex 性别
      * @param memEmail 安全邮箱
      * @param team_account 队伍账号
@@ -89,7 +89,7 @@ public class SignController {
                 json.put("code",200);
                 json.put("msg","此学号可以注册");
             }else{
-                json.put("code",200);
+                json.put("code",400);
                 json.put("msg","此学号已被占用");
             }
         }catch(Exception e){
@@ -114,7 +114,7 @@ public class SignController {
                 json.put("code",200);
                 json.put("msg","此账户可以注册");
             }else{
-                json.put("code",200);
+                json.put("code",400);
                 json.put("msg","此账户已经存在");
             }
         }catch (Exception e){
