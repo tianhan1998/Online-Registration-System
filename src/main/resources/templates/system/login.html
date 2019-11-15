@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<title>INSPINIA | Login</title>
+
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+
+		<link href="css/animate.css" rel="stylesheet">
+		<link href="css/style.css" rel="stylesheet">
+
+	</head>
+
+	<body class="gray-bg">
+
+		<div class="middle-box text-center loginscreen animated fadeInDown">
+			<div>
+				<div>
+
+					<h1 class="logo-name">IN+</h1>
+
+				</div>
+				<h3>欢迎您管理员</h3>
+				<p>
+
+				</p>
+				<div id="login" class="tab-pane" id="panel-884429">
+					<p>
+						<form class="m-t" role="form" >
+							<div class="form-group">
+								<input type="email" class="form-control" placeholder="账号" required="">
+							</div>
+							<div class="form-group">
+								<input type="password" class="form-control" placeholder="密码" required="">
+							</div>
+							<button id="team_submit" type="button" class="btn btn-primary block full-width m-b">登陆</button>
+					</form>
+					</p>
+				</div>
+			</div>
+
+				
+				<p class="m-t"> <small>Inspinia we app framework base on Bootstrap 3 &copy; 2014</small> </p>
+			</div>
+		</div>
+
+		<!-- Mainly scripts -->
+		<script src="js/jquery-2.1.1.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+
+	</body>
+	<script>
+		$(document).ready(function() {
+			//登陆
+			$("#team_submit").click(function () {
+				var memId=$("#mem_id").val();
+				if(memId.length!=9){
+					$("#log-mem-id").show().html("<buttonaria-hidden='true' data-dismiss='alert' class='close' type='button'>×</button><p>密码长度不足</p>");
+				}
+				else{
+					window.location.href="team_index.html";
+				}
+			});
+		});
+	</script>
+</html>
