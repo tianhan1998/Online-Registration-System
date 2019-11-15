@@ -6,6 +6,9 @@
     <result column="team_id" jdbcType="INTEGER" property="teamId" />
     <result column="match_id" jdbcType="INTEGER" property="matchId" />
   </resultMap>
+  <select id="getJoinedTeamByMatchId" resultType="int" parameterType="int">
+    select team_id from team_match where match_id=#{id}
+  </select>
   <select id="checkExistInTeamMatch" parameterType="int" resultType="int">
     select count(*) from team_match where match_id=#{match_id} and team_id=#{team_id}
   </select>

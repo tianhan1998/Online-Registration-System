@@ -18,7 +18,6 @@ public class IndexTest {
     }
     @Test
     public void memEnrollByid(){
-
     }
     @Test
     public void getTeamMemInfoByid() {

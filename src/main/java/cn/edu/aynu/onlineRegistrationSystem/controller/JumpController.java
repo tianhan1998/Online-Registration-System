@@ -1,8 +1,13 @@
 package cn.edu.aynu.onlineRegistrationSystem.controller;
 
+import cn.edu.aynu.onlineRegistrationSystem.service.JumpService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * company: www.abc.com
@@ -11,8 +16,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller
 public class JumpController {
+    @Autowired
+    JumpService service;
     @RequestMapping(value = "/login",method = RequestMethod.GET)
-    public String jumpHello(){
+    public String jumpHello(HttpServletRequest request){
+        service.clearSession(request.getSession());
         return "login";
     }
 

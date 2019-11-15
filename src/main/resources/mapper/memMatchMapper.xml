@@ -6,6 +6,9 @@
     <result column="mem_id" jdbcType="INTEGER" property="memId" />
     <result column="match_id" jdbcType="INTEGER" property="matchId" />
   </resultMap>
+  <select id="getJoinedMemByMatchId" resultType="int">
+    select mem_id from mem_match where match_id=#{id}
+  </select>
   <select id="checkExistInMemMatch" parameterType="int" resultType="int">
     select count(*) from mem_match where mem_id=#{mem_id} and match_id=#{match_id}
   </select>

@@ -1,6 +1,9 @@
 package cn.edu.aynu.onlineRegistrationSystem.controller;
 
+import cn.edu.aynu.onlineRegistrationSystem.entity.TeamMessage;
+import cn.edu.aynu.onlineRegistrationSystem.entity.matchInfo;
 import cn.edu.aynu.onlineRegistrationSystem.entity.memInfo;
+import cn.edu.aynu.onlineRegistrationSystem.entity.teamInfo;
 import cn.edu.aynu.onlineRegistrationSystem.service.ManageSystemService;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -58,8 +62,7 @@ public class ManageSystemController {
      * @return
      */
     @GetMapping("/memLists")
-    public JSONObject getMemList(Integer pn,Integer length,HttpServletRequest request){
-        HttpSession session=request.getSession();
+    public JSONObject getMemList(Integer pn,Integer length){
         JSONObject json=new JSONObject();
         List<memInfo> lists;
         try {
@@ -112,9 +115,22 @@ public class ManageSystemController {
      * @param memId
      * @return
      */
+    @GetMapping("/deleteMem")//TODO 新增实现
     public JSONObject deleteMem(Integer memId){
-
-        return null;
+        JSONObject json=new JSONObject();
+        try {
+            if(service.deleteMem(memId)>0){
+                json.put("code",200);
+                json.put("msg","删除成功");
+            }else{
+                json.put("code",404);
+                json.put("msg","未找到此用户");
+            }
+        }catch(Exception e){
+            json.put("code",500);
+            json.put("msg",e.getMessage());
+        }
+        return json;
     }
 
     /**
@@ -123,9 +139,25 @@ public class ManageSystemController {
      * @param length 每页显示的个数
      * @return
      */
-    public JSONObject getTeamList(Integer pn,Integer length){
-
-        return null;
+    @GetMapping("/teamLists")
+    public JSONObject getTeamList(Integer pn,Integer length){//TODO 新增实现
+        List<teamInfo>lists;
+        JSONObject json=new JSONObject();
+        try{
+            lists=service.getTeamList();
+            if(lists.size()>0){
+                json.put("code",200);
+                json.put("msg","查询成功");
+                json.put("data",lists);
+            }else{
+                json.put("code",200);
+                json.put("msg","未找到任何队伍");
+            }
+        }catch(Exception e){
+            json.put("code",500);
+            json.put("msg",e.getMessage());
+        }
+        return json;
     }
 
     /**
@@ -136,9 +168,23 @@ public class ManageSystemController {
      * @param email 团队修改后email
      * @return
      */
-    public JSONObject modefTeamInfo(Integer id,String name,String password,String email){
-
-        return null;
+    @PostMapping("/updateTeam")
+    public JSONObject modelTeamInfo(Integer id,String name,String password,String email){//TODO 新增实现
+        JSONObject json=new JSONObject();
+        try{
+            teamInfo team=new teamInfo(id,name,email,password);
+            if(service.updateTeam(team)>0){
+                json.put("code",200);
+                json.put("msg","修改队伍信息成功");
+            }else{
+                json.put("code",404);
+                json.put("msg","修改队伍失败,未找到该队伍");
+            }
+        }catch(Exception e){
+            json.put("code",500);
+            json.put("msg",e.getMessage());
+        }
+        return json;
     }
 
     /**
@@ -146,9 +192,22 @@ public class ManageSystemController {
      * @param id 团队账号id
      * @return
      */
-    public JSONObject deleteTeam(Integer id){
-
-        return null;
+    @GetMapping("deleteTeam")
+    public JSONObject deleteTeam(Integer id){//TODO 新增实现
+        JSONObject json=new JSONObject();
+        try{
+            if(service.deleteTeam(id)>0){
+                json.put("code",200);
+                json.put("msg","删除队伍成功");
+            }else{
+                json.put("code",404);
+                json.put("msg","未找到该队伍");
+            }
+        }catch(Exception e){
+            json.put("code",500);
+            json.put("msg",e.getMessage());
+        }
+        return json;
     }
 
     /**
@@ -158,9 +217,59 @@ public class ManageSystemController {
      * @param id 比赛表id
      * @return
      */
-    public JSONObject getMatchInfoList(Integer id){
-
-        return null;
+    @GetMapping("/enrolledTeamsOrMems")
+    public JSONObject getMatchInfoList(Integer id){//TODO 新增实现
+        JSONObject json=new JSONObject();
+        matchInfo match;
+        List<Integer> ids;//参加比赛的个人或团队id组
+        List<memInfo> users;//参加比赛的个人组
+        List<TeamMessage> teamMessages=new ArrayList<>();//参加所有团队比赛的团队信息
+        try{
+            match=service.getMatch(id);
+            if(match!=null){
+                if(Integer.parseInt(match.getMatchMode())==0){//个人比赛
+                    ids=service.getJoinedMemIdsByMatchId(match.getMatchId());
+                    if(ids.size()>0){
+                        users=service.getMemListsByIds(ids);
+                        json.put("code",200);
+                        json.put("msg","找到参加此个人比赛的所有用户");
+                        json.put("data",users);
+                    }else{
+                        json.put("code",404);
+                        json.put("msg","没有找到任何用户参加此比赛");
+                    }
+                }else {//团队比赛
+                    ids = service.getJoinedTeamIdsByMatchId(match.getMatchId());
+                    if (ids.size() > 0) {
+                        for (Integer temp_id : ids) {
+                            teamInfo temp_team = service.getTeamByTeamId(temp_id);
+                            List<Integer> temp_mem_ids = service.getMemidsByTeamId(temp_id);
+                            if(temp_mem_ids.size()>0) {//队伍有人
+                                List<memInfo> temp_mems = service.getMemListsByIds(temp_mem_ids);
+                                TeamMessage message = new TeamMessage(temp_team, temp_mems);
+                                teamMessages.add(message);
+                            }else{//空队伍参加
+                                TeamMessage message=new TeamMessage(temp_team);
+                                teamMessages.add(message);
+                            }
+                        }
+                        json.put("code",200);
+                        json.put("msg","找到参加此团队比赛的所有用户");
+                        json.put("data",teamMessages);
+                    }else{
+                        json.put("code",404);
+                        json.put("msg","没有找到任何队伍参加此比赛");
+                    }
+                }
+            }else{
+                json.put("code",404);
+                json.put("msg","未找到该比赛");
+            }
+        }catch(Exception e){
+            json.put("code",500);
+            json.put("msg",e.getMessage());
+        }
+        return json;
     }
 
 }

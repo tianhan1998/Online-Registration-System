@@ -9,6 +9,7 @@ import cn.edu.aynu.onlineRegistrationSystem.mapper.teamInfoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.util.List;
 

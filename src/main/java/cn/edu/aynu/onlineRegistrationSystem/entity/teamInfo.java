@@ -27,6 +27,13 @@ public class teamInfo {
         this.teamEmail = teamEmail;
     }
 
+    public teamInfo(Integer teamId, String teamName, String teamPassword, String teamEmail) {
+        this.teamId = teamId;
+        this.teamName = teamName;
+        this.teamPassword = teamPassword;
+        this.teamEmail = teamEmail;
+    }
+
     public teamInfo(Integer teamId, String teamName, String teamAccount, String teamPassword, Integer memId1, Integer memId2, Integer memId3, String teamEmail) {
         this.teamId=teamId;
         this.teamName = teamName;
