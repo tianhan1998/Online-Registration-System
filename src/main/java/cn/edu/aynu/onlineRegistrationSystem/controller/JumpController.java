@@ -34,4 +34,19 @@ public class JumpController {
     public String jumpTablesAll() {
         return "mem/mem_index_all_list";
     }
+
+    @RequestMapping(value = "/join_team",method = RequestMethod.GET)
+    public String jumpJoinTeamList() {
+        return "mem/join_team_list";
+    }
+
+    @RequestMapping(value = "/404",method = RequestMethod.GET)
+    public String jump404() {
+        return "error/404";
+    }
+
+    @RequestMapping(value = "/500",method = RequestMethod.GET)
+    public String jump500() {
+        return "error/500";
+    }
 }

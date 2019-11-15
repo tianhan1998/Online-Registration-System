@@ -180,7 +180,7 @@ public class IndexController {
      * @param memId 个人账号id
      * @return 返回成功或者失败的JSON信息
      */
-    @PostMapping(value = "/joinTeam",produces = "application/json;charset=utf-8")//TODO 此方法修改为session取值
+    @PostMapping(value = "/joinTeam",produces = "application/json;charset=utf-8")
     public JSONObject joinTeamById(Integer memId,HttpServletRequest request){
         HttpSession session=request.getSession();
         JSONObject json=new JSONObject();
