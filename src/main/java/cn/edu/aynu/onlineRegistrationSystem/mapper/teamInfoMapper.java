@@ -24,6 +24,8 @@ public interface teamInfoMapper {
 
     teamInfo selectByTeamAccount(String team_account);
 
+    List<teamInfo> getTeamList();
+
     int updateByExampleSelective(@Param("record") teamInfo record, @Param("example") teamInfoExample example);
 
     int updateByExample(@Param("record") teamInfo record, @Param("example") teamInfoExample example);

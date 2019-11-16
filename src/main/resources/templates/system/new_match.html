@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>INSPINIA | Dashboard v.4</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+</head>
+
+<body class="top-navigation">
+<div id="wrapper">
+    <div id="page-wrapper" class="gray-bg">
+        <div class="row border-bottom white-bg">
+            <nav class="navbar navbar-static-top" role="navigation">
+                <div class="navbar-header">
+                    <button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse"
+                            class="navbar-toggle collapsed" type="button">
+                        <i class="fa fa-reorder"></i>
+                    </button>
+                    <a href="#" class="navbar-brand">后台管理系统</a>
+                </div>
+                <div class="navbar-collapse collapse" id="navbar">
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown">
+                            <a aria-expanded="false" role="button" href="mem_index.html"> 所有个人账号</a>
+                        </li>
+
+                        <li class="dropdown">
+                            <a aria-expanded="false" role="button" href="mem_index_all_list.html"> 所有团队账号</a>
+                        </li>
+                        <li class="dropdown">
+                            <a aria-expanded="false" role="button" href="search_join_team.html"> 所有比赛列表</a>
+                        </li>
+                        <li class="active">
+                            <a aria-expanded="false" role="button" href="join_team_list.html"> 发布新比赛</a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-top-links navbar-right">
+                        <li>
+                            <a href="login.html">
+                                <i class="fa fa-sign-out"></i> 退出登录
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+        <div class="wrapper wrapper-content">
+            <div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>发布新的比赛 <small></small></h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                <i class="fa fa-wrench"></i>
+                            </a>
+
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <form method="get" class="form-horizontal">
+                            <div class="form-group"><label class="col-sm-2 control-label">比赛标题(长度1~255)</label>
+                                <div class="col-sm-10"><input type="text" class="form-control"></div>
+                            </div>
+                            <div class="form-group"><label class="col-sm-2 control-label">时间</label>
+                                <div class="col-sm-10"><div class="form-group" id="data_5">
+                                    <label class="font-normal">(精确到时分秒)</label>
+                                        <div class="input-daterange input-group" id="datepicker">
+                                            <input type="date" class="input-sm form-control" name="start" value="05/14/2014">
+
+                                            <span class="input-group-addon">至</span>
+                                            <input type="date" class="input-sm form-control" name="end" value="05/22/2014">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group"><label class="col-lg-2 control-label">比赛模式</label>
+                                <div class="col-lg-5">
+                                    <select class="form-control m-b" name="account" disabled="disabled">
+                                        <option value="0">个人赛</option>
+                                        <option value="1">团队赛</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group"><label class="col-sm-2 control-label">邀请码</label>
+                                <div class="col-sm-10"><input type="text" class="form-control" placeholder="即比赛邀请码，不填写即没有密码"></div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                                <div class="form-group">
+                                    <div class="col-sm-4 col-sm-offset-2">
+                                        <button class="btn btn-white" type="button" id="quxiao">取消</button>
+                                        <button class="btn btn-primary" type="button">发布比赛</button>
+                                    </div>
+                                </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+                    <!--                    模态框-->
+
+                    <div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true"
+                         style="display: none;">
+                        <div class="modal-dialog">
+                            <div class="modal-content animated bounceInRight">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"><span
+                                            aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+
+                                    <i class="fa fa-laptop modal-icon"></i>
+                                    <h4 class="modal-title">取消</h4>
+                                    <small class="font-bold">您要取消这个比赛吗？取消后信息将不会被保存</small>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                                    <button type="button" class="btn btn-primary">确认</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="pull-right">
+                10GB of <strong>250GB</strong> Free.
+            </div>
+            <div>
+                <strong>Copyright</strong> Example Company &copy; 2014-2015
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- Mainly scripts -->
+<script src="js/jquery-2.1.1.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+<!-- Custom and plugin javascript -->
+<script src="js/inspinia.js"></script>
+<script src="js/plugins/pace/pace.min.js"></script>
+
+<!-- Flot -->
+<script src="js/plugins/flot/jquery.flot.js"></script>
+<script src="js/plugins/flot/jquery.flot.tooltip.min.js"></script>
+<script src="js/plugins/flot/jquery.flot.resize.js"></script>
+
+<!-- ChartJS-->
+<script src="js/plugins/chartJs/Chart.min.js"></script>
+
+<!-- Peity -->
+<script src="js/plugins/peity/jquery.peity.min.js"></script>
+<!-- Peity demo -->
+<script src="js/demo/peity-demo.js"></script>
+
+
+<script>
+    $(document).ready(function () {
+
+    });
+</script>
+
+</body>
+
+</html>

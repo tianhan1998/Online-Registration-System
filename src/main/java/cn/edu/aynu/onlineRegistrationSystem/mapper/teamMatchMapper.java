@@ -31,4 +31,6 @@ public interface teamMatchMapper {
     int updateByPrimaryKey(teamMatch record);
 
     int checkExistInTeamMatch(Integer team_id,Integer match_id);
+
+    List<Integer> getJoinedTeamByMatchId(Integer id);
 }

@@ -12,6 +12,9 @@
     <result column="team_email" jdbcType="VARCHAR" property="teamEmail" />
   </resultMap>
 
+  <select id="getTeamList" resultMap="BaseResultMap">
+    select team_id,team_name,team_account,mem_id1,mem_id2,mem_id3,team_email from team_info
+  </select>
   <select id="selectByTeamAccount" parameterType="String" resultMap="BaseResultMap">
     select team_account from team_info where team_account=#{team_account}
   </select>

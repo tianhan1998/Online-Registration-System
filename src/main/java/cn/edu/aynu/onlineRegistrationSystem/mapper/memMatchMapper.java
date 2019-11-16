@@ -32,4 +32,6 @@ public interface memMatchMapper {
     int updateByPrimaryKey(memMatch record);
 
     int checkExistInMemMatch(Integer mem_id, Integer match_id);
+
+    List<Integer> getJoinedMemByMatchId(Integer id);
 }
