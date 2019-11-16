@@ -195,35 +195,54 @@
             data:[],
             type:"get",
             success: function (data) {
+                $.ajax({
+                    url:"matchList",
+                    datatype:"json",
+                    data:[],
+                    type:"post",
+                    success: function(obj) {
+                        //双重循环来标记是否参加过这个比赛
+                        for(var i=0;i<data.data.length;i++) {
+                            var ms = data.data[i];
+                            var mode = "";
+                            var status = "";
+                            var btn = "";
+                            if(ms.matchMode == "0") {
+                                mode = "<th><span class=\"label label-info\">个人赛</span></th>";
+                                btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" data-toggle=\"modal\" data-target=\"#myModal\">报名</button></th>";
+                            }else{
+                                mode = "<th><span class=\"label label-primary\">团队赛</span></th>";
+                                btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" data-toggle=\"modal\" data-target=\"#myModal\" disabled style=\"background-color:#DCDCDC;\">报名</button></th>";
+                            }
+                            if(ms.matchStatus == 0) {
+                                status = "<th><span class=\"label label-primary\">未开始</span></th>";
+                                btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" data-toggle=\"modal\" data-target=\"#myModal\">报名</button></th>";
+                            }else if(ms.matchStatus == 2){
+                                status = "<th><span class=\"label label-danger\">已结束</span></th>";
+                                btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" data-toggle=\"modal\" data-target=\"#myModal\" disabled style=\"background-color:#DCDCDC;\">报名</button></th>";
+                            }else{
+                                status = "<th><span class=\"label label-warning\">进行中</span></th>";
+                                btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" data-toggle=\"modal\" data-target=\"#myModal\" disabled style=\"background-color:#DCDCDC;\">报名</button></th>";
+                            }
 
-                for(var i=0;i<data.data.length;i++) {
-
-                    var ms = data.data[i];
-                    var mode = "";
-                    var status = "";
-                    var btn = "";
-                    if(ms.matchMode == "0") {
-                        mode = "<th><span class=\"label label-info\">个人赛</span></th>";
-                    }else{
-                        mode = "<th><span class=\"label label-primary\">团队赛</span></th>";
+                            for(var j=0;j<obj.data.length;j++) {
+                                console.log();
+                                var myMatchs = obj.data[j];
+                                if(myMatchs.matchId == ms.matchId) {
+                                    btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" data-toggle=\"modal\" data-target=\"#myModal\" disabled style=\"background-color:#DCDCDC;\">报名</button></th>";
+                                    break;
+                                }
+                            }
+                            $(".matchs").append("<tr>" +
+                                "<th>"+ms.matchId+"</th>" +
+                                "<th>"+ms.matchTitle+"</th>" +
+                                "<th>"+ms.matchStarTime+"</th>" +
+                                "<th>"+ms.matchEndTime+"</th>" +
+                                mode + status + btn +
+                                "</tr>");
+                        }
                     }
-                    if(ms.matchStatus == 0) {
-                        status = "<th><span class=\"label label-primary\">未开始</span></th>";
-                    }else if(ms.matchStatus == 2){
-                        status = "<th><span class=\"label label-danger\">已结束</span></th>";
-                    }else{
-                        status = "<th><span class=\"label label-warning\">进行中</span></th>";
-                    }
-
-                    $(".matchs").append("<tr>" +
-                        "<th>"+ms.matchId+"</th>" +
-                        "<th>"+ms.matchTitle+"</th>" +
-                        "<th>"+ms.matchStarTime+"</th>" +
-                        "<th>"+ms.matchEndTime+"</th>" +
-                        mode + status +"<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" data-toggle=\"modal\" data-target=\"#myModal\">报名</button></th>"+
-                        "</tr>");
-                }
-
+                });
             }
         })
     });
