@@ -83,6 +83,9 @@ public class IndexController {
         memInfo user= (memInfo)session.getAttribute("user");
         matchInfo match;
         teamInfo team= (teamInfo) session.getAttribute("team");
+
+
+
         Integer type;
         try{
             switch ((String)session.getAttribute("type")) {
@@ -107,7 +110,7 @@ public class IndexController {
             else if(type!=Integer.parseInt(match.getMatchMode())){
                 json.put("code",404);
                 json.put("msg","用户对应的比赛不正确");
-            }else if(!matchPassword.equals(match.getMatchPassword())){
+            }else if(!matchPassword.equals(match.getMatchPassword())){ //TODO 如果前端传进来个空值，会显示null，然后会报异常
                 json.put("code",404);
                 json.put("msg","比赛邀请码不正确");
             }
@@ -125,7 +128,7 @@ public class IndexController {
                 }
             }else {
                 if (service.checkExistInTeamMatch(team.getTeamId(), matchId) == 0) {
-                    if (service.insertTeamMatch(new teamMatch(team.getTeamId(), matchId)) > 0) {
+                    if (service.insertTeamMatch(new teamMatch(team.getTeamId(), matchId)) > 0) { //TODO 报异常了，也不知道是啥问题，nested exception is org.apache.ibatis.binding.Bind…lable parameters are [arg1, arg0, param1, param2]
                         json.put("code", 200);
                         json.put("msg", "报名成功");
                     } else {
@@ -138,7 +141,7 @@ public class IndexController {
             }
         }catch(Exception e){
             json.put("code",500);
-            json.put("msg",e.getMessage());
+            json.put("msg",e.getMessage());//TODO 比赛类型正确，数据库异常，没有返回msg信息
         }
         return json;
     }

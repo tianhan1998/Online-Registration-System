@@ -142,7 +142,7 @@
 
                                     <p><strong>邀请码</strong> 没有邀请码点击继续即可</p>
 
-                                    <div class="form-group"><label>样品输入</label> <input type="email"
+                                    <div class="form-group"><label>样品输入</label> <input type="text"
                                                                                        placeholder="比赛邀请码"
                                                                                        class="form-control"></div>
                                 </div>
@@ -214,13 +214,6 @@
                             var status = "";
                             var btn = "";
                             var id = ms.matchId;
-                            if(ms.matchMode == "0") {
-                                mode = "<th><span class=\"label label-info\">个人赛</span></th>";
-                                btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" data-toggle=\"modal\" data-target=\"#myModal\" onclick=\"cc("+id+")\">报名</button></th>";
-                            }else{
-                                mode = "<th><span class=\"label label-primary\">团队赛</span></th>";
-                                btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" disabled style=\"background-color:#DCDCDC;\">报名</button></th>";
-                            }
                             if(ms.matchStatus == 0) {
                                 status = "<th><span class=\"label label-primary\">未开始</span></th>";
                                 btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" data-toggle=\"modal\" data-target=\"#myModal\" onclick=\"cc("+id+")\">报名</button></th>";
@@ -231,7 +224,13 @@
                                 status = "<th><span class=\"label label-warning\">进行中</span></th>";
                                 btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" disabled style=\"background-color:#DCDCDC;\">报名</button></th>";
                             }
-
+                            if(ms.matchMode == 0) {
+                                mode = "<th><span class=\"label label-info\">个人赛</span></th>";
+                                btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" data-toggle=\"modal\" data-target=\"#myModal\" onclick=\"cc("+id+")\">报名</button></th>";
+                            }else{
+                                mode = "<th><span class=\"label label-primary\">团队赛</span></th>";
+                                btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" disabled style=\"background-color:#DCDCDC;\">报名</button></th>";
+                            }
                             for(var j=0;j<obj.data.length;j++) {
                                 console.log();
                                 var myMatchs = obj.data[j];
@@ -259,15 +258,27 @@
     }
     function ic() {
         var v = $('.inv').val();
+        var matchpwd = $('.form-control').val();
         console.log(v);
         $.ajax({
             url: "enroll",
             dataType: "json",
-            data: [{"matchId":v}],
+            data: {"matchId":v,"matchPassword":matchpwd},
             type: "post",
             success: function (data) {
-                console.log(data);
+                //清空matchid
                 $('.inv').remove();
+                //清空输入框
+                $('.form-control').val("");
+                //关闭模态框
+                $('#myModal').modal("hide");
+
+                if(data.code != 200) {
+                    alert("报名失败!");
+                }else{
+                    alert("报名成功!");
+                }
+
             }
         })
     }
