@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @SpringBootTest
@@ -18,6 +19,8 @@ public class IndexTest {
     IndexController controller;
     @Autowired
     IndexService service;
+    @Autowired
+    HttpSession session;
 
     @Test
     public void testFindMatchList(){
@@ -36,10 +39,11 @@ public class IndexTest {
         controller.joinTeamById(1,174804155);*/
     }
     @Test
-    public void getMatchListByTeamId(){
-        List<matchInfo> list=service.getMatchListByTeamId(1);
-        for (matchInfo info : list) {
-            System.out.println(info);
+    public void getMatchListByTeamId(HttpSession session){
+        // List<matchInfo> list=service.getMatchListByTeamId(1);
+        // for (matchInfo info : list) {
+        //     System.out.println(info);
+        // Object obj=new Object();
+        // Integer id;
         }
-    }
 }

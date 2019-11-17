@@ -93,7 +93,7 @@ public class MessageController {
                         json.put("msg","插入发送记录失败");
                     }
                 } else {
-                    json.put("msg", 404);
+                    json.put("code", 404);
                     json.put("msg", "发送失败，数据库操作0行");
                 }
             } else {
@@ -141,7 +141,7 @@ public class MessageController {
 
     /**
      * 根据前端传入messageId来删除消息
-     * @param id
+     * @param id 消息id
      * @return
      */
     @GetMapping("/deleteMessage")
@@ -158,7 +158,7 @@ public class MessageController {
             }
             message=service.getMessageById(id);
             if(message!=null){
-                if(message.getMessageToId()==temp_id){
+                if(message.getMessageToId().equals(temp_id)){
                     if(service.deleteReceiveRecord(message.getMessageId(),temp_id)>0){
                         json.put("code",200);
                         json.put("msg","删除成功");
