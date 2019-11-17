@@ -116,7 +116,7 @@
                         </tbody>
                     </table>
 
-                    <!--                    模态框-->
+                    <!--模态框-->
 
                     <div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true"
                          style="display: none;">
@@ -125,7 +125,6 @@
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal"><span
                                             aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-
                                     <i class="fa fa-laptop modal-icon"></i>
                                     <h4 class="modal-title">邀请码</h4>
                                     <small class="font-bold">请输入你的邀请码</small>
@@ -141,7 +140,6 @@
                                                                                        class="form-control"></div>
                                 </div>
                                 <div class="modal-footer">
-                                    <input type="hidden" id="dateId" value="" />
                                     <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
                                     <button type="button" class="btn btn-primary" onclick="ic()">确认</button>
                                 </div>
@@ -211,14 +209,14 @@
                             var id = ms.matchId;
                             if(ms.matchMode == "0") {
                                 mode = "<th><span class=\"label label-info\">个人赛</span></th>";
-                                btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" data-toggle=\"modal\" data-target=\"#myModal\" onclick='setvalue(id)'>报名</button></th>";
+                                btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" data-toggle=\"modal\" data-target=\"#myModal\" onclick=\"cc("+id+")\">报名</button></th>";
                             }else{
                                 mode = "<th><span class=\"label label-primary\">团队赛</span></th>";
                                 btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" disabled style=\"background-color:#DCDCDC;\">报名</button></th>";
                             }
                             if(ms.matchStatus == 0) {
                                 status = "<th><span class=\"label label-primary\">未开始</span></th>";
-                                btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" data-toggle=\"modal\" data-target=\"#myModal\" onclick='setvalue(id)'>报名</button></th>";
+                                btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" data-toggle=\"modal\" data-target=\"#myModal\" onclick=\"cc("+id+")\">报名</button></th>";
                             }else if(ms.matchStatus == 2){
                                 status = "<th><span class=\"label label-danger\">已结束</span></th>";
                                 btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" disabled style=\"background-color:#DCDCDC;\">报名</button></th>";
@@ -248,19 +246,21 @@
             }
         })
     });
-    //TODO 模态框传参有点问题
-    function setvalue(v) {
-        $('#dateId').val(v);
+    function cc(x) {
+        var iv = "<input type='text' value='"+x+"' class='inv' style='display: none'>";
+        $('.modal-footer').append(iv);
     }
     function ic() {
-        console.log($('#dateId').val);
+        var v = $('.inv').val();
+        console.log(v);
         $.ajax({
             url: "enroll",
             dataType: "json",
-            data: [{"matchId":null}],
+            data: [{"matchId":v}],
             type: "post",
             success: function (data) {
                 console.log(data);
+                $('.inv').remove();
             }
         })
     }
