@@ -8,10 +8,10 @@
 
     <title>INSPINIA | Dashboard v.4</title>
 
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
-    <link href="css/animate.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="../css/animate.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
 
 </head>
 
@@ -29,11 +29,11 @@
                 </div>
                 <div class="navbar-collapse collapse" id="navbar">
                     <ul class="nav navbar-nav">
-                        <li class="active">
-                            <a aria-expanded="false" role="button" href="mem_index.html"> 所有个人账号</a>
+                        <li class="dropdown">
+                            <a aria-expanded="false" role="button" href="sys_index.html"> 所有个人账号</a>
                         </li>
 
-                        <li class="dropdown">
+                        <li class="active">
                             <a aria-expanded="false" role="button" href="mem_index_all_list.html"> 所有团队账号</a>
                         </li>
                         <li class="dropdown">
@@ -74,24 +74,37 @@
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th>姓名</th>
-                            <th>学号</th>
-                            <th>性别</th>
+                            <th>团队名</th>
                             <th>Email</th>
+                            <th>队员一</th>
+                            <th>队员二</th>
+                            <th>队员三</th>
                             <th>操作</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <tr>
-                            <th>1</th>
-                            <th>第一届ACM</th>
-                            <th>2019.3.12</th>
-                            <th>2019.3.12</th>
-                            <th><span class="label label-primary">团队赛</span></th>
-                            <th>
-                                <button type="button" class="btn btn-w-m btn-danger btn-xs" data-toggle="modal" data-target="#myModal">删除</button>
-                            </th>
-                        </tr>
+                        <tbody id="add">
+<!--                        <tr>-->
+<!--                            <th>1</th>-->
+<!--                            <th>对酒当歌</th>-->
+<!--                            <th>12343531@163.com</th>-->
+<!--                            <th>姜小昌</th>-->
+<!--                            <th>岳阳</th>-->
+<!--                            <th>朱森林</th>-->
+<!--                            <th>-->
+<!--                                <button type="button" class="btn btn-w-m btn-danger btn-xs" data-toggle="modal" data-target="#myModal">删除</button>-->
+<!--                            </th>-->
+<!--                        </tr>-->
+<!--                        <tr>-->
+<!--                            <th>2</th>-->
+<!--                            <th>阿斯顿发斯蒂芬</th>-->
+<!--                            <th>12343531@163.com</th>-->
+<!--                            <th>大熊</th>-->
+<!--                            <th>-</th>&lt;!&ndash;没有队员&ndash;&gt;-->
+<!--                            <th>-</th>-->
+<!--                            <th>-->
+<!--                                <button type="button" class="btn btn-w-m btn-danger btn-xs" data-toggle="modal" data-target="#myModal">删除</button>-->
+<!--                            </th>-->
+<!--                        </tr>-->
                         </tbody>
                     </table>
 
@@ -107,7 +120,7 @@
 
                                     <i class="fa fa-laptop modal-icon"></i>
                                     <h4 class="modal-title">删除</h4>
-                                    <small class="font-bold">确认要删除这个人吗？</small>
+                                    <small class="font-bold">确认要删除这团队吗？</small>
 
                                 </div>
                                 <div class="modal-footer">
@@ -134,27 +147,27 @@
 
 
 <!-- Mainly scripts -->
-<script src="js/jquery-2.1.1.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
-<script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="../js/jquery-2.1.1.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="../js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
 <!-- Custom and plugin javascript -->
-<script src="js/inspinia.js"></script>
-<script src="js/plugins/pace/pace.min.js"></script>
+<script src="../js/inspinia.js"></script>
+<script src="../js/plugins/pace/pace.min.js"></script>
 
 <!-- Flot -->
-<script src="js/plugins/flot/jquery.flot.js"></script>
-<script src="js/plugins/flot/jquery.flot.tooltip.min.js"></script>
-<script src="js/plugins/flot/jquery.flot.resize.js"></script>
+<script src="../js/plugins/flot/jquery.flot.js"></script>
+<script src="../js/plugins/flot/jquery.flot.tooltip.min.js"></script>
+<script src="../js/plugins/flot/jquery.flot.resize.js"></script>
 
 <!-- ChartJS-->
-<script src="js/plugins/chartJs/Chart.min.js"></script>
+<script src="../js/plugins/chartJs/Chart.min.js"></script>
 
 <!-- Peity -->
-<script src="js/plugins/peity/jquery.peity.min.js"></script>
+<script src="../js/plugins/peity/jquery.peity.min.js"></script>
 <!-- Peity demo -->
-<script src="js/demo/peity-demo.js"></script>
+<script src="../js/demo/peity-demo.js"></script>
 
 
 <script>
@@ -162,6 +175,28 @@
         $("button[value='删除']").click(function () {
             $("myModal").modal(options);
         });
+
+        $.ajax({
+            type: "GET",
+            url: "../admin/teamLists",
+            dataType:"json",
+            success: function(msg){
+                var code=msg['code'];
+                if(code!=200){
+                    return;
+                }
+                var data=msg['data'];
+                var html="";
+                for (var i =0;i<data.length;i++)
+                {
+                    console.log(i);
+                    html="<tr>"+"<th>"+(i+1)+"</th>"+"<th>"+data[i]['teamName']+"</th>"+"<th>"+data[i]['teamEmail']+"</th>"+"<th>----</th>"+"<th>----</th>"+"<th>----</th>"+'<th><button type="button" class="btn btn-w-m btn-danger btn-xs" data-toggle="modal" data-target="#myModal">删除</button></th>'+"</tr>";
+                    console.log(html);
+                    $("#add").append(html);
+                }
+            }
+        });
+
     });
 </script>
 

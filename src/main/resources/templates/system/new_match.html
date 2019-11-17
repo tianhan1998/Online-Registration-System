@@ -8,10 +8,18 @@
 
     <title>INSPINIA | Dashboard v.4</title>
 
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
-    <link href="css/animate.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="../css/animate.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
+
+
+    <!--jeui-->
+    <link rel="stylesheet" href="../css/jeui/jeui.css" >
+    <link rel="stylesheet" href="../css/jeui/skin/jebox.css">
+    <link rel="stylesheet" href="../css/jeui/skin/jedate.css" >
+    <script type="text/javascript" src="../js/jeui/modules/jeui.js"></script>
+    <!--jeui-->
 
 </head>
 
@@ -30,7 +38,7 @@
                 <div class="navbar-collapse collapse" id="navbar">
                     <ul class="nav navbar-nav">
                         <li class="dropdown">
-                            <a aria-expanded="false" role="button" href="mem_index.html"> 所有个人账号</a>
+                            <a aria-expanded="false" role="button" href="sys_index.html"> 所有个人账号</a>
                         </li>
 
                         <li class="dropdown">
@@ -77,10 +85,16 @@
                                 <div class="col-sm-10"><div class="form-group" id="data_5">
                                     <label class="font-normal">(精确到时分秒)</label>
                                         <div class="input-daterange input-group" id="datepicker">
-                                            <input type="date" class="input-sm form-control" name="start" value="05/14/2014">
 
-                                            <span class="input-group-addon">至</span>
-                                            <input type="date" class="input-sm form-control" name="end" value="05/22/2014">
+                                            <!--jeui-->
+                                            <input type="text" name="title" id="inpstart" placeholder="开始日期" readonly class="je-input je-pl5 je-pr5">至
+                                            <input type="text" name="title" id="inpend" placeholder="结束日期" readonly class="je-input je-pl5 je-pr5">
+                                            <!--jeui-->
+
+<!--                                            <input type="date" class="input-sm form-control" name="start" value="05/14/2014 10:20:00">-->
+
+<!--                                            <span class="input-group-addon">至</span>-->
+<!--                                            <input type="date" class="input-sm form-control" name="end" value="05/22/2014">-->
                                         </div>
                                     </div>
                                 </div>
@@ -100,7 +114,7 @@
                                 <div class="form-group">
                                     <div class="col-sm-4 col-sm-offset-2">
                                         <button class="btn btn-white" type="button" id="quxiao">取消</button>
-                                        <button class="btn btn-primary" type="button">发布比赛</button>
+                                        <button class="btn btn-primary" type="button" id="sub">发布比赛</button>
                                     </div>
                                 </div>
                         </form>
@@ -147,32 +161,88 @@
 
 
 <!-- Mainly scripts -->
-<script src="js/jquery-2.1.1.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
-<script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="../js/jquery-2.1.1.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="../js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
 <!-- Custom and plugin javascript -->
-<script src="js/inspinia.js"></script>
-<script src="js/plugins/pace/pace.min.js"></script>
+<script src="../js/inspinia.js"></script>
+<script src="../js/plugins/pace/pace.min.js"></script>
 
 <!-- Flot -->
-<script src="js/plugins/flot/jquery.flot.js"></script>
-<script src="js/plugins/flot/jquery.flot.tooltip.min.js"></script>
-<script src="js/plugins/flot/jquery.flot.resize.js"></script>
+<script src="../js/plugins/flot/jquery.flot.js"></script>
+<script src="../js/plugins/flot/jquery.flot.tooltip.min.js"></script>
+<script src="../js/plugins/flot/jquery.flot.resize.js"></script>
 
 <!-- ChartJS-->
-<script src="js/plugins/chartJs/Chart.min.js"></script>
+<script src="../js/plugins/chartJs/Chart.min.js"></script>
 
 <!-- Peity -->
-<script src="js/plugins/peity/jquery.peity.min.js"></script>
+<script src="../js/plugins/peity/jquery.peity.min.js"></script>
 <!-- Peity demo -->
-<script src="js/demo/peity-demo.js"></script>
+<script src="../js/demo/peity-demo.js"></script>
+
+<script type="text/javascript">
+    jeui.use(["jquery","jeBox","jeDate","jeCheck"],function () {
+
+        var start = {
+            format: 'YYYY-MM-DD hh:mm:ss',
+            minDate: '2014-06-16 23:59:59', //设定最小日期为当前日期
+            isinitVal:true,
+            //festival:true,
+            ishmsVal:false,
+            maxDate: $.nowDate({DD:0}), //最大日期
+            choosefun: function(elem, val, date){
+                end.minDate = date; //开始日选好后，重置结束日的最小日期
+                endDates();
+            }
+        };
+        var end = {
+            format: 'YYYY-MM-DD hh:mm:ss',
+            minDate: $.nowDate({DD:0}), //设定最小日期为当前日期
+            //festival:true,
+            maxDate: '2099-06-16 23:59:59', //最大日期
+            choosefun: function(elem, val, date){
+                start.maxDate = date; //将结束日的初始值设定为开始日的最大日期
+            }
+        };
+        //这里是日期联动的关键
+        function endDates() {
+            //将结束日期的事件改成 false 即可
+            end.trigger = false;
+            $("#inpend").jeDate(end);
+        }
+        $('#inpstart').jeDate(start);
+        $('#inpend').jeDate(end);
+        $("#newCheck").jeCheck({
+            jename:"chunk",
+            attrName:[false,"勾选"],
+            itemfun: function(elem,bool) {
+                console.log(bool)
+                //console.log(elem.prop('checked'))
+            },
+            success:function(elem){
+                jeui.chunkSelect(elem,'#gocheck','on')
+
+            }
+        })
+    });
+</script>
 
 
 <script>
     $(document).ready(function () {
-
+        $("#sub").click(function () {
+            $.ajax({
+                type: "GET",
+                url: "../admin/teamLists",
+                dataType:"json",
+                success: function(msg){
+                    console.log(msg);
+                }
+            });
+        });
     });
 </script>
 

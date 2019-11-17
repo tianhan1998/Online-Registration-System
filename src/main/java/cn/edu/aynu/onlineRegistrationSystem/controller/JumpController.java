@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 /**
  * company: www.abc.com
@@ -66,6 +65,21 @@ public class JumpController {
     @RequestMapping(value = "sys/login",method = RequestMethod.GET)
     public String jumpLogin() {
         return "system/login";
+    }
+
+    @RequestMapping(value = "sys/getTeam",method = RequestMethod.GET)
+    public String jumpGetTeam() {
+        return "system/sys_index";
+    }
+
+    @RequestMapping(value = "sys/getMatch",method = RequestMethod.GET)
+    public String jumpGetMatch() {
+        return "system/all_match";
+    }
+
+    @RequestMapping(value = "sys/putMatch",method = RequestMethod.GET)
+    public String jumpPutMatch() {
+        return "system/new_match";
     }
 
 }

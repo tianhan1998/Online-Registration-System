@@ -134,12 +134,12 @@ public class ManageSystemController {
     }
 
     /**
-     * 获取所有的团队信息
+     * 获取所有的团队信息+团队名字
      * @param pn 页码
      * @param length 每页显示的个数
      * @return
      */
-    @GetMapping("/teamLists")
+    @GetMapping("/teamLists")//TODO 没有返回团队成员名字   没找到获取比赛列表的接口   没有找到提交新比赛的接口
     public JSONObject getTeamList(Integer pn,Integer length){
         List<teamInfo>lists;
         JSONObject json=new JSONObject();
