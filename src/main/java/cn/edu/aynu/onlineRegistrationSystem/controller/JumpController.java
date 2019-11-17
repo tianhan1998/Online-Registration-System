@@ -62,4 +62,11 @@ public class JumpController {
     public String jumpAgree() {
         return "mem/agree_list";
     }
+
+    @RequestMapping(value = "sys/login",method = RequestMethod.GET)
+    public String jumpSystemLogin(HttpServletRequest request){
+        service.clearSession(request.getSession());
+        return "system/login";
+    }
+
 }
