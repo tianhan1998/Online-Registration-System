@@ -44,17 +44,20 @@ public class IndexController {
      * @param length 每页显示记录数
      * @return 已经报名的比赛信息
      */
+    //TODO (已经解决)团队账号获取的时候无法拿到数据原因是团队登录的时候不能通过session.getAttribute("mem_id");拿到对应的id
     @PostMapping(value = "/matchList",produces = "application/json;charset=utf-8")
     public JSONObject getMatchListById(Integer pn, Integer length, HttpServletRequest request, HttpServletResponse response) {
         JSONObject json=new JSONObject();
         HttpSession session =request.getSession();
-        Integer id= (Integer) session.getAttribute("mem_id");
+        // Integer id= (Integer) session.getAttribute("mem_id"); 更改前
         List<matchInfo> matches;
 //        System.out.println("我登陆了但是失败了"+id);
         try {
             if ("mem".equals(session.getAttribute("type"))) {
+                Integer id= (Integer) session.getAttribute("mem_id");
                 matches = service.getMatchListByMemId(id);
             } else {
+                Integer id= (Integer) session.getAttribute("team_id");
                 matches = service.getMatchListByTeamId(id);
             }
             json.put("code", 200);

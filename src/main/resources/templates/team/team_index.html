@@ -146,43 +146,10 @@
                             <th>比赛结束时间</th>
                             <th>比赛模式</th>
                             <th>比赛状态</th>
-                            <th>操作</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <tr>
-                            <th>1</th>
-                            <th>第一届ACM</th>
-                            <th>2019.3.12</th>
-                            <th>2019.3.12</th>
-                            <th><span class="label label-primary">团队赛</span></th>
-                            <th><span class="label label-primary">未开始</span></th>
-                            <th>
-                                <button type="button" class="btn btn-w-m btn-info btn-xs" data-toggle="modal" data-target="#myModal">报名</button>
-                            </th>
-                        </tr>
-                        <tr>
-                            <th>2</th>
-                            <th>第二届ACM</th>
-                            <th>2019.3.12</th>
-                            <th>2019.3.12</th>
-                            <th><span class="label label-primary">团队赛</span></th>
-                            <th><span class="label label-warning">进行中</span></th>
-                            <th>
-                                <button type="button" class="btn btn-w-m btn-info btn-xs" data-toggle="modal" data-target="#myModal">报名</button>
-                            </th>
-                        </tr>
-                        <tr>
-                            <th>3</th>
-                            <th>第三届ACM</th>
-                            <th>2019.3.12</th>
-                            <th>2019.3.12</th>
-                            <th><span class="label label-info">个人赛</span></th>
-                            <th><span class="label label-danger">已结束</span></th>
-                            <th>
-                                <button type="button" class="btn btn-w-m btn-info btn-xs" data-toggle="modal" data-target="#myModal">报名</button>
-                            </th>
-                        </tr>
+                        <tbody class="matchs">
+
                         </tbody>
                     </table>
 
@@ -258,10 +225,43 @@
 
 
 <script>
-    $(document).ready(function () {
-        $("button[value='报名']").click(function () {
-            $("myModal").modal(options);
-        });
+    $(function () {
+        $.ajax({
+            url:"matchList",
+            datatype:"json",
+            data:[],
+            type:"post",
+            success: function (data) {
+
+                for(var i=0;i<data.data.length;i++) {
+
+                    var ms = data.data[i];
+                    var mode = "";
+                    var status = "";
+                    if(ms.matchMode == "0") {
+                        mode = "<th><span class=\"label label-info\">个人赛</span></th>";
+
+                    }else{
+                        mode = "<th><span class=\"label label-primary\">团队赛</span></th>";
+                    }
+                    if(ms.matchStatus == 0) {
+                        status = "<th><span class=\"label label-primary\">未开始</span></th>";
+                    }else if(ms.matchStatus == 2){
+                        status = "<th><span class=\"label label-danger\">已结束</span></th>";
+                    }else{
+                        status = "<th><span class=\"label label-warning\">进行中</span></th>";
+                    }
+
+                    $(".matchs").append("<tr>" +
+                        "<th>"+ms.matchId+"</th>" +
+                        "<th>"+ms.matchTitle+"</th>" +
+                        "<th>"+ms.matchStarTime+"</th>" +
+                        "<th>"+ms.matchEndTime+"</th>" +
+                        mode + status +
+                        "</tr>");
+                }
+            }
+        })
     });
 </script>
 
