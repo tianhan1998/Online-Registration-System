@@ -91,7 +91,7 @@ public class ManageSystemController {
      * @param email 修改后的email
      * @return JSON
      */
-    @PostMapping("/updateMem")//TODO 新增实现
+    @PostMapping("/updateMem")
     public JSONObject modifyMemInfo(Integer memId,String password,String sex,String name,String email){
         JSONObject json=new JSONObject();
         memInfo user=new memInfo(memId,name,email,sex,password);
@@ -115,7 +115,7 @@ public class ManageSystemController {
      * @param memId
      * @return
      */
-    @GetMapping("/deleteMem")//TODO 新增实现
+    @GetMapping("/deleteMem")
     public JSONObject deleteMem(Integer memId){
         JSONObject json=new JSONObject();
         try {
@@ -140,7 +140,7 @@ public class ManageSystemController {
      * @return
      */
     @GetMapping("/teamLists")
-    public JSONObject getTeamList(Integer pn,Integer length){//TODO 新增实现
+    public JSONObject getTeamList(Integer pn,Integer length){
         List<teamInfo>lists;
         JSONObject json=new JSONObject();
         try{
@@ -169,7 +169,7 @@ public class ManageSystemController {
      * @return
      */
     @PostMapping("/updateTeam")
-    public JSONObject modelTeamInfo(Integer id,String name,String password,String email){//TODO 新增实现
+    public JSONObject modelTeamInfo(Integer id,String name,String password,String email){
         JSONObject json=new JSONObject();
         try{
             teamInfo team=new teamInfo(id,name,email,password);
@@ -193,7 +193,7 @@ public class ManageSystemController {
      * @return
      */
     @GetMapping("deleteTeam")
-    public JSONObject deleteTeam(Integer id){//TODO 新增实现
+    public JSONObject deleteTeam(Integer id){
         JSONObject json=new JSONObject();
         try{
             if(service.deleteTeam(id)>0){
@@ -218,7 +218,7 @@ public class ManageSystemController {
      * @return
      */
     @GetMapping("/enrolledTeamsOrMems")
-    public JSONObject getMatchInfoList(Integer id){//TODO 新增实现
+    public JSONObject getMatchInfoList(Integer id){
         JSONObject json=new JSONObject();
         matchInfo match;
         List<Integer> ids;//参加比赛的个人或团队id组

@@ -57,4 +57,9 @@ public class JumpController {
     public String jump500() {
         return "error/500";
     }
+
+    @RequestMapping(value = "/agree",method = RequestMethod.GET)
+    public String jumpAgree() {
+        return "mem/agree_list";
+    }
 }

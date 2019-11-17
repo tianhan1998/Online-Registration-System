@@ -76,7 +76,7 @@ public class IndexController {
      * @param matchPassword 比赛邀请码，如果数据库没有比赛邀请码则不需填写
      * @return 成功返回成功的JSON信息，失败返回失败的JSON信息
      */
-    @PostMapping(value = "/enroll",produces = "application/json;charset=utf-8")//TODO 此方法修改为session取值
+    @PostMapping(value = "/enroll",produces = "application/json;charset=utf-8")
     public JSONObject memEnrollById(Integer matchId,String matchPassword,HttpServletRequest request){
         JSONObject json=new JSONObject();
         HttpSession session=request.getSession();
@@ -147,7 +147,7 @@ public class IndexController {
      * 根据当前登录团队账号id获取该团队的所有成员信息
      * @return 获取当前登录团队里面所有的成员信息打包返回JSON
      */
-    @GetMapping(value = "/member",produces = "application/json;charset=utf-8")//TODO 此方法修改为session取值
+    @GetMapping(value = "/member",produces = "application/json;charset=utf-8")
     public JSONObject getTeamMemInfoById(HttpServletRequest request){
         HttpSession session=request.getSession();
         Integer teamId;
