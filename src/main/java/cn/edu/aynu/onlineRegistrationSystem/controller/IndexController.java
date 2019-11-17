@@ -110,12 +110,12 @@ public class IndexController {
             }
             else if(type==0){
                 if(service.checkExistInMemMatch(user.getMemId(),matchId)==0) {
-                    if (service.insertMemMatch(new memMatch(user.getMemId(), matchId)) > 0) {
-                        json.put("code", 200);
-                        json.put("msg", "报名成功");
-                    } else {
-                        throw new Exception("插入个人报名失败");
-                    }
+                        if (service.insertMemMatch(new memMatch(user.getMemId(), matchId)) > 0) {
+                            json.put("code", 200);
+                            json.put("msg", "报名成功");
+                        } else {
+                            throw new Exception("插入个人报名失败");
+                        }
                 }else{
                     json.put("code",404);
                     json.put("msg","您已报名过比赛");

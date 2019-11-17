@@ -141,8 +141,9 @@
                                                                                        class="form-control"></div>
                                 </div>
                                 <div class="modal-footer">
+                                    <input type="hidden" id="dateId" value="" />
                                     <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
-                                    <button type="button" class="btn btn-primary">确认</button>
+                                    <button type="button" class="btn btn-primary" onclick="ic()">确认</button>
                                 </div>
                             </div>
                         </div>
@@ -188,7 +189,7 @@
 
 
 <script>
-    $(function () {
+    $(function() {
         $.ajax({
             url:"matchList",
             datatype:"json",
@@ -207,34 +208,35 @@
                             var mode = "";
                             var status = "";
                             var btn = "";
+                            var id = ms.matchId;
                             if(ms.matchMode == "0") {
                                 mode = "<th><span class=\"label label-info\">个人赛</span></th>";
-                                btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" data-toggle=\"modal\" data-target=\"#myModal\">报名</button></th>";
+                                btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" data-toggle=\"modal\" data-target=\"#myModal\" onclick='setvalue(id)'>报名</button></th>";
                             }else{
                                 mode = "<th><span class=\"label label-primary\">团队赛</span></th>";
-                                btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" data-toggle=\"modal\" data-target=\"#myModal\" disabled style=\"background-color:#DCDCDC;\">报名</button></th>";
+                                btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" disabled style=\"background-color:#DCDCDC;\">报名</button></th>";
                             }
                             if(ms.matchStatus == 0) {
                                 status = "<th><span class=\"label label-primary\">未开始</span></th>";
-                                btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" data-toggle=\"modal\" data-target=\"#myModal\">报名</button></th>";
+                                btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" data-toggle=\"modal\" data-target=\"#myModal\" onclick='setvalue(id)'>报名</button></th>";
                             }else if(ms.matchStatus == 2){
                                 status = "<th><span class=\"label label-danger\">已结束</span></th>";
-                                btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" data-toggle=\"modal\" data-target=\"#myModal\" disabled style=\"background-color:#DCDCDC;\">报名</button></th>";
+                                btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" disabled style=\"background-color:#DCDCDC;\">报名</button></th>";
                             }else{
                                 status = "<th><span class=\"label label-warning\">进行中</span></th>";
-                                btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" data-toggle=\"modal\" data-target=\"#myModal\" disabled style=\"background-color:#DCDCDC;\">报名</button></th>";
+                                btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" disabled style=\"background-color:#DCDCDC;\">报名</button></th>";
                             }
 
                             for(var j=0;j<obj.data.length;j++) {
                                 console.log();
                                 var myMatchs = obj.data[j];
                                 if(myMatchs.matchId == ms.matchId) {
-                                    btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" data-toggle=\"modal\" data-target=\"#myModal\" disabled style=\"background-color:#DCDCDC;\">报名</button></th>";
+                                    btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" disabled style=\"background-color:#DCDCDC;\">报名</button></th>";
                                     break;
                                 }
                             }
                             $(".matchs").append("<tr>" +
-                                "<th>"+ms.matchId+"</th>" +
+                                "<th>"+(i+1)+"</th>" +
                                 "<th>"+ms.matchTitle+"</th>" +
                                 "<th>"+ms.matchStarTime+"</th>" +
                                 "<th>"+ms.matchEndTime+"</th>" +
@@ -246,6 +248,22 @@
             }
         })
     });
+    //TODO 模态框传参有点问题
+    function setvalue(v) {
+        $('#dateId').val(v);
+    }
+    function ic() {
+        console.log($('#dateId').val);
+        $.ajax({
+            url: "enroll",
+            dataType: "json",
+            data: [{"matchId":null}],
+            type: "post",
+            success: function (data) {
+                console.log(data);
+            }
+        })
+    }
 </script>
 
 </body>
