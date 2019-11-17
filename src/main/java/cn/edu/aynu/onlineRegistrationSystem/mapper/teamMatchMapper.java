@@ -30,7 +30,7 @@ public interface teamMatchMapper {
 
     int updateByPrimaryKey(teamMatch record);
 
-    int checkExistInTeamMatch(Integer team_id,Integer match_id);
+    int checkExistInTeamMatch(@Param("team_id") Integer team_id,@Param("match_id") Integer match_id);
 
     List<Integer> getJoinedTeamByMatchId(Integer id);
 }

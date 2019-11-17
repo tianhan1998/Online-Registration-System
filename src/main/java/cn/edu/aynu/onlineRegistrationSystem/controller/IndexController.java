@@ -44,7 +44,6 @@ public class IndexController {
      * @param length 每页显示记录数
      * @return 已经报名的比赛信息
      */
-    //TODO (已经解决)团队账号获取的时候无法拿到数据原因是团队登录的时候不能通过session.getAttribute("mem_id");拿到对应的id
     @PostMapping(value = "/matchList",produces = "application/json;charset=utf-8")
     public JSONObject getMatchListById(Integer pn, Integer length, HttpServletRequest request, HttpServletResponse response) {
         JSONObject json=new JSONObject();
@@ -110,7 +109,7 @@ public class IndexController {
             else if(type!=Integer.parseInt(match.getMatchMode())){
                 json.put("code",404);
                 json.put("msg","用户对应的比赛不正确");
-            }else if(!matchPassword.equals(match.getMatchPassword())){ //TODO 如果前端传进来个空值，会显示null，然后会报异常
+            }else if(matchPassword==null||!matchPassword.equals(match.getMatchPassword())){
                 json.put("code",404);
                 json.put("msg","比赛邀请码不正确");
             }
@@ -128,7 +127,7 @@ public class IndexController {
                 }
             }else {
                 if (service.checkExistInTeamMatch(team.getTeamId(), matchId) == 0) {
-                    if (service.insertTeamMatch(new teamMatch(team.getTeamId(), matchId)) > 0) { //TODO 报异常了，也不知道是啥问题，nested exception is org.apache.ibatis.binding.Bind…lable parameters are [arg1, arg0, param1, param2]
+                    if (service.insertTeamMatch(new teamMatch(team.getTeamId(), matchId)) > 0) {
                         json.put("code", 200);
                         json.put("msg", "报名成功");
                     } else {
@@ -141,7 +140,7 @@ public class IndexController {
             }
         }catch(Exception e){
             json.put("code",500);
-            json.put("msg",e.getMessage());//TODO 比赛类型正确，数据库异常，没有返回msg信息
+            json.put("msg",e.getMessage());
         }
         return json;
     }

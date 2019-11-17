@@ -103,7 +103,7 @@ public class IndexService {
      * @return
      */
     public int insertTeamMatch(teamMatch teamMatch){
-        return teamMatchMapper.insert(teamMatch);
+        return teamMatchMapper.insertSelective(teamMatch);
     }
 
     /***
@@ -112,7 +112,7 @@ public class IndexService {
      * @return
      */
     public int insertMemMatch(memMatch memMatch){
-        return memMatchMapper.insert(memMatch);
+        return memMatchMapper.insertSelective(memMatch);
     }
 
     /**

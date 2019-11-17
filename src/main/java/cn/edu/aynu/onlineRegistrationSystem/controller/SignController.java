@@ -41,7 +41,7 @@ public class SignController {
      * @param type 类型，0是个人，1是团队
      * @return json{code:200,msg:xxx,data:[]}
      */
-    @RequestMapping(value = "/signUp",method = RequestMethod.POST)//TODO 增加团队注册
+    @RequestMapping(value = "/signUp",method = RequestMethod.POST)
     public JSONObject signUp(String memId, String memName, String memPassword, String memEmail, String memSex, HttpServletRequest request,Integer type,String team_account,String team_name,String team_password,String team_email)  {
         try {
             if (type == 0) {
