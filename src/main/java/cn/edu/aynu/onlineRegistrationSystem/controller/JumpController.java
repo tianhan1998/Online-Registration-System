@@ -63,5 +63,9 @@ public class JumpController {
         return "mem/agree_list";
     }
 
+    @RequestMapping(value = "sys/login",method = RequestMethod.GET)
+    public String jumpLogin() {
+        return "system/login";
+    }
 
 }
