@@ -139,7 +139,7 @@ public class ManageSystemController {
      * @param length 每页显示的个数
      * @return
      */
-    @GetMapping("/teamLists")//TODO 没有返回团队成员名字   没找到获取比赛列表的接口   没有找到提交新比赛的接口
+    @GetMapping("/teamLists")//TODO 没有返回团队成员名字
     public JSONObject getTeamList(Integer pn,Integer length){
         List<teamInfo>lists;
         JSONObject json=new JSONObject();
@@ -269,6 +269,37 @@ public class ManageSystemController {
             json.put("code",500);
             json.put("msg",e.getMessage());
         }
+        return json;
+    }
+
+    /**
+     * 添加新的比赛 //TODO 新增了一个添加比赛方法
+     * @param matchTitle 比赛标题
+     * @param matchStarTime 比赛开始时间
+     * @param matchEndTime 比赛结束时间
+     * @param matchMode 比赛模式
+     * @param matchPassword 比赛邀请码
+     * @return json
+     */
+    @PostMapping(value = "/putMatch")
+    public JSONObject addMatch(String matchTitle,String matchStarTime,String matchEndTime,String matchMode,String matchPassword){
+        JSONObject json=new JSONObject();
+
+        try {
+            int rel=service.addMatch(matchTitle,matchStarTime,matchEndTime,matchMode,matchPassword);
+            if(rel!=0){
+                json.put("code",200);
+                json.put("msg","添加成功");
+            }else{
+                json.put("code",400);
+                json.put("msg","添加失败成功了"+rel+"条数据");
+            }
+        } catch (Exception e) {
+            json.put("code",500);
+            System.out.println(e);
+            json.put("msg",e.getMessage());
+        }
+
         return json;
     }
 

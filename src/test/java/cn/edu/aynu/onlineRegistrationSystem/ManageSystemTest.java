@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.List;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class ManageSystemTest {
@@ -19,5 +17,17 @@ public class ManageSystemTest {
 //        List<Integer> ids;
 //        ids=service.getJoinedMemIdsByMatchId(1);
 //        System.out.println(ids);
+    }
+
+//    yyyy-MM-dd HH:mm:ss
+
+    @Test
+    public void testInsertMatch(){
+        try {
+            int rel=service.addMatch("这是一个测试比赛","2019-11-12 13:13:13","2020-12-12 13:13:13","0","123");
+            System.out.println(rel);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

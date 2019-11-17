@@ -7,6 +7,7 @@ import cn.edu.aynu.onlineRegistrationSystem.mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -146,5 +147,19 @@ public class ManageSystemService {
         }else{
             throw new Exception("队伍不存在");
         }
+    }
+
+    /**
+     * 添加比赛
+     * @param matchTitle 比赛标题
+     * @param matchStarTime 比赛开始时间时间格式为yyyy-MM-dd HH:mm:ss
+     * @param matchEndTime 比赛结束时间时间格式为yyyy-MM-dd HH:mm:ss
+     * @param matchMode 比赛模式
+     * @param matchPassword 比赛邀请码
+     * @return 非零插入成功
+     */
+    public Integer addMatch(String matchTitle,String matchStarTime,String matchEndTime,String matchMode,String matchPassword) throws Exception{
+        SimpleDateFormat simpleDateForma=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return matchInfoMapper.insert(new matchInfo(matchTitle, simpleDateForma.parse(matchStarTime),simpleDateForma.parse(matchEndTime),matchMode,matchPassword,0));
     }
 }

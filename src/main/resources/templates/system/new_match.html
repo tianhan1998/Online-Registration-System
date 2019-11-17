@@ -77,9 +77,9 @@
                         </div>
                     </div>
                     <div class="ibox-content">
-                        <form method="get" class="form-horizontal">
+                        <form id="match_form" method="post" class="form-horizontal">
                             <div class="form-group"><label class="col-sm-2 control-label">比赛标题(长度1~255)</label>
-                                <div class="col-sm-10"><input type="text" class="form-control"></div>
+                                <div class="col-sm-10"><input name="matchTitle" type="text" class="form-control"></div>
                             </div>
                             <div class="form-group"><label class="col-sm-2 control-label">时间</label>
                                 <div class="col-sm-10"><div class="form-group" id="data_5">
@@ -87,8 +87,8 @@
                                         <div class="input-daterange input-group" id="datepicker">
 
                                             <!--jeui-->
-                                            <input type="text" name="title" id="inpstart" placeholder="开始日期" readonly class="je-input je-pl5 je-pr5">至
-                                            <input type="text" name="title" id="inpend" placeholder="结束日期" readonly class="je-input je-pl5 je-pr5">
+                                            <input type="text" name="matchStarTime" id="inpstart" placeholder="开始日期" readonly class="je-input je-pl5 je-pr5">至
+                                            <input type="text" name="matchEndTime" id="inpend" placeholder="结束日期" readonly class="je-input je-pl5 je-pr5">
                                             <!--jeui-->
 
 <!--                                            <input type="date" class="input-sm form-control" name="start" value="05/14/2014 10:20:00">-->
@@ -101,14 +101,14 @@
                             </div>
                             <div class="form-group"><label class="col-lg-2 control-label">比赛模式</label>
                                 <div class="col-lg-5">
-                                    <select class="form-control m-b" name="account" disabled="disabled">
+                                    <select class="form-control m-b" name="matchMode" >
                                         <option value="0">个人赛</option>
                                         <option value="1">团队赛</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group"><label class="col-sm-2 control-label">邀请码</label>
-                                <div class="col-sm-10"><input type="text" class="form-control" placeholder="即比赛邀请码，不填写即没有密码"></div>
+                                <div class="col-sm-10"><input name="matchPassword" type="text" class="form-control" placeholder="即比赛邀请码，不填写即没有密码"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
                                 <div class="form-group">
@@ -235,9 +235,10 @@
     $(document).ready(function () {
         $("#sub").click(function () {
             $.ajax({
-                type: "GET",
-                url: "../admin/teamLists",
+                type: "post",
+                url: "../admin/putMatch",
                 dataType:"json",
+                data:$("#match_form").serialize(),
                 success: function(msg){
                     console.log(msg);
                 }
