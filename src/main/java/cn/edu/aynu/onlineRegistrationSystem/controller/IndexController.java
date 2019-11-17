@@ -15,7 +15,7 @@ import java.util.List;
  * 第二级页面信息
  */
 @RestController
-//@RequestMapping("/mem")
+//@RequestMapping("/online")
 public class IndexController {
     @Autowired
     IndexService service;

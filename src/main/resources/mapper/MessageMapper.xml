@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.aynu.onlineRegistrationSystem.mapper.MessageMapper">
+    <resultMap id="BaseResultMap" type="MessageInfo">
+        <id column="message_id" property="messageId"></id>
+        <result column="message_from_id" property="messageFromId"></result>
+        <result column="message_to_id" property="messageToId"></result>
+        <result column="message_from_name" property="messageFromName"></result>
+        <result column="message_to_name" property="messageToName"></result>
+        <result column="message_text" property="messageText"></result>
+        <result column="message_date" property="messageDate"></result>
+    </resultMap>
+    <insert id="insertMessage" parameterType="MessageInfo">
+        insert into message_info(message_from_id,message_to_id,message_from_name,message_to_name,message_text,message_date) values(#{messageFromId},#{messageToId},#{messageFromName},#{messageToName},#{messageText},#{messageDate})
+        <selectKey keyProperty="messageId" order="AFTER" resultType="int">
+            select LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <select id="getMessagesById" resultMap="BaseResultMap" parameterType="int">
+        select message_id,message_from_id,message_to_id,message_from_name,message_to_name,message_text,message_date from message_info,receive_message where receive_message_id=message_id and receive_object_id=#{id}
+    </select>
+    <select id="getMessageById" parameterType="int" resultMap="BaseResultMap">
+        select message_id,message_from_id,message_to_id,message_from_name,message_to_name,message_text,message_date from message_info where message_id=#{id}
+    </select>
+
+    <insert id="insertSendMessageRecord">
+        insert into send_message(send_message_id,send_object_id) values(#{send_message_id},#{send_object_id})
+    </insert>
+
+    <insert id="insertReceiveMessageRecord">
+        insert into receive_message(receive_message_id,receive_object_id) values(#{receive_message_id},#{receive_object_id})
+    </insert>
+
+    <delete id="deleteReceivedMessageRecord">
+        delete from receive_message where receive_message_id=#{receive_message_id} and receive_object_id=#{receive_object_id}
+    </delete>
+</mapper>

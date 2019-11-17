@@ -1,6 +1,7 @@
 package cn.edu.aynu.onlineRegistrationSystem.filter;
 
 import cn.edu.aynu.onlineRegistrationSystem.entity.memInfo;
+import cn.edu.aynu.onlineRegistrationSystem.entity.teamInfo;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -28,7 +29,8 @@ public class MemCheckFilter implements Filter {
         HttpServletResponse response= (HttpServletResponse) servletResponse;
         HttpSession session=request.getSession();
         memInfo user= (memInfo) session.getAttribute("user");
-        if(user==null){//管理员也会被过滤，因为后台用户数据库没有对应的账号信息，查询相应比赛会出错
+        teamInfo team= (teamInfo) session.getAttribute("team");
+        if(user==null&&team==null){//管理员也会被过滤，因为后台用户数据库没有对应的账号信息，查询相应比赛会出错
             response.sendRedirect("/ORS/login");//TODO 暂定跳转
         }else{
             filterChain.doFilter(servletRequest, servletResponse);

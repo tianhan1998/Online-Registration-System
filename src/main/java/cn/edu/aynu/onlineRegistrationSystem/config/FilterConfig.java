@@ -28,7 +28,7 @@ public class FilterConfig {
     FilterRegistrationBean filterRegistrationBean2(){
         FilterRegistrationBean filterRegistrationBean=new FilterRegistrationBean();
         filterRegistrationBean.setFilter(new MemCheckFilter());
-        filterRegistrationBean.addUrlPatterns("/mem/*");
+        filterRegistrationBean.addUrlPatterns("/online/*");
         return filterRegistrationBean;
     }
 }
