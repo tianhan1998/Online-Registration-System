@@ -5,7 +5,6 @@ import cn.edu.aynu.onlineRegistrationSystem.entity.memInfo;
 import cn.edu.aynu.onlineRegistrationSystem.entity.teamInfo;
 import cn.edu.aynu.onlineRegistrationSystem.service.MessageService;
 import com.alibaba.fastjson.JSONObject;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,8 +18,8 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * company: www.abc.com
- * Author: Administrator
+ * company: cn.edu.aynu 算法艺术社
+ * Author: Tianhan
  * Create Data: 2019/11/17 0017
  */
 @RestController
@@ -43,11 +42,11 @@ public class MessageController {
         HttpSession session = request.getSession();
         MessageInfo message = null;//发送的信息
         Object target;//发送目标，队伍或个人类型
-        Integer myid;
+        Integer myId;
         try {
             if ("mem".equals(session.getAttribute("type"))) {//个人账号发送消息
                 memInfo user = (memInfo) session.getAttribute("user");
-                myid=user.getMemId();
+                myId=user.getMemId();
                 if (type == 0) {//抵达地址类型是个人账户
                     target = service.getMemById(messageToId);
                     memInfo targetUser = (memInfo) target;
@@ -63,7 +62,7 @@ public class MessageController {
                 }
             } else {//团队账号发送消息
                 teamInfo team= (teamInfo) session.getAttribute("team");
-                myid=team.getTeamId();
+                myId=team.getTeamId();
                 if (type == 0) {//抵达地址类型是个人账户
                     target = service.getMemById(messageToId);
                     memInfo targetUser = (memInfo) target;
@@ -80,8 +79,8 @@ public class MessageController {
             }
             if (target!=null) {
                 if (service.insertMessage(message) > 0) {
-                    if(service.insertSendRecord(message.getMessageId(),myid)>0){
-                        if(service.insertReceiveRecord(message.getMessageId(),myid)>0) {
+                    if(service.insertSendRecord(message.getMessageId(),myId)>0){
+                        if(service.insertReceiveRecord(message.getMessageId(),messageToId)>0) {
                             json.put("code", 200);
                             json.put("msg", "发送成功并且成功插入记录");
                         }else{
@@ -111,8 +110,8 @@ public class MessageController {
      * 获取所有收到的消息
      * @return
      */
-    @GetMapping("/getMessage")
-    public JSONObject getMessage(HttpServletRequest request){
+    @GetMapping("/getReceivedMessage")
+    public JSONObject getReceivedMessage(HttpServletRequest request){
         JSONObject json=new JSONObject();
         HttpSession session=request.getSession();
         Integer id;
@@ -123,14 +122,19 @@ public class MessageController {
             }else{
                 id= (Integer) session.getAttribute("team_id");
             }
-            lists=service.getMessagesById(id);
-            if(lists.size()>0){
-                json.put("code",200);
-                json.put("msg","查找成功");
-                json.put("data",lists);
+            lists=service.getReceivedMessagesById(id);
+            if(lists!=null) {
+                if (lists.size() > 0) {
+                    json.put("code", 200);
+                    json.put("msg", "查找成功");
+                    json.put("data", lists);
+                } else {
+                    json.put("code", 404);
+                    json.put("msg", "消息数为零");
+                }
             }else{
                 json.put("code",404);
-                json.put("msg","消息数为零");
+                json.put("msg","id错误，没有找到对应的收件list");
             }
         }catch(Exception e){
             json.put("code",500);
@@ -144,8 +148,8 @@ public class MessageController {
      * @param id 消息id
      * @return
      */
-    @GetMapping("/deleteMessage")
-    public JSONObject deleteMessage(Integer id,HttpServletRequest request){
+    @GetMapping("/deleteReceivedMessage")
+    public JSONObject deleteReceivedMessage(Integer id,HttpServletRequest request){
         JSONObject json=new JSONObject();
         HttpSession session=request.getSession();
         MessageInfo message;
@@ -158,13 +162,18 @@ public class MessageController {
             }
             message=service.getMessageById(id);
             if(message!=null){
-                if(message.getMessageToId().equals(temp_id)){
-                    if(service.deleteReceiveRecord(message.getMessageId(),temp_id)>0){
-                        json.put("code",200);
-                        json.put("msg","删除成功");
-                    }else{
-                        json.put("code",404);
-                        json.put("msg","删除失败,数据库操纵0行");
+                if(message.getMessageToId().equals(temp_id)) {
+                    if (service.checkExistInReceivedMessage(message.getMessageId(), temp_id) > 0) {
+                        if (service.deleteReceiveRecord(message.getMessageId(), temp_id) > 0) {
+                            json.put("code", 200);
+                            json.put("msg", "删除成功");
+                        } else {
+                            json.put("code", 404);
+                            json.put("msg", "删除失败,数据库操纵0行");
+                        }
+                    } else {
+                        json.put("code", 404);
+                        json.put("msg", "收件箱不存在此消息");
                     }
                 }else{
                     json.put("code",404);
@@ -173,6 +182,92 @@ public class MessageController {
             }else{
                 json.put("code",404);
                 json.put("msg","没有找到该消息");
+            }
+        }catch(Exception e){
+            json.put("code",500);
+            json.put("msg",e.getMessage());
+        }
+        return json;
+    }
+
+    /**
+     * 根据id删除发件箱内的消息
+     * @param id
+     * @param request
+     * @return
+     */
+    @GetMapping("deleteSendMessage")
+    public JSONObject deleteSendMessage(Integer id,HttpServletRequest request){
+        JSONObject json=new JSONObject();
+        MessageInfo message;
+        HttpSession session=request.getSession();
+        Integer myId;
+        try{
+            if("mem".equals(session.getAttribute("type"))){
+                myId= (Integer) session.getAttribute("mem_id");
+            }else{
+                myId= (Integer) session.getAttribute("team_id");
+            }
+            message=service.getMessageById(id);
+            if(message!=null) {
+                if(message.getMessageFromId().equals(myId)) {
+                    if (service.checkExistInSendMessage(message.getMessageId(), myId) > 0) {
+                        if (service.deleteSendRecord(id, myId) > 0) {
+                            json.put("code", 200);
+                            json.put("msg", "删除发信记录成功");
+                        } else {
+                            json.put("code", 404);
+                            json.put("msg", "删除失败，数据库删除0行");
+                        }
+                    } else {
+                        json.put("code", 404);
+                        json.put("msg", "发件箱不存在此消息");
+                    }
+                }else{
+                    json.put("code",404);
+                    json.put("msg","消息对应ID不正确，请确认您是否是改消息的发件人");
+                }
+            }else{
+                json.put("code",404);
+                json.put("msg","您已删除此记录");
+            }
+        }catch(Exception e){
+            json.put("code",500);
+            json.put("msg",e.getMessage());
+        }
+        return json;
+    }
+
+    /**
+     * 获取所有发信消息
+     * @param request
+     * @return
+     */
+    @GetMapping("getSendMessage")
+    public JSONObject getSendMessageList(HttpServletRequest request){
+        JSONObject json=new JSONObject();
+        HttpSession session=request.getSession();
+        Integer myId;
+        List<MessageInfo>lists;
+        try{
+            if("mem".equals(session.getAttribute("type"))){
+                myId= (Integer) session.getAttribute("mem_id");
+            }else{
+                myId= (Integer) session.getAttribute("team_id");
+            }
+            lists=service.getSendMessageById(myId);
+            if(lists!=null) {
+                if (lists.size() > 0) {
+                    json.put("code", 200);
+                    json.put("msg", "查询发信息成功");
+                    json.put("data", lists);
+                } else {
+                    json.put("code", 404);
+                    json.put("msg", "一共找到0条发信息");
+                }
+            }else{
+                json.put("code",404);
+                json.put("msg","id错误，数据库没有找到对应消息");
             }
         }catch(Exception e){
             json.put("code",500);

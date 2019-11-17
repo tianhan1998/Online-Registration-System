@@ -14,10 +14,14 @@ import java.util.List;
 @Repository
 public interface MessageMapper {
     int insertMessage(MessageInfo message);
-    List<MessageInfo> getMessagesById(Integer id);
+    List<MessageInfo> getReceivedMessagesById(Integer id);
+    List<MessageInfo> getSendMessageById(Integer id);
     MessageInfo getMessageById(Integer id);
     int insertSendMessageRecord(@Param("send_message_id")Integer send_message_id,@Param("send_object_id")Integer send_object_id);
-    int insertReceiveMessageRecord(@Param("receive_message_id")Integer receive_message_id,@Param("receive_object_id")Integer receive_object_id);
+    int insertReceivedMessageRecord(@Param("receive_message_id")Integer receive_message_id,@Param("receive_object_id")Integer receive_object_id);
     int deleteReceivedMessageRecord(@Param("receive_message_id")Integer receive_message_id,@Param("receive_object_id")Integer receive_object_id);
+    int deleteSendMessageRecord(@Param("send_message_id")Integer send_message_id,@Param("send_object_id")Integer send_object_id);
+    int checkExistInSendMessage(@Param("message_id")Integer messageId,@Param("object_id")Integer object_id);
+    int checkExistInReceivedMessage(@Param("message_id")Integer messageId,@Param("object_id")Integer object_id);
 
 }

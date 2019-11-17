@@ -8,6 +8,8 @@ mybatis:
   type-aliases-package: cn.edu.aynu.onlineRegistrationSystem.entity
 
 spring:
+  mvc:
+    date-format: yyyy-MM-dd HH:mm:ss
   profiles:
     active: dev
   http:

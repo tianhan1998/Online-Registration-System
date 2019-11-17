@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * company: www.abc.com
- * Author: Administrator
+ * company: cn.edu.aynu 算法艺术社
+ * Author: Tianhan
  * Create Data: 2019/11/17 0017
  */
 @Service
@@ -57,8 +57,8 @@ public class MessageService {
      * @param id
      * @return
      */
-    public List<MessageInfo> getMessagesById(Integer id){
-        return messageMapper.getMessagesById(id);
+    public List<MessageInfo> getReceivedMessagesById(Integer id){
+        return messageMapper.getReceivedMessagesById(id);
     }
 
     /**
@@ -87,7 +87,7 @@ public class MessageService {
      * @return
      */
     public int insertReceiveRecord(Integer re_mess_id,Integer re_object_id){
-        return messageMapper.insertReceiveMessageRecord(re_mess_id,re_object_id);
+        return messageMapper.insertReceivedMessageRecord(re_mess_id,re_object_id);
     }
 
     /**
@@ -98,5 +98,44 @@ public class MessageService {
      */
     public int deleteReceiveRecord(Integer re_mess_id,Integer re_object_id){
         return messageMapper.deleteReceivedMessageRecord(re_mess_id,re_object_id);
+    }
+
+    /**
+     * 删除发信记录
+     * @param send_message_id
+     * @param send_object_id
+     * @return
+     */
+    public int deleteSendRecord(Integer send_message_id,Integer send_object_id){
+        return messageMapper.deleteSendMessageRecord(send_message_id, send_object_id);
+    }
+
+    /**
+     * 通过账号id获取所有发信记录
+     * @param id
+     * @return
+     */
+    public List<MessageInfo> getSendMessageById(Integer id){
+        return messageMapper.getSendMessageById(id);
+    }
+
+    /**
+     * 检查发件箱是否存在对应记录
+     * @param mess_id
+     * @param obj_id
+     * @return
+     */
+    public int checkExistInSendMessage(Integer mess_id,Integer obj_id){
+        return messageMapper.checkExistInSendMessage(mess_id, obj_id);
+    }
+
+    /**
+     * 检查收件箱是否存在对应记录
+     * @param mess_id
+     * @param obj_id
+     * @return
+     */
+    public int checkExistInReceivedMessage(Integer mess_id,Integer obj_id){
+        return messageMapper.checkExistInReceivedMessage(mess_id, obj_id);
     }
 }

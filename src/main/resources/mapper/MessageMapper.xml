@@ -17,7 +17,7 @@
         </selectKey>
     </insert>
 
-    <select id="getMessagesById" resultMap="BaseResultMap" parameterType="int">
+    <select id="getReceivedMessagesById" resultMap="BaseResultMap" parameterType="int">
         select message_id,message_from_id,message_to_id,message_from_name,message_to_name,message_text,message_date from message_info,receive_message where receive_message_id=message_id and receive_object_id=#{id}
     </select>
     <select id="getMessageById" parameterType="int" resultMap="BaseResultMap">
@@ -28,11 +28,25 @@
         insert into send_message(send_message_id,send_object_id) values(#{send_message_id},#{send_object_id})
     </insert>
 
-    <insert id="insertReceiveMessageRecord">
+    <insert id="insertReceivedMessageRecord">
         insert into receive_message(receive_message_id,receive_object_id) values(#{receive_message_id},#{receive_object_id})
     </insert>
 
     <delete id="deleteReceivedMessageRecord">
         delete from receive_message where receive_message_id=#{receive_message_id} and receive_object_id=#{receive_object_id}
     </delete>
+
+    <delete id="deleteSendMessageRecord">
+        delete from send_message where send_message_id=#{send_message_id} and send_object_id=#{send_object_id}
+    </delete>
+
+    <select id="getSendMessageById" resultMap="BaseResultMap" parameterType="int">
+        select message_id,message_from_id,message_to_id,message_from_name,message_to_name,message_text,message_date from message_info,send_message where send_message_id=message_id and send_object_id=#{id}
+    </select>
+    <select id="checkExistInSendMessage" resultType="int">
+        select count(*) from send_message where send_message_id=#{message_id} and send_object_id=#{object_id}
+    </select>
+    <select id="checkExistInReceivedMessage" resultType="int">
+        select count(*) from receive_message where receive_message_id=#{message_id} and receive_object_id=#{object_id}
+    </select>
 </mapper>
