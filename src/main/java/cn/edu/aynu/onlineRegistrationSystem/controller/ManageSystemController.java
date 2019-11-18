@@ -143,7 +143,7 @@ public class ManageSystemController {
      * @param length 每页显示的个数
      * @return
      */
-    @GetMapping("/teamLists")
+    @GetMapping("/teamLists")//TODO 返回邮箱不见了，没有email
     public JSONObject getTeamList(Integer pn,Integer length){
         List<teamInfo>lists;
         JSONObject json=new JSONObject();
