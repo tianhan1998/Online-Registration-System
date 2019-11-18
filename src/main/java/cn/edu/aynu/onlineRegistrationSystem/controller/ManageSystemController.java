@@ -143,28 +143,24 @@ public class ManageSystemController {
      * @param length 每页显示的个数
      * @return
      */
-    @GetMapping("/teamLists")//TODO 返回邮箱不见了，没有email
+    @GetMapping("/teamLists")
     public JSONObject getTeamList(Integer pn,Integer length){
         List<teamInfo>lists;
         JSONObject json=new JSONObject();
         List<TeamMessage> list=new ArrayList<>();
         try{
             lists=service.getTeamList();
-
             if(lists.size()>0){
                 for(teamInfo temp:lists) {
-                    //System.out.println(temp.getMemId1());
-                    TeamMessage teamMessage=new TeamMessage(temp);
-                    list.add(teamMessage);
-//                    List<Integer> tempIds=service.getMemidsByTeamId(temp.getTeamId());
-//                    if(tempIds.size()>0){
-//                        List<memInfo> tempUsers=service.getMemListsByIds(tempIds);
-//                        TeamMessage tempTeamMes=new TeamMessage(temp,tempUsers);
-//                        list.add(tempTeamMes);
-//                    }else{//队伍中无人
-//                        TeamMessage teamMessage=new TeamMessage(temp);
-//                        list.add(teamMessage);
-//                    }
+                    List<Integer> tempIds=service.getMemidsByTeamId(temp.getTeamId());
+                    if(tempIds.size()>0){
+                        List<memInfo> tempUsers=service.getMemListsByIds(tempIds);
+                        TeamMessage tempTeamMes=new TeamMessage(temp,tempUsers);
+                        list.add(tempTeamMes);
+                    }else{//队伍中无人
+                        TeamMessage teamMessage=new TeamMessage(temp);
+                        list.add(teamMessage);
+                    }
                 }
                 json.put("code",200);
                 json.put("msg","查询成功");
@@ -296,7 +292,7 @@ public class ManageSystemController {
     }
 
     /**
-     * 添加新的比赛 //TODO 新增了一个添加比赛方法
+     * 添加新的比赛
      * @param matchTitle 比赛标题
      * @param matchStarTime 比赛开始时间
      * @param matchEndTime 比赛结束时间

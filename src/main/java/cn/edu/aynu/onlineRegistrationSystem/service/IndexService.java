@@ -24,6 +24,44 @@ public class IndexService {
     teamMatchMapper teamMatchMapper;
     @Autowired
     teamInfoMapper teamInfoMapper;
+    @Autowired
+    InviteInfoMapper inviteInfoMapper;
+
+    /**
+     * 通过来去两个id判断是否存在邀请
+     * @param from_id
+     * @param to_id
+     * @return
+     */
+    public int checkInviteExistByFromAndTo(Integer from_id,Integer to_id){
+        return inviteInfoMapper.checkExistByFromAndTo(from_id, to_id);
+    }
+
+    /**
+     * 根据id检查是否存在邀请
+     * @param id
+     * @return
+     */
+    public InviteInfo checkInviteExistById(Integer id){
+        return inviteInfoMapper.checkExistById(id);
+    }
+
+    /**
+     * 根据邀请id删除数据库
+     * @param id
+     * @return
+     */
+    public int deleteInviteById(Integer id){
+        return inviteInfoMapper.deleteInviteById(id);
+    }
+
+    /**
+     * 发送邀请消息
+     * @return
+     */
+    public int insertInvite(InviteInfo invite){
+        return inviteInfoMapper.insertInviteInfo(invite);
+    }
 
     /**
      * 个人加入团队
