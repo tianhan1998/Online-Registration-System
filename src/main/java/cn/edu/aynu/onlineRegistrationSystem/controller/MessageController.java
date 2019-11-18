@@ -130,6 +130,7 @@ public class MessageController {
                     json.put("data", lists);
                 } else {
                     json.put("code", 404);
+                    json.put("data",lists);
                     json.put("msg", "消息数为零");
                 }
             }else{
@@ -263,6 +264,7 @@ public class MessageController {
                     json.put("data", lists);
                 } else {
                     json.put("code", 404);
+                    json.put("data",lists);
                     json.put("msg", "一共找到0条发信息");
                 }
             }else{

@@ -143,18 +143,31 @@ public class ManageSystemController {
      * @param length 每页显示的个数
      * @return
      */
-    @GetMapping("/teamLists")//TODO 没有返回团队成员名字
+    @GetMapping("/teamLists")
     public JSONObject getTeamList(Integer pn,Integer length){
         List<teamInfo>lists;
         JSONObject json=new JSONObject();
+        List<TeamMessage> list=new ArrayList<>();
         try{
             lists=service.getTeamList();
             if(lists.size()>0){
+                for(teamInfo temp:lists) {
+                    List<Integer> tempIds=service.getMemidsByTeamId(temp.getTeamId());
+                    if(tempIds.size()>0){
+                        List<memInfo> tempUsers=service.getMemListsByIds(tempIds);
+                        TeamMessage tempTeamMes=new TeamMessage(temp,tempUsers);
+                        list.add(tempTeamMes);
+                    }else{//队伍中无人
+                        TeamMessage teamMessage=new TeamMessage(temp);
+                        list.add(teamMessage);
+                    }
+                }
                 json.put("code",200);
                 json.put("msg","查询成功");
-                json.put("data",lists);
+                json.put("data",list);
             }else{
                 json.put("code",200);
+                json.put("data",list);
                 json.put("msg","未找到任何队伍");
             }
         }catch(Exception e){
@@ -240,6 +253,7 @@ public class ManageSystemController {
                         json.put("data",users);
                     }else{
                         json.put("code",404);
+                        json.put("data",new ArrayList<>());
                         json.put("msg","没有找到任何用户参加此比赛");
                     }
                 }else {//团队比赛
@@ -262,6 +276,7 @@ public class ManageSystemController {
                         json.put("data",teamMessages);
                     }else{
                         json.put("code",404);
+                        json.put("data",teamMessages);
                         json.put("msg","没有找到任何队伍参加此比赛");
                     }
                 }
