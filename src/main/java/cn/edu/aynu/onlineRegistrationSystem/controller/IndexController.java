@@ -232,4 +232,14 @@ public class IndexController {
         return json;
     }
 
+    //根据比赛id获取该比赛所有报名信息
+/* JSONObject getMatchInfos(Integer id,HttpServletRequest request){
+        HttpSession session=request.getSession();
+        if("team".equals(session.getAttribute("type")))
+
+        }
+
+        return null;
+    }*/
+
 }

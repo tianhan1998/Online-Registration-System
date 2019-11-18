@@ -13,6 +13,7 @@ import java.util.List;
  * @date 2019/11/11
  */
 @Service
+
 public class IndexService {
     @Autowired
     matchInfoMapper MatchInfoMapper;
@@ -158,4 +159,23 @@ public class IndexService {
     public List<matchInfo> getMatchListByTeamId(Integer id){
         return MatchInfoMapper.getMatchListByTeamId(id);
     }
+//
+//    /**
+//     * 获取该id个人比赛报名信息
+//     * @param id 比赛id
+//     * @return
+//     */
+//    public List<memInfo> getMatchInfosByidWithMem(Integer id){
+//
+//        return null;
+//    }
+//    /**
+//     * 获取该id团队比赛报名信息
+//     * @param id 比赛id
+//     * @return
+//     */
+//    public List<teamInfo> getMatchInfosByidWithTeam(Integer id){
+//
+//        return null;
+//    }
 }

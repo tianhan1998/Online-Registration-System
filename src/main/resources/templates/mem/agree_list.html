@@ -219,7 +219,14 @@
 
 
     $(function () {
-
+        $.ajax({
+            type:"get",
+            dataType:"json",
+            url:"./getSendMessage",
+            success:function (result) {
+                
+            }
+        })
     });
 </script>
 
