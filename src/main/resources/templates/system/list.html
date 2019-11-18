@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 
 <head>
 
@@ -8,10 +8,10 @@
 
     <title>INSPINIA | Dashboard v.4</title>
 
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
-    <link href="css/animate.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="../css/animate.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
     <link rel="shortcut icon" href="#" />
 
 </head>
@@ -30,14 +30,19 @@
                 </div>
                 <div class="navbar-collapse collapse" id="navbar">
                     <ul class="nav navbar-nav">
-                        <li class="active">
-                            <a aria-expanded="false" role="button" href="mem_tables"> 我参加的比赛</a>
+                        <li class="dropdown">
+                            <a aria-expanded="false" role="button" href="getMem"> 所有个人账号</a>
                         </li>
 
                         <li class="dropdown">
-                            <a aria-expanded="false" role="button" href="mem_tables_all"> 所有比赛</a>
+                            <a aria-expanded="false" role="button" href="getTeam"> 所有团队账号</a>
                         </li>
-
+                        <li class="active">
+                            <a aria-expanded="false" role="button" href="List"> 所有比赛列表</a>
+                        </li>
+                        <li class="dropdown">
+                            <a aria-expanded="false" role="button" href="putMatch"> 发布新比赛</a>
+                        </li>
                     </ul>
                     <ul class="nav navbar-top-links navbar-right">
                         <!--                    通知-->
@@ -47,31 +52,33 @@
                                 <i class="fa fa-envelope"></i> <span class="label label-warning">2</span>
                             </a>
                         </li>
+
+<!--                        个人信息-->
                         <li class="dropdown">
-                            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="message" aria-expanded="true">
+                            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#" aria-expanded="true">
                                 <!--                            信息条数-->
                                 <i class="glyphicon glyphicon-user"></i> <span class="label label-warning"></span>
                             </a>
                             <ul class="dropdown-menu dropdown-alerts">
                                 <li>
-                                        <div>
-                                            <i class="fa fa-envelope fa-fw"></i> 姓名${user.memName}
-                                        </div>
+                                    <div>
+                                        <i class="fa fa-envelope fa-fw"></i> 姓名：XXX
+                                    </div>
                                     </a>
                                 </li>
                                 <li class="divider"></li>
 
                                 <li>
-                                        <div>
-                                            <i class="fa fa-envelope fa-fw"></i> 学号：${user.memId}
-                                        </div>
+                                    <div>
+                                        <i class="fa fa-envelope fa-fw"></i> 学号：XXX
+                                    </div>
                                     </a>
                                 </li>
                                 <li class="divider"></li>
 
                                 <li>
                                     <div class="text-center link-block">
-                                        <a href="mem_info.html">
+                                        <a href="notifications.html">
                                             <strong>查看所有信息</strong>
                                             <i class="fa fa-angle-right"></i>
                                         </a>
@@ -115,14 +122,14 @@
                             <th>比赛结束时间</th>
                             <th>比赛模式</th>
                             <th>比赛状态</th>
+                            <th>操作</th>
                         </tr>
                         </thead>
                         <tbody class="matchs">
-
                         </tbody>
                     </table>
 
-                    <!--                    模态框-->
+                    <!--模态框-->
 
                     <div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true"
                          style="display: none;">
@@ -131,7 +138,6 @@
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal"><span
                                             aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-
                                     <i class="fa fa-laptop modal-icon"></i>
                                     <h4 class="modal-title">邀请码</h4>
                                     <small class="font-bold">请输入你的邀请码</small>
@@ -142,13 +148,13 @@
 
                                     <p><strong>邀请码</strong> 没有邀请码点击继续即可</p>
 
-                                    <div class="form-group"><label>样品输入</label> <input type="email"
+                                    <div class="form-group"><label>样品输入</label> <input type="text"
                                                                                        placeholder="比赛邀请码"
                                                                                        class="form-control"></div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
-                                    <button type="button" class="btn btn-primary">确认</button>
+                                    <button type="button" class="btn btn-primary" onclick="ic()">确认</button>
                                 </div>
                             </div>
                         </div>
@@ -170,71 +176,105 @@
 
 
 <!-- Mainly scripts -->
-<script src="js/jquery-2.1.1.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
-<script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="../js/jquery-2.1.1.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="../js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
 <!-- Custom and plugin javascript -->
-<script src="js/inspinia.js"></script>
-<script src="js/plugins/pace/pace.min.js"></script>
+<script src="../js/inspinia.js"></script>
+<script src="../js/plugins/pace/pace.min.js"></script>
 
 <!-- Flot -->
-<script src="js/plugins/flot/jquery.flot.js"></script>
-<script src="js/plugins/flot/jquery.flot.tooltip.min.js"></script>
-<script src="js/plugins/flot/jquery.flot.resize.js"></script>
+<script src="../js/plugins/flot/jquery.flot.js"></script>
+<script src="../js/plugins/flot/jquery.flot.tooltip.min.js"></script>
+<script src="../js/plugins/flot/jquery.flot.resize.js"></script>
 
 <!-- ChartJS-->
-<script src="js/plugins/chartJs/Chart.min.js"></script>
+<script src="../js/plugins/chartJs/Chart.min.js"></script>
 
 <!-- Peity -->
-<script src="js/plugins/peity/jquery.peity.min.js"></script>
+<script src="../js/plugins/peity/jquery.peity.min.js"></script>
 <!-- Peity demo -->
-<script src="js/demo/peity-demo.js"></script>
+<script src="../js/demo/peity-demo.js"></script>
 
 
 <script>
-
-
-    $(function () {
+    $(function() {
         $.ajax({
-            url:"matchList",
+            url:"../admin/matchList",
             datatype:"json",
             data:[],
-            type:"post",
+            type:"get",
             success: function (data) {
-
-                for(var i=0;i<data.data.length;i++) {
-
+                for(var i=0;i<data.data.length;i++)
+                {
                     var ms = data.data[i];
                     var mode = "";
                     var status = "";
-                    if(ms.matchMode == "0") {
-                        mode = "<th><span class=\"label label-info\">个人赛</span></th>";
-
-                    }else{
-                        mode = "<th><span class=\"label label-primary\">团队赛</span></th>";
-                    }
+                    var btn = "";
+                    var id = ms.matchId;
                     if(ms.matchStatus == 0) {
                         status = "<th><span class=\"label label-primary\">未开始</span></th>";
+                        btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" data-toggle=\"modal\" data-target=\"#myModal\" onclick=\"cc("+id+")\">删除</button></th>";
                     }else if(ms.matchStatus == 2){
                         status = "<th><span class=\"label label-danger\">已结束</span></th>";
+                        btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" disabled style=\"background-color:#DCDCDC;\">删除</button></th>";
                     }else{
                         status = "<th><span class=\"label label-warning\">进行中</span></th>";
+                        btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" disabled style=\"background-color:#DCDCDC;\">删除</button></th>";
                     }
+                    if(ms.matchMode == 0) {
+                        mode = "<th><span class=\"label label-info\">个人赛</span></th>";
+                        btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" data-toggle=\"modal\" data-target=\"#myModal\" onclick=\"cc("+id+")\">报名</button></th>";
+                    }else{
+                        mode = "<th><span class=\"label label-primary\">团队赛</span></th>";
+                        btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" disabled style=\"background-color:#DCDCDC;\">删除</button></th>";
+                    }
+
+                    btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" disabled style=\"background-color:#DCDCDC;\">删除</button></th>";
 
                     $(".matchs").append("<tr>" +
                         "<th>"+(i+1)+"</th>" +
                         "<th>"+ms.matchTitle+"</th>" +
                         "<th>"+ms.matchStarTime+"</th>" +
                         "<th>"+ms.matchEndTime+"</th>" +
-                            mode + status +
+                        mode + status + btn +
                         "</tr>");
+                }
+            }
+        })
+    });
+    function cc(x) {
+        var iv = "<input type='text' value='"+x+"' class='inv' style='display: none'>";
+        $('.modal-footer').append(iv);
+    }
+    function ic() {
+        var v = $('.inv').val();
+        var matchpwd = $('.form-control').val();
+        console.log(v);
+        $.ajax({
+            url: "enroll",
+            dataType: "json",
+            data: {"matchId":v,"matchPassword":matchpwd},
+            type: "post",
+            success: function (data) {
+                //清空matchid
+                $('.inv').remove();
+                //清空输入框
+                $('.form-control').val("");
+                //关闭模态框
+                $('#myModal').modal("hide");
+
+                if(data.code != 200) {
+                    alert("报名失败!");
+                }else{
+                    alert("报名成功!");
                 }
 
             }
         })
-    });
+    }
 </script>
 
 </body>

@@ -72,14 +72,24 @@ public class JumpController {
         return "system/sys_index";
     }
 
-    @RequestMapping(value = "sys/getMatch",method = RequestMethod.GET)
+    @RequestMapping(value = "sys/getMem",method = RequestMethod.GET)
     public String jumpGetMatch() {
-        return "system/all_match";
+        return "system/mem_list";
     }
 
     @RequestMapping(value = "sys/putMatch",method = RequestMethod.GET)
     public String jumpPutMatch() {
         return "system/new_match";
+    }
+
+    @RequestMapping(value = "sys/List",method = RequestMethod.GET)
+    public String jumpMatchList() {
+        return "system/list";
+    }
+
+    @RequestMapping(value = "/message",method = RequestMethod.GET)
+    public String jumpMessage() {
+        return "mem/agree_list";
     }
 
 }

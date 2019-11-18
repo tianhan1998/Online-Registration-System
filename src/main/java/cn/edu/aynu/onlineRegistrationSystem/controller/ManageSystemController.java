@@ -4,6 +4,7 @@ import cn.edu.aynu.onlineRegistrationSystem.entity.TeamMessage;
 import cn.edu.aynu.onlineRegistrationSystem.entity.matchInfo;
 import cn.edu.aynu.onlineRegistrationSystem.entity.memInfo;
 import cn.edu.aynu.onlineRegistrationSystem.entity.teamInfo;
+import cn.edu.aynu.onlineRegistrationSystem.service.IndexService;
 import cn.edu.aynu.onlineRegistrationSystem.service.ManageSystemService;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,9 @@ public class ManageSystemController {
 
     @Autowired
     ManageSystemService service;
+    @Autowired
+    IndexService indexService;
+
     @Value("${admin.account}")
     String adminac;
     @Value("${admin.password}")
@@ -300,6 +304,24 @@ public class ManageSystemController {
             json.put("msg",e.getMessage());
         }
 
+        return json;
+    }
+    /**
+     * 获取所有比赛列表，包括个人比赛和团队比赛
+     * @return 返回所有比赛信息的JSON
+     */
+    @GetMapping(value = "/matchList",produces = "application/json;charset=utf-8")
+    public JSONObject getMatchList() {
+        JSONObject json = new JSONObject();
+        try {
+            List<matchInfo> lists = indexService.getMatchList();
+            json.put("data",lists);
+            json.put("code",200);
+            json.put("msg","查询成功");
+        }catch (Exception e){
+            json.put("code",500);
+            json.put("msg","数据库查询失败"+e.getMessage());
+        }
         return json;
     }
 

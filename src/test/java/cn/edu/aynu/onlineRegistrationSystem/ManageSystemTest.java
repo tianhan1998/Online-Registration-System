@@ -23,6 +23,7 @@ public class ManageSystemTest {
 
     @Test
     public void testInsertMatch(){
+        for(int i=0;i<300;i++)
         try {
             int rel=service.addMatch("这是一个测试比赛","2019-11-12 13:13:13","2020-12-12 13:13:13","0","123");
             System.out.println(rel);
