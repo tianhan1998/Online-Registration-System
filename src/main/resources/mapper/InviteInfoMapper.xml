@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.edu.aynu.onlineRegistrationSystem.mapper.InviteInfoMapper">
+    <resultMap id="BaseResultMap" type="cn.edu.aynu.onlineRegistrationSystem.entity.InviteInfo">
+        <id column="invite_id" property="inviteId"></id>
+        <result column="invite_from_id" property="inviteFromId"></result>
+        <result column="invite_to_id" property="inviteToId"></result>
+    </resultMap>
+
+    <insert id="insertInviteInfo" parameterType="InviteInfo">
+        insert into invite_info(invite_from_id, invite_to_id) values (#{inviteFromId},#{inviteToId})
+        <selectKey resultType="int" keyProperty="inviteId" order="AFTER">
+            select LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <select id="checkExistById" resultMap="BaseResultMap">
+        select invite_id, invite_from_id, invite_to_id from invite_info where invite_id=#{id}
+    </select>
+
+    <delete id="deleteInviteById">
+        delete from invite_info where invite_id=#{id}
+    </delete>
+
+    <select id="checkExistByFromAndTo" resultType="int">
+        select count(*) from invite_info where invite_from_id=#{from_id} and invite_to_id=#{to_id}
+    </select>
+</mapper>

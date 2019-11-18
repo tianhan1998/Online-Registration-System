@@ -2,7 +2,7 @@ package cn.edu.aynu.onlineRegistrationSystem.entity;
 
 import java.util.List;
 
-public class TeamMessage {//TODO 新增实体类存队伍以及队伍人员信息
+public class TeamMessage {
     private Integer teamId;
 
     private String teamName;
@@ -19,19 +19,12 @@ public class TeamMessage {//TODO 新增实体类存队伍以及队伍人员信�
     private String memName3;
     private String memSex3;
 
-    //TODO 忘记加邮箱
-
     private String teamEmail;
-
     public TeamMessage(){};
     public TeamMessage(teamInfo team){
         this.teamName=team.getTeamName();
         this.teamId=team.getTeamId();
-        //TODO 忘记赋值了
         this.teamEmail=team.getTeamEmail();
-        this.memId1=team.getMemId1();
-        this.memId2=team.getMemId2();
-        this.memId3=team.getMemId3();
     }
 
     public TeamMessage(teamInfo team, List<memInfo>users){
