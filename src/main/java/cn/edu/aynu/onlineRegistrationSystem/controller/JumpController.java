@@ -92,4 +92,5 @@ public class JumpController {
         return "mem/agree_list";
     }
 
+
 }
