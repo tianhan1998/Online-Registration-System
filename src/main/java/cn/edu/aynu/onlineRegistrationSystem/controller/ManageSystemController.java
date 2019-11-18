@@ -153,7 +153,7 @@ public class ManageSystemController {
 
             if(lists.size()>0){
                 for(teamInfo temp:lists) {
-                    System.out.println(temp.getMemId1());
+                    //System.out.println(temp.getMemId1());
                     TeamMessage teamMessage=new TeamMessage(temp);
                     list.add(teamMessage);
 //                    List<Integer> tempIds=service.getMemidsByTeamId(temp.getTeamId());
