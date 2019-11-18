@@ -187,7 +187,7 @@ public class IndexController {
      * @return 返回成功或者失败的JSON信息
      */
     @Transactional
-    @PostMapping(value = "/joinTeam",produces = "application/json;charset=utf-8")
+    @PostMapping(value = "/joinTeam",produces = "application/json;charset=utf-8")//TODO 重写该方法
     public JSONObject joinTeamById(Integer memId,HttpServletRequest request){
         HttpSession session=request.getSession();
         JSONObject json=new JSONObject();
@@ -249,8 +249,15 @@ public class IndexController {
         }
         return json;
     }
+
+    /**
+     * 通过邀请id接受邀请（有账号验证）
+     * @param id
+     * @param request
+     * @return
+     */
     @GetMapping("/acceptInvite")
-    public JSONObject acceptInvite(Integer id,HttpServletRequest request){
+    public JSONObject acceptInvite(Integer id,HttpServletRequest request){//TODO 新增方法
         HttpSession session=request.getSession();
         JSONObject json=new JSONObject();
         teamInfo team;
@@ -295,8 +302,15 @@ public class IndexController {
         }
         return json;
     }
+
+    /**
+     * 通过id拒绝邀请（有身份验证）
+     * @param id
+     * @param request
+     * @return
+     */
     @GetMapping("/denyInvite")
-    public JSONObject denyInvite(Integer id,HttpServletRequest request){
+    public JSONObject denyInvite(Integer id,HttpServletRequest request){//TODO 新增方法
         HttpSession session=request.getSession();
         JSONObject json=new JSONObject();
         InviteInfo invite;
