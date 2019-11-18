@@ -18,11 +18,22 @@ public class TeamMessage {//TODO 新增实体类存队伍以及队伍人员信�
     private Integer memId3;
     private String memName3;
     private String memSex3;
+
+    //TODO 忘记加邮箱
+
+    private String teamEmail;
+
     public TeamMessage(){};
     public TeamMessage(teamInfo team){
         this.teamName=team.getTeamName();
         this.teamId=team.getTeamId();
+        //TODO 忘记赋值了
+        this.teamEmail=team.getTeamEmail();
+        this.memId1=team.getMemId1();
+        this.memId2=team.getMemId2();
+        this.memId3=team.getMemId3();
     }
+
     public TeamMessage(teamInfo team, List<memInfo>users){
         this.teamId=team.getTeamId();
         this.teamName=team.getTeamName();
@@ -55,6 +66,7 @@ public class TeamMessage {//TODO 新增实体类存队伍以及队伍人员信�
                 ", memId3=" + memId3 +
                 ", memName3='" + memName3 + '\'' +
                 ", memSex3='" + memSex3 + '\'' +
+                ", teamEmail='" + teamEmail + '\'' +
                 '}';
     }
 
@@ -144,5 +156,13 @@ public class TeamMessage {//TODO 新增实体类存队伍以及队伍人员信�
 
     public void setMemSex3(String memSex3) {
         this.memSex3 = memSex3;
+    }
+
+    public String getTeamEmail() {
+        return teamEmail;
+    }
+
+    public void setTeamEmail(String teamEmail) {
+        this.teamEmail = teamEmail;
     }
 }

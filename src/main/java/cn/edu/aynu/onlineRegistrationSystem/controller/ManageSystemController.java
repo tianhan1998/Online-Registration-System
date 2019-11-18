@@ -150,17 +150,21 @@ public class ManageSystemController {
         List<TeamMessage> list=new ArrayList<>();
         try{
             lists=service.getTeamList();
+
             if(lists.size()>0){
                 for(teamInfo temp:lists) {
-                    List<Integer> tempIds=service.getMemidsByTeamId(temp.getTeamId());
-                    if(tempIds.size()>0){
-                        List<memInfo> tempUsers=service.getMemListsByIds(tempIds);
-                        TeamMessage tempTeamMes=new TeamMessage(temp,tempUsers);
-                        list.add(tempTeamMes);
-                    }else{//队伍中无人
-                        TeamMessage teamMessage=new TeamMessage(temp);
-                        list.add(teamMessage);
-                    }
+                    System.out.println(temp.getMemId1());
+                    TeamMessage teamMessage=new TeamMessage(temp);
+                    list.add(teamMessage);
+//                    List<Integer> tempIds=service.getMemidsByTeamId(temp.getTeamId());
+//                    if(tempIds.size()>0){
+//                        List<memInfo> tempUsers=service.getMemListsByIds(tempIds);
+//                        TeamMessage tempTeamMes=new TeamMessage(temp,tempUsers);
+//                        list.add(tempTeamMes);
+//                    }else{//队伍中无人
+//                        TeamMessage teamMessage=new TeamMessage(temp);
+//                        list.add(teamMessage);
+//                    }
                 }
                 json.put("code",200);
                 json.put("msg","查询成功");
