@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -222,8 +223,14 @@ public class IndexController {
                             String text = "您有一条来自" + team.getTeamName() + "队伍的邀请，如果您同意，请点击同意链接，否则请点击拒绝链接\r\n同意链接:http://localhost:8080/ORS/acceptInvite?Id="+invite.getInviteId()+"\r\n拒绝连接:http://localhost:8080/ORS/denyInvite?Id="+invite.getInviteId();
                             MessageInfo newMessage = new MessageInfo(teamId, memId, team.getTeamName(), user.getMemName(), text, simpleDateFormat.parse(simpleDateFormat.format(new Date())));
                             if (MessageUtils.sendMessage(newMessage)) {
-                                json.put("code", 200);
-                                json.put("msg", "发送邀请成功");
+                                if(service.updateInviteMessageId(invite,newMessage.getMessageId())>0){
+                                    json.put("code", 200);
+                                    json.put("msg", "发送邀请成功");
+                                }else{
+                                    json.put("code",404);
+                                    json.put("msg","发送邀请成功，但消息与invite连接失败");
+                                    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                                }
                             } else {
                                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                                 json.put("code", 404);
@@ -389,6 +396,43 @@ public class IndexController {
         }catch (Exception e){
             json.put("code",500);
             json.put("msg",e.getMessage());
+        }
+        return json;
+    }
+
+    /**
+     * 获取当前登录用户的所有被邀请的消息
+     * @param request
+     * @return
+     */
+    @GetMapping(value = "/getInvitedMessage",produces = "application/json;charset=utf-8")
+    public JSONObject getBeInvitedMessage(HttpServletRequest request){
+        JSONObject json=new JSONObject();
+        HttpSession session=request.getSession();
+        Integer myId;
+        List<MessageInfo>lists;
+        try{
+            if("mem".equals(session.getAttribute("type"))){
+                myId= (Integer) session.getAttribute("mem_id");
+                lists=service.selectListBeInvited(myId);
+                if(lists!=null){
+                    json.put("code",200);
+                    json.put("msg","找到所有被邀请消息");
+                    json.put("data",lists);
+                }else{
+                    json.put("code",404);
+                    json.put("msg","没有找到任何被邀请消息");
+                    json.put("data",new ArrayList<>());
+                }
+            }else {
+                json.put("code",404);
+                json.put("msg","当前登录状态错误");
+                json.put("data",new ArrayList<>());
+            }
+        }catch (Exception e){
+            json.put("code",500);
+            json.put("msg",e.getMessage());
+            json.put("data",new ArrayList<>());
         }
         return json;
     }

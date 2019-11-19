@@ -27,6 +27,8 @@ public class IndexService {
     teamInfoMapper teamInfoMapper;
     @Autowired
     InviteInfoMapper inviteInfoMapper;
+    @Autowired
+    MessageMapper messageMapper;
 
     /**
      * 返回不带密码的个人信息
@@ -205,5 +207,31 @@ public class IndexService {
      */
     public List<matchInfo> getMatchListByTeamId(Integer id){
         return MatchInfoMapper.getMatchListByTeamId(id);
+    }
+
+    /**
+     * 将invite和message链接起来
+     * @param invite
+     * @param messageId
+     * @return
+     */
+    public int updateInviteMessageId(InviteInfo invite,Integer messageId){
+        return inviteInfoMapper.updateMessageId(invite, messageId);
+    }
+
+    /**
+     * 返回所有被邀请的Message
+     * @param to_id
+     * @return
+     */
+    public List<MessageInfo> selectListBeInvited(Integer to_id) throws Exception {
+        List<Integer> list=inviteInfoMapper.selectMessageIdsBeInvited(to_id);
+        List<MessageInfo> messageInfos;
+        if(list!=null){
+            messageInfos=messageMapper.selectListMessageByIds(list);
+            return messageInfos;
+        }else{
+            throw new Exception("没有任何被邀请信息");
+        }
     }
 }

@@ -25,4 +25,12 @@
     <select id="checkExistByFromAndTo" resultType="int">
         select count(*) from invite_info where invite_from_id=#{from_id} and invite_to_id=#{to_id}
     </select>
+
+    <update id="updateMessageId">
+        update invite_info set message_id=#{messageId} where invite_id=#{invite.inviteId}
+    </update>
+
+    <select id="selectMessageIdsBeInvited" resultType="int">
+        select message_id from invite_info where invite_to_id=#{to_id}
+    </select>
 </mapper>

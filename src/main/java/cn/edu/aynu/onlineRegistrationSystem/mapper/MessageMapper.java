@@ -23,5 +23,6 @@ public interface MessageMapper {
     int deleteSendMessageRecord(@Param("send_message_id")Integer send_message_id,@Param("send_object_id")Integer send_object_id);
     int checkExistInSendMessage(@Param("message_id")Integer messageId,@Param("object_id")Integer object_id);
     int checkExistInReceivedMessage(@Param("message_id")Integer messageId,@Param("object_id")Integer object_id);
+    List<MessageInfo> selectListMessageByIds(@Param("ids") List<Integer> ids);
 
 }

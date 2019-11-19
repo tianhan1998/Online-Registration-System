@@ -10,6 +10,16 @@
         <result column="message_text" property="messageText"></result>
         <result column="message_date" property="messageDate"></result>
     </resultMap>
+
+    <select id="selectListMessageByIds" resultMap="BaseResultMap" parameterType="list">
+        select message_id, message_from_id, message_to_id, message_from_name, message_to_name, message_text, message_date from message_info
+        <where>
+            <foreach collection="ids" item="id" open="and message_id in(" separator="," close=")">
+                #{id}
+            </foreach>
+        </where>
+    </select>
+
     <insert id="insertMessage" parameterType="MessageInfo">
         insert into message_info(message_from_id,message_to_id,message_from_name,message_to_name,message_text,message_date) values(#{messageFromId},#{messageToId},#{messageFromName},#{messageToName},#{messageText},#{messageDate})
         <selectKey keyProperty="messageId" order="AFTER" resultType="int">
