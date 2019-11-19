@@ -2,7 +2,6 @@ package cn.edu.aynu.onlineRegistrationSystem.utils;
 
 import cn.edu.aynu.onlineRegistrationSystem.entity.RSABean;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.Cipher;
@@ -15,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Random;
 
-@Component("rsa")
+@Component
 public class RSA {
     private static int count;
     private static int length;
