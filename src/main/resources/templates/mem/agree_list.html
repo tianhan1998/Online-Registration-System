@@ -194,6 +194,7 @@
             dataType:"json",
             url:"./getInvitedMessage",
             success:function (result) {
+                $("#messageTables").remove();
                 // messageDate: "2019-11-19 18:58:01"
                 // messageFromId: 4
                 // messageFromName: "测试二队"
@@ -203,38 +204,70 @@
                 // 拒绝连接:http://localhost:8080/ORS/denyInvite?Id=5"
                 // messageToId: 174804155
                 // messageToName: "岳阳"
-
-                for(var i=0;i<result.data.length;i++){
-                    var html="<div class=\"col-lg-12\">\n" +
-                        "                            <div class=\"panel panel-primary\">\n" +
-                        "                                <div class=\"panel-heading\">\n" +
-                        "                                    团队邀请\n" +
-                        "                                </div>\n" +
-                        "                                <div class=\"panel-body\">\n" +
-                        "                                    <p class=\"col-lg-8\">\n" +
-                        "                                        <strong>"+result.data[i].messageFromName+"</strong>团队邀请您加入该团队\n" +
-                        "                                    </p>\n" +
-                        "                                    <div class=\"col-lg-4\">\n" +
-                        "                                        <input type=\"hidden\" value=\"\">\n" +
-                        "                                        <a href='acceptInvite?Id="+result.data[i].messageId+"'>\n" +
-                        "                                            <button type=\"button\" class=\"btn btn-w-m btn-success\">同意</button>\n" +
-                        "                                        </a>\n" +
-                        "                                        <a href='denyInvite?Id="+result.data[i].messageId+"'>\n" +
-                        "                                            <button type=\"button\" class=\"btn btn-w-m btn-warning\">拒绝</button>\n" +
-                        "                                        </a>\n" +
-                        "                                    </div>\n" +
-                        "                                </div>\n" +
-                        "                            </div>\n" +
-                        "                        </div>"
-                    $("#messageTables").append(html);
+                if(result.data.length!=0){
+                    for(var i=0;i<result.data.length;i++){
+                        var html="<div class=\"col-lg-12\">\n" +
+                            "                            <div class=\"panel panel-primary\">\n" +
+                            "                                <div class=\"panel-heading\">\n" +
+                            "                                    团队邀请\n" +
+                            "                                </div>\n" +
+                            "                                <div class=\"panel-body\">\n" +
+                            "                                    <p class=\"col-lg-8\">\n" +
+                            "                                        <strong>"+result.data[i].messageFromName+"</strong>团队邀请您加入该团队\n" +
+                            "                                    </p>\n" +
+                            "                                    <div class=\"col-lg-4\">\n" +
+                            "                                        <input type=\"hidden\" value=\"\">\n" +
+                            "                                            <button type=\"button\" onclick=\"tongyi('"+result.data[i].messageId+"')\" class=\"btn btn-w-m btn-success\">同意</button>\n" +
+                            "                                            <button type=\"button\" onclick=\"butongyi('"+result.data[i].messageId+"')\"class=\"btn btn-w-m btn-warning\">拒绝</button>\n" +
+                            "                                    </div>\n" +
+                            "                                </div>\n" +
+                            "                            </div>\n" +
+                            "                        </div>"
+                        $("#messageTables").append(html);
+                    }
+                }else{
+                    $("#messageTables").append("没有任何信息");
                 }
-
-
                 console.log(result);
                 console.log(result.msg);
             }
         })
+
     });
+    //同意按钮点击事件
+    function tongyi(id) {
+        $.ajax({
+            dataType:"json",
+            url:"./acceptInvite",
+            type:"get",
+            data:{"id":id},
+            success:function (result) {
+                alert(result.msg);
+                if(result.code==200)
+                    location.reload();
+            },
+            error:function (result) {
+                alert(result.msg);
+            }
+        })
+    }
+    //不同意按钮点击事件
+    function butongyi(id) {
+        $.ajax({
+            dataType:"json",
+            url:"./denyInvite",
+            type:"get",
+            data:{"id":id},
+            success:function (result) {
+                alert(result.msg);
+                if(result.code==200)
+                    location.reload();
+            },
+            error:function (result) {
+                alert(result.msg);
+            }
+        })
+    }
 </script>
 
 </body>
