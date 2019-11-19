@@ -345,4 +345,52 @@ public class IndexController {
         }
         return json;
     }
+
+    /**
+     * 获取当前登录用户的信息
+     * @param request
+     * @return
+     */
+    @GetMapping(value = "/getOnlineInfo",produces = "application/json;charset=utf-8")
+    public JSONObject getOnlineInfo(HttpServletRequest request){
+        JSONObject json=new JSONObject();
+        HttpSession session=request.getSession();
+        Integer myId;
+        memInfo mem;
+        teamInfo team;
+        TeamMessage message=null;
+        try{
+            if("mem".equals(session.getAttribute("type"))){
+                myId= (Integer) session.getAttribute("mem_id");
+                mem=service.getMemInfosWithOutPasswordById(myId);
+                if(mem!=null){
+                    json.put("code",200);
+                    json.put("msg","查找当前登录用户成功");
+                    json.put("data",mem);
+                }else{
+                    json.put("code",404);
+                    json.put("msg","没有找到用户");
+                    json.put("data",mem);
+                }
+            }else{
+                myId= (Integer) session.getAttribute("team_id");
+                team=service.getTeamInfoById(myId);
+                if(team!=null){
+                    message=new TeamMessage(team);
+                    json.put("code",200);
+                    json.put("msg","查找当前登录用户成功");
+                    json.put("data",message);
+                }else{
+                    json.put("code",404);
+                    json.put("msg","没有找到用户");
+                    json.put("data",message);
+                }
+            }
+        }catch (Exception e){
+            json.put("code",500);
+            json.put("msg",e.getMessage());
+        }
+        return json;
+    }
+
 }

@@ -33,4 +33,6 @@ public interface memInfoMapper {
     List<memInfo> getMemInfoByIds(@Param("ids") List<Integer> ids);
 
     List<memInfo>getMemInfoLists();
+
+    memInfo getMemInfosWithOutPasswordById(Integer id);
 }
