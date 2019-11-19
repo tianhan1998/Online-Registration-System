@@ -2,6 +2,7 @@ package cn.edu.aynu.onlineRegistrationSystem.utils;
 
 import cn.edu.aynu.onlineRegistrationSystem.entity.RSABean;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.Cipher;
@@ -16,12 +17,18 @@ import java.util.Random;
 
 @Component("rsa")
 public class RSA {
-    @Value("rsa.count")
-    private static int count=10;
-    @Value("rsa.length")
-    private static int length=512;
+    private static int count;
+    private static int length;
     private static ArrayList<RSABean> keys=new ArrayList<RSABean>();//用于封装随机产生的公钥与私钥
     private static RSA rsa=null;
+    @Value("${rsa.count}")
+    public void setCount(int Count){
+        count=Count;
+    }
+    @Value("${rsa.length}")
+    public void setLength(int Length){
+        length=Length;
+    }
 
     public static RSA getInstance() throws Exception {
         if(rsa==null){

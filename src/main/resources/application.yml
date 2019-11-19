@@ -20,4 +20,4 @@ rsa:
   # rsa密钥生成数量
   count: 5
   # rsa密钥长度
-  length: 100
+  length: 512

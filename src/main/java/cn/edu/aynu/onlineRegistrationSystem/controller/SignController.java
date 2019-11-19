@@ -47,9 +47,9 @@ public class SignController {
         HttpSession session;
         try {
             session=request.getSession();
-            if(session.getAttribute("privateKey")!=null){
+            if(session.getAttribute("privateKey")!=null) {
                 if (type == 0) {
-                    memPassword=RSA.decrypt(memPassword,session.getAttribute("privateKey").toString());//获取私钥解密
+                    memPassword = RSA.decrypt(memPassword, session.getAttribute("privateKey").toString());//获取私钥解密
 
                     memInfo memInfo = new memInfo(Integer.valueOf(memId), memName, memEmail, memSex, memPassword);
                     if (service.signUp(memInfo)) {
@@ -61,17 +61,17 @@ public class SignController {
                         json.put("code", 404);
                         json.put("msg", "用户已存在");
                     }
-                }else{
-                    team_password=RSA.decrypt(team_password,session.getAttribute("privateKey").toString());//获取私钥解密
-                    teamInfo team=new teamInfo(team_name,team_account,team_password,team_email);
-                    if(service.signUpTeam(team)){
-                        String obj=JSONArray.toJSONString(team);
-                        json.put("code",200);
-                        json.put("msg","注册队伍成功");
-                        json.put("data",obj);
-                    }else{
-                        json.put("code",404);
-                        json.put("msg","队伍已存在");
+                } else {
+                    team_password = RSA.decrypt(team_password, session.getAttribute("privateKey").toString());//获取私钥解密
+                    teamInfo team = new teamInfo(team_name, team_account, team_password, team_email);
+                    if (service.signUpTeam(team)) {
+                        String obj = JSONArray.toJSONString(team);
+                        json.put("code", 200);
+                        json.put("msg", "注册队伍成功");
+                        json.put("data", obj);
+                    } else {
+                        json.put("code", 404);
+                        json.put("msg", "队伍已存在");
                     }
                 }
             }else{
