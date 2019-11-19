@@ -42,41 +42,7 @@
                         </li>
                     </ul>
                     <ul class="nav navbar-top-links navbar-right">
-                        <!--                    通知-->
-                        <li class="dropdown open">
-                            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#" aria-expanded="true">
-                                <!--                            信息条数-->
-                                <i class="fa fa-envelope"></i> <span class="label label-warning">2</span>
-                            </a>
-                            <ul class="dropdown-menu dropdown-messages">
 
-                                <li class="divider"></li>
-                                <li>
-                                    <div class="dropdown-messages-box">
-                                        <div class="media-body ">
-                                            <strong>张三请求加入您的团队</strong><br>
-                                            <small class="text-muted">2017.10.06 7:58</small>
-<!--                                            同意按钮-->
-                                            <button class="btn btn-primary btn-xs" type="button">√同意</i></button>
-<!--                                            不同意按钮-->
-                                            <button class="btn btn-danger btn-xs" type="button">×不同意</button>
-                                        </div>
-                                    </div>
-                                </li>
-
-                                <li class="divider"></li>
-                                <li>
-                                    <div class="dropdown-messages-box">
-                                        <div class="media-body ">软件学院第一届ACM大赛开始报名了</strong> <br>
-                                            <small class="text-muted">2017.10.06 7:58</small>
-                                        </div>
-                                    </div>
-                                </li>
-
-                                <li class="divider"></li>
-
-                            </ul>
-                        </li>
 <!--                        团队信息-->
                         <li class="dropdown">
                             <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#" aria-expanded="true">
@@ -122,56 +88,58 @@
         </div>
         <div class="wrapper wrapper-content">
             <h2 class="text-center">
-                <span class="text-navy">搜索队员</span>
+                <span class="text-navy">邀请队员加入我</span>
             </h2>
             <form action="index.html" method="get">
                 <div class="input-group">
-                    <input type="text" placeholder="输入队员名称或者学号" name="search" class="form-control input-lg">
+
+                    <input id="id" name="memId" type="text" placeholder="输入队员学号" class="form-control input-lg">
+
                     <div class="input-group-btn">
-                        <button class="btn btn-lg btn-primary" type="submit">
-                            搜索
+                        <button id="submit" class="btn btn-lg btn-primary" type="button">
+                            邀请
                         </button>
                     </div>
                 </div>
 
             </form>
             <!--            表格-->
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>搜索结果 </h5>
-                    <div class="ibox-tools">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            <i class="fa fa-wrench"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="ibox-content">
+<!--            <div class="ibox float-e-margins">-->
+<!--                <div class="ibox-title">-->
+<!--                    <h5>搜索结果 </h5>-->
+<!--                    <div class="ibox-tools">-->
+<!--                        <a class="collapse-link">-->
+<!--                            <i class="fa fa-chevron-up"></i>-->
+<!--                        </a>-->
+<!--                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">-->
+<!--                            <i class="fa fa-wrench"></i>-->
+<!--                        </a>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="ibox-content">-->
 
-                    <table class="table table-bordered">
-                        <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>学号</th>
-                            <th>姓名</th>
-                            <th>操作</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <th>1</th>
-                            <th>174804155</th>
-                            <th>XXXXX</a></th>
-                            <th>
-                                <button type="button" class="btn btn-w-m btn-info btn-xs" data-toggle="modal" data-target="#myModal">邀请加入我的团队</button>
-                            </th>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+<!--                    <table class="table table-bordered">-->
+<!--                        <thead>-->
+<!--                        <tr>-->
+<!--                            <th>#</th>-->
+<!--                            <th>学号</th>-->
+<!--                            <th>姓名</th>-->
+<!--                            <th>操作</th>-->
+<!--                        </tr>-->
+<!--                        </thead>-->
+<!--                        <tbody>-->
+<!--                        <tr>-->
+<!--                            <th>1</th>-->
+<!--                            <th>174804155</th>-->
+<!--                            <th>XXXXX</a></th>-->
+<!--                            <th>-->
+<!--                                <button type="button" class="btn btn-w-m btn-info btn-xs" data-toggle="modal" data-target="#myModal">邀请加入我的团队</button>-->
+<!--                            </th>-->
+<!--                        </tr>-->
+<!--                        </tbody>-->
+<!--                    </table>-->
+<!--                </div>-->
+<!--            </div>-->
         </div>
         <div class="footer">
             <div class="pull-right">
@@ -212,8 +180,32 @@
 
 <script>
     $(document).ready(function () {
-        $("button[value='报名']").click(function () {
-            $("myModal").modal(options);
+
+        
+        $("#submit").click(function () {
+            var memId=$("#id").val();
+            if(memId.length!=9){
+                alert("学号长度有问题"+memId.length+memId+$("#id").val());
+            }else{
+                $.ajax({
+                    type:"post",
+                    url:"./joinTeam",
+                    data:$("#id").serialize(),
+                    datatype:"json",
+                    success:function (result) {
+                        alert(result.msg);
+                        console.log(result);
+                        if(result.code!=200){//加入失败
+
+                        }else{
+
+                        }
+                    },
+                    error:function (result) {
+                        alert("出现未知错误请重试");
+                    }
+                });
+            }
         });
     });
 </script>

@@ -35,4 +35,5 @@ public interface teamInfoMapper {
     int updateByPrimaryKey(teamInfo record);
 
     int joinTeam(@Param("team") teamInfo team,@Param("memId") Integer memId);
+
 }

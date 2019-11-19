@@ -29,6 +29,15 @@ public class IndexService {
     InviteInfoMapper inviteInfoMapper;
 
     /**
+     * 返回不带密码的个人信息
+     * @param id
+     * @return
+     */
+    public memInfo getMemInfosWithOutPasswordById(Integer id){
+        return memInfoMapper.getMemInfosWithOutPasswordById(id);
+    }
+
+    /**
      * 通过来去两个id判断是否存在邀请
      * @param from_id
      * @param to_id
@@ -197,23 +206,4 @@ public class IndexService {
     public List<matchInfo> getMatchListByTeamId(Integer id){
         return MatchInfoMapper.getMatchListByTeamId(id);
     }
-//
-//    /**
-//     * 获取该id个人比赛报名信息
-//     * @param id 比赛id
-//     * @return
-//     */
-//    public List<memInfo> getMatchInfosByidWithMem(Integer id){
-//
-//        return null;
-//    }
-//    /**
-//     * 获取该id团队比赛报名信息
-//     * @param id 比赛id
-//     * @return
-//     */
-//    public List<teamInfo> getMatchInfosByidWithTeam(Integer id){
-//
-//        return null;
-//    }
 }
