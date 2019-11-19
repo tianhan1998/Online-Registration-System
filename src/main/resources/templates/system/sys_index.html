@@ -125,7 +125,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
-                                    <button type="button" class="btn btn-primary">确认</button>
+                                    <button type="button" class="btn btn-primary" onclick="deltheteam()">确认</button>
                                 </div>
                             </div>
                         </div>
@@ -189,17 +189,42 @@
                 var html="";
                 for (var i =0;i<data.length;i++)
                 {
-                    console.log(i);
-                    html="<tr>"+"<th>"+(i+1)+"</th>"+"<th>"+data[i]['teamName']+"</th>"+"<th>"+data[i]['teamEmail']+"</th>"+"<th>"+data[i]['memId1']+"</th>"+"<th>"+data[i]['memId2']+"</th>"+"<th>"+data[i]['memId3']+"</th>"+'<th><button type="button" class="btn btn-w-m btn-danger btn-xs" data-toggle="modal" data-target="#myModal">删除</button></th>'+"</tr>";
-                    console.log(html);
+                    html="<tr>"+"<th>"+(i+1)+"</th>"+"<th>"+data[i]['teamName']+"</th>"+"<th>"+data[i]['teamEmail']+"</th>"+"<th>"+data[i]['memId1']+"</th>"+"<th>"+data[i]['memId2']+"</th>"+"<th>"+data[i]['memId3']+"</th>"+'<th><button type="button" class="btn btn-w-m btn-danger btn-xs" data-toggle="modal" data-target="#myModal" onclick=\"createInput('+data[i]['teamId']+')\">删除</button></th>'+"</tr>";
                     html=html.split("undefined").join("----");
-                    console.log(html);
                     $("#add").append(html);
                 }
             }
         });
 
     });
+    //    模态框传值
+    //    生成input标签进行传参
+    function createInput(id) {
+        var iv = "<input type='text' value='"+id+"' class='inv' style='display: none'>";
+        $('.modal-footer').append(iv);
+    }
+    function deltheteam() {
+        $.ajax({
+            url:"/ORS/admin/deleteTeam",
+            type:"get",
+            dataType:"json",
+            data:{"id":$('.inv').val()},
+            success:function (data) {
+                //清空id
+                $('.inv').remove();
+                //关闭模态框
+                $('#myModal').modal("hide");
+
+                $('.inv').remove();
+                if(data.code == "200"){
+                    alert("删除成功!");
+                    window.location.reload();
+                }else{
+                    alert("删除失败!");
+                }
+            }
+        })
+    }
 </script>
 
 </body>

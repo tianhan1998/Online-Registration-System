@@ -112,7 +112,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
-                                    <button type="button" class="btn btn-primary" onclick="delthelist()">确认</button>
+                                    <button type="button" class="btn btn-primary" onclick="deltheMem()">确认</button>
                                 </div>
                             </div>
                         </div>
@@ -197,8 +197,7 @@
         var iv = "<input type='text' value='"+id+"' class='inv' style='display: none'>";
         $('.modal-footer').append(iv);
     }
-    function delthelist() {
-        console.log($('.inv').val());
+    function deltheMem() {
         $.ajax({
             url:"/ORS/admin/deleteMem",
             type:"get",
@@ -210,7 +209,7 @@
                 //关闭模态框
                 $('#myModal').modal("hide");
 
-                $('inv').remove();
+                $('.inv').remove();
                 if(data.code == "200"){
                     alert("删除成功!");
                     window.location.reload();
