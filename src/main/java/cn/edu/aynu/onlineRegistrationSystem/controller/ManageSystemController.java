@@ -340,4 +340,27 @@ public class ManageSystemController {
         return json;
     }
 
+    /**
+     * 通过id删除比赛
+     * @param id
+     * @return
+     */
+    @GetMapping("/deleteMatch")//TODO 新增实现
+    public JSONObject deleteMatch(Integer id){
+        JSONObject json=new JSONObject();
+        try{
+            if(service.deleteMatch(id)>0){
+                json.put("code",200);
+                json.put("msg","删除比赛成功");
+            }else{
+                json.put("code",404);
+                json.put("msg","删除比赛失败,数据库操纵0行");
+            }
+        }catch (Exception e){
+            json.put("code",500);
+            json.put("msg",e.getMessage());
+        }
+        return json;
+    }
+
 }

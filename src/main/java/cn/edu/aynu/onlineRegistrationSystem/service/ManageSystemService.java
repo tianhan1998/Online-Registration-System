@@ -162,4 +162,14 @@ public class ManageSystemService {
         SimpleDateFormat simpleDateForma=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return matchInfoMapper.insert(new matchInfo(matchTitle, simpleDateForma.parse(matchStarTime),simpleDateForma.parse(matchEndTime),matchMode,matchPassword,0));
     }
+
+    /**
+     * 删除比赛
+     * @param id
+     * @return
+     */
+    public int deleteMatch(Integer id){
+        return matchInfoMapper.deleteByPrimaryKey(id);
+    }
+
 }
