@@ -129,7 +129,7 @@
                         </tbody>
                     </table>
 
-                    <!--模态框-->
+                    <!--                    模态框-->
 
                     <div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true"
                          style="display: none;">
@@ -138,23 +138,15 @@
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal"><span
                                             aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+
                                     <i class="fa fa-laptop modal-icon"></i>
-                                    <h4 class="modal-title">邀请码</h4>
-                                    <small class="font-bold">请输入你的邀请码</small>
+                                    <h4 class="modal-title">删除</h4>
+                                    <small class="font-bold">确认要删除这个比赛吗？</small>
 
-                                </div>
-
-                                <div class="modal-body">
-
-                                    <p><strong>邀请码</strong> 没有邀请码点击继续即可</p>
-
-                                    <div class="form-group"><label>样品输入</label> <input type="text"
-                                                                                       placeholder="比赛邀请码"
-                                                                                       class="form-control"></div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
-                                    <button type="button" class="btn btn-primary" onclick="ic()">确认</button>
+                                    <button type="button" class="btn btn-primary" onclick="delteMatch()">确认</button>
                                 </div>
                             </div>
                         </div>
@@ -202,7 +194,7 @@
 <script>
     $(function() {
         $.ajax({
-            url:"../admin/matchList",
+            url:"/ORS/admin/matchList",
             datatype:"json",
             data:[],
             type:"get",
@@ -212,27 +204,21 @@
                     var ms = data.data[i];
                     var mode = "";
                     var status = "";
-                    var btn = "";
                     var id = ms.matchId;
                     if(ms.matchStatus == 0) {
                         status = "<th><span class=\"label label-primary\">未开始</span></th>";
-                        btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" data-toggle=\"modal\" data-target=\"#myModal\" onclick=\"cc("+id+")\">删除</button></th>";
                     }else if(ms.matchStatus == 2){
                         status = "<th><span class=\"label label-danger\">已结束</span></th>";
-                        btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" disabled style=\"background-color:#DCDCDC;\">删除</button></th>";
                     }else{
                         status = "<th><span class=\"label label-warning\">进行中</span></th>";
-                        btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" disabled style=\"background-color:#DCDCDC;\">删除</button></th>";
                     }
                     if(ms.matchMode == 0) {
                         mode = "<th><span class=\"label label-info\">个人赛</span></th>";
-                        btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" data-toggle=\"modal\" data-target=\"#myModal\" onclick=\"cc("+id+")\">报名</button></th>";
                     }else{
                         mode = "<th><span class=\"label label-primary\">团队赛</span></th>";
-                        btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" disabled style=\"background-color:#DCDCDC;\">删除</button></th>";
                     }
 
-                    btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" disabled style=\"background-color:#DCDCDC;\">删除</button></th>";
+                    var btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-danger btn-xs\" onclick=\"cc('+id+')\" data-toggle='modal' data-target='#myModal'>删除</button></th>";
 
                     $(".matchs").append("<tr>" +
                         "<th>"+(i+1)+"</th>" +
@@ -249,14 +235,14 @@
         var iv = "<input type='text' value='"+x+"' class='inv' style='display: none'>";
         $('.modal-footer').append(iv);
     }
-    function ic() {
+    function delteMatch() {
         var v = $('.inv').val();
         var matchpwd = $('.form-control').val();
         console.log(v);
         $.ajax({
             url: "enroll",
             dataType: "json",
-            data: {"matchId":v,"matchPassword":matchpwd},
+            data: {},
             type: "post",
             success: function (data) {
                 //清空matchid
@@ -267,9 +253,9 @@
                 $('#myModal').modal("hide");
 
                 if(data.code != 200) {
-                    alert("报名失败!");
+                    alert("删除成功!");
                 }else{
-                    alert("报名成功!");
+                    alert("删除失败!");
                 }
 
             }
