@@ -259,7 +259,6 @@
     function ic() {
         var v = $('.inv').val();
         var matchpwd = $('.form-control').val();
-        console.log(v);
         $.ajax({
             url: "enroll",
             dataType: "json",
@@ -277,6 +276,7 @@
                     alert("报名失败!");
                 }else{
                     alert("报名成功!");
+                    window.location.reload();
                 }
 
             }

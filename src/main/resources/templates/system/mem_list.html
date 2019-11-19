@@ -112,7 +112,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
-                                    <button type="button" class="btn btn-primary">确认</button>
+                                    <button type="button" class="btn btn-primary" onclick="delthelist()">确认</button>
                                 </div>
                             </div>
                         </div>
@@ -158,18 +158,20 @@
 
 
 <script>
+
+
+
     $(document).ready(function () {
         $("button[value='删除']").click(function () {
             $("myModal").modal(options);
         });
-
 
         $.ajax({
             type: "GET",
             url: "../admin/memLists",
             dataType:"json",
             success: function(msg){
-                console.log(msg);
+                //console.log(msg);
                 var code=msg['code'];
                 if(code!=200){
                     return;
@@ -178,9 +180,9 @@
                 var html="";
                 for (var i =0;i<data.length;i++)
                 {
-                    console.log(i);
-                    html="<tr>"+"<th>"+(i+1)+"</th>"+"<th>"+data[i]['memName']+"</th>"+"<th>"+data[i]['memId']+"</th>"+"<th>"+data[i]['memSex']+"</th>"+"<th>"+data[i]['memEmail']+"</th>"+'<th><button type="button" class="btn btn-w-m btn-danger btn-xs" data-toggle="modal" data-target="#myModal">删除</button></th>'+"</tr>";
-                    console.log(html);
+                    //console.log(i);
+                    html="<tr>"+"<th>"+(i+1)+"</th>"+"<th>"+data[i]['memName']+"</th>"+"<th>"+data[i]['memId']+"</th>"+"<th>"+data[i]['memSex']+"</th>"+"<th>"+data[i]['memEmail']+"</th>"+'<th><button type="button" class="btn btn-w-m btn-danger btn-xs" data-toggle="modal" data-target="#myModal" onclick=\"createInput('+data[i]['memId']+')\">删除</button></th>'+"</tr>";
+                    //console.log(html);
                     $("#add").append(html);
                 }
             }
@@ -188,6 +190,37 @@
 
 
     });
+
+//    模态框传值
+//    生成input标签进行传参
+    function createInput(id) {
+        var iv = "<input type='text' value='"+id+"' class='inv' style='display: none'>";
+        $('.modal-footer').append(iv);
+    }
+    function delthelist() {
+        console.log($('.inv').val());
+        $.ajax({
+            url:"/ORS/admin/deleteMem",
+            type:"get",
+            dataType:"json",
+            data:{"memId":$('.inv').val()},
+            success:function (data) {
+                //清空matchid
+                $('.inv').remove();
+                //关闭模态框
+                $('#myModal').modal("hide");
+
+                $('inv').remove();
+                if(data.code == "200"){
+                    alert("删除成功!");
+                    window.location.reload();
+                }else{
+                    alert("删除失败!");
+                }
+            }
+        })
+    }
+
 </script>
 
 </body>
