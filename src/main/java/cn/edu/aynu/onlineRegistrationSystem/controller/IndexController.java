@@ -2,13 +2,18 @@ package cn.edu.aynu.onlineRegistrationSystem.controller;
 
 import cn.edu.aynu.onlineRegistrationSystem.entity.*;
 import cn.edu.aynu.onlineRegistrationSystem.service.IndexService;
+import cn.edu.aynu.onlineRegistrationSystem.utils.MessageUtils;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -82,9 +87,6 @@ public class IndexController {
         memInfo user= (memInfo)session.getAttribute("user");
         matchInfo match;
         teamInfo team= (teamInfo) session.getAttribute("team");
-
-
-
         Integer type;
         try{
             switch ((String)session.getAttribute("type")) {
@@ -180,24 +182,24 @@ public class IndexController {
     }
 
     /**
-     * 根据个人账号id让个人账号加入这个团队账号
-     * 如果团队人数到达上限则加入失败，如果个人账号不存在则加入失败 如果这个人已经加入这个团队，则加入失败
+     * 团队发送邀请消息
      * @param memId 个人账号id
      * @return 返回成功或者失败的JSON信息
      */
-    @PostMapping(value = "/joinTeam",produces = "application/json;charset=utf-8")
+    @Transactional
+    @PostMapping(value = "/joinTeam",produces = "application/json;charset=utf-8")//TODO 重写该方法
     public JSONObject joinTeamById(Integer memId,HttpServletRequest request){
         HttpSession session=request.getSession();
         JSONObject json=new JSONObject();
-        teamInfo team;
         memInfo user;
         Integer teamId;
+        teamInfo team;
         List<Integer> ids;//队伍中的人数
         try {
             if("team".equals(session.getAttribute("type"))) {//确认登陆类型
-                teamId= (Integer) session.getAttribute("team_account");
+                teamId= (Integer) session.getAttribute("team_id");
                 user = service.getMemInfoById(memId);
-                team = service.getTeamInfoById(teamId);
+                team=service.getTeamInfoById(teamId);
                 ids = service.getMemidsByTeamId(teamId);//方法内存在队伍是否存在检测，所以不需要if判断
                 if (user == null) {
                     json.put("code", 404);
@@ -209,16 +211,31 @@ public class IndexController {
                     if (ids.size() > 0) {
                         for (int i : ids) {
                             if (i == memId) {
-                                throw new Exception("您已加入此队伍");
+                                throw new Exception("用户已加入此队伍");
                             }
                         }
                     }
-                    if (service.joinTeamByid(team, memId) > 0) {
-                        json.put("code", 200);
-                        json.put("msg", "加入队伍成功");
-                    } else {
-                        json.put("code", 404);
-                        json.put("msg", "加入队伍失败");
+                    if (service.checkInviteExistByFromAndTo(teamId, memId) == 0) {//判断是否存在邀请（已发送
+                        InviteInfo invite=new InviteInfo(teamId,memId);
+                        if (service.insertInvite(invite) > 0) {
+                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                            String text = "您有一条来自" + team.getTeamName() + "队伍的邀请，如果您同意，请点击同意链接，否则请点击拒绝链接\r\n同意链接:http://localhost:8080/ORS/acceptInvite?Id="+invite.getInviteId()+"\r\n拒绝连接:http://localhost:8080/ORS/denyInvite?Id="+invite.getInviteId();
+                            MessageInfo newMessage = new MessageInfo(teamId, memId, team.getTeamName(), user.getMemName(), text, simpleDateFormat.parse(simpleDateFormat.format(new Date())));
+                            if (MessageUtils.sendMessage(newMessage)) {
+                                json.put("code", 200);
+                                json.put("msg", "发送邀请成功");
+                            } else {
+                                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                                json.put("code", 404);
+                                json.put("msg", "发送邀请消息失败");
+                            }
+                        } else {
+                            json.put("code", 404);
+                            json.put("msg", "插入invite数据库失败");
+                        }
+                    }else{
+                        json.put("msg","您已发过邀请");
+                        json.put("code",404);
                     }
                 }
             }else{
@@ -227,19 +244,105 @@ public class IndexController {
             }
         }catch(Exception e){
             json.put("code",500);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             json.put("msg","数据库错误"+e.getMessage());
         }
         return json;
     }
 
-    //根据比赛id获取该比赛所有报名信息
-/* JSONObject getMatchInfos(Integer id,HttpServletRequest request){
+    /**
+     * 通过邀请id接受邀请（有账号验证）
+     * @param id
+     * @param request
+     * @return
+     */
+    @GetMapping("/acceptInvite")
+    public JSONObject acceptInvite(Integer id,HttpServletRequest request){//TODO 新增方法
         HttpSession session=request.getSession();
-        if("team".equals(session.getAttribute("type")))
-
+        JSONObject json=new JSONObject();
+        teamInfo team;
+        InviteInfo invite;
+        try{
+            if("mem".equals(session.getAttribute("type"))) {
+                Integer memId= (Integer) session.getAttribute("mem_id");
+                invite = service.checkInviteExistById(id);
+                if (invite != null) {
+                    if(invite.getInviteToId().equals(memId)){
+                        team=service.getTeamInfoById(invite.getInviteFromId());
+                        List<Integer> ids=service.getMemidsByTeamId(team.getTeamId());
+                        if(ids!=null&&ids.size()==3){
+                            json.put("code",404);
+                            json.put("msg","此队伍已满");
+                            service.deleteInviteById(id);
+                        }else {
+                            if (service.joinTeamByid(team, memId) > 0) {
+                                json.put("code", 200);
+                                json.put("msg", "加入成功");
+                                service.deleteInviteById(id);
+                            } else {
+                                json.put("code", 404);
+                                json.put("msg", "加入失败，数据库操作0行");
+                            }
+                        }
+                    }else{
+                        json.put("code",404);
+                        json.put("msg","这不是您的邀请信息");
+                    }
+                }else{
+                    json.put("code",404);
+                    json.put("msg","没有此邀请,请检查您的id");
+                }
+            }else{
+                json.put("code",404);
+                json.put("msg","登录账号类型错误");
+            }
+        }catch (Exception e){
+            json.put("code",500);
+            json.put("msg",e.getMessage());
         }
+        return json;
+    }
 
-        return null;
-    }*/
-
+    /**
+     * 通过id拒绝邀请（有身份验证）
+     * @param id
+     * @param request
+     * @return
+     */
+    @GetMapping("/denyInvite")
+    public JSONObject denyInvite(Integer id,HttpServletRequest request){//TODO 新增方法
+        HttpSession session=request.getSession();
+        JSONObject json=new JSONObject();
+        InviteInfo invite;
+        try {
+            if ("mem".equals(session.getAttribute("type"))) {
+                Integer memId = (Integer) session.getAttribute("mem_id");
+                invite = service.checkInviteExistById(id);
+                if (invite != null) {
+                    if (invite.getInviteToId().equals(memId)) {
+                        if(service.deleteInviteById(id)>0){
+                            json.put("code",200);
+                            json.put("msg","删除成功");
+                        }else{
+                            json.put("code",404);
+                            json.put("msg","删除失败，数据库操作0行");
+                        }
+                    }else{
+                        json.put("code",404);
+                        json.put("msg","您不是该消息的拥有者");
+                    }
+                }else{
+                    json.put("code",404);
+                    json.put("msg","消息id错误");
+                }
+            }else{
+                json.put("code",404);
+                json.put("msg","登录账号类型错误");
+            }
+        }catch (Exception e){
+            json.put("code",500);
+            json.put("msg",e.getMessage());
+        }
+        return json;
+    }
 }
