@@ -37,6 +37,11 @@ public class JumpController {
         return "team/team_index";
     }
 
+    @RequestMapping(value = "/team_tables_all",method = RequestMethod.GET)
+    public String jumpTablesTeamAll() {
+        return "team/team_index_all_list";
+    }
+
     @RequestMapping(value = "/mem_tables_all",method = RequestMethod.GET)
     public String jumpTablesAll() {
         return "mem/mem_index_all_list";
@@ -92,5 +97,9 @@ public class JumpController {
         return "mem/agree_list";
     }
 
+    @RequestMapping(value = "/search_join",method = RequestMethod.GET)
+    public String jumpJoinTeam() {
+        return "team/search_join";
+    }
 
 }

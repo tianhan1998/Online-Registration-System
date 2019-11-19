@@ -35,49 +35,22 @@
                         </li>
 
                         <li class="active">
-                            <a aria-expanded="false" role="button" href="mem_tables_all"> 所有比赛</a>
+                            <a aria-expanded="false" role="button" href="team_tables_all"> 所有比赛</a>
                         </li>
                         <li class="dropdown">
-                            <a aria-expanded="false" role="button" href="search_join.html"> 邀请队员加入我的团队</a>
+                            <a aria-expanded="false" role="button" href="search_join"> 邀请队员加入我的团队</a>
                         </li>
                     </ul>
                     <ul class="nav navbar-top-links navbar-right">
                         <!--                    通知-->
                         <li class="dropdown open">
-                            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#" aria-expanded="true">
+                            <a class="dropdown-toggle count-info" href="message">
                                 <!--                            信息条数-->
                                 <i class="fa fa-envelope"></i> <span class="label label-warning">2</span>
                             </a>
-                            <ul class="dropdown-menu dropdown-messages">
-
-                                <li class="divider"></li>
-                                <li>
-                                    <div class="dropdown-messages-box">
-                                        <div class="media-body ">
-                                            <strong>张三请求加入您的团队</strong><br>
-                                            <small class="text-muted">2017.10.06 7:58</small>
-<!--                                            同意按钮-->
-                                            <button class="btn btn-primary btn-xs" type="button">√同意</i></button>
-<!--                                            不同意按钮-->
-                                            <button class="btn btn-danger btn-xs" type="button">×不同意</button>
-                                        </div>
-                                    </div>
-                                </li>
-
-                                <li class="divider"></li>
-                                <li>
-                                    <div class="dropdown-messages-box">
-                                        <div class="media-body ">软件学院第一届ACM大赛开始报名了</strong> <br>
-                                            <small class="text-muted">2017.10.06 7:58</small>
-                                        </div>
-                                    </div>
-                                </li>
-
-                                <li class="divider"></li>
-
-                            </ul>
                         </li>
-<!--                        团队信息-->
+
+                        <!--                        个人信息-->
                         <li class="dropdown">
                             <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#" aria-expanded="true">
                                 <!--                            信息条数-->
@@ -85,24 +58,24 @@
                             </a>
                             <ul class="dropdown-menu dropdown-alerts">
                                 <li>
-                                        <div>
-                                            <i class="fa fa-envelope fa-fw"></i> 团队名：XXX
-                                        </div>
+                                    <div>
+                                        <i class="fa fa-envelope fa-fw"></i> 姓名：XXX
+                                    </div>
                                     </a>
                                 </li>
                                 <li class="divider"></li>
 
                                 <li>
-                                        <div>
-                                            <i class="fa fa-envelope fa-fw"></i> 成员数：XXX
-                                        </div>
+                                    <div>
+                                        <i class="fa fa-envelope fa-fw"></i> 学号：XXX
+                                    </div>
                                     </a>
                                 </li>
                                 <li class="divider"></li>
 
                                 <li>
                                     <div class="text-center link-block">
-                                        <a href="../mem/mem_info.html">
+                                        <a href="notifications.html">
                                             <strong>查看所有信息</strong>
                                             <i class="fa fa-angle-right"></i>
                                         </a>
@@ -149,44 +122,11 @@
                             <th>操作</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <tr>
-                            <th>1</th>
-                            <th>第一届ACM</th>
-                            <th>2019.3.12</th>
-                            <th>2019.3.12</th>
-                            <th><span class="label label-primary">团队赛</span></th>
-                            <th><span class="label label-primary">未开始</span></th>
-                            <th>
-                                <button type="button" class="btn btn-w-m btn-info btn-xs" data-toggle="modal" data-target="#myModal">报名</button>
-                            </th>
-                        </tr>
-                        <tr>
-                            <th>2</th>
-                            <th>第二届ACM</th>
-                            <th>2019.3.12</th>
-                            <th>2019.3.12</th>
-                            <th><span class="label label-primary">团队赛</span></th>
-                            <th><span class="label label-warning">进行中</span></th>
-                            <th>
-                                <button type="button" class="btn btn-w-m btn-info btn-xs" data-toggle="modal" data-target="#myModal">报名</button>
-                            </th>
-                        </tr>
-                        <tr>
-                            <th>3</th>
-                            <th>第三届ACM</th>
-                            <th>2019.3.12</th>
-                            <th>2019.3.12</th>
-                            <th><span class="label label-info">个人赛</span></th>
-                            <th><span class="label label-danger">已结束</span></th>
-                            <th>
-                                <button type="button" class="btn btn-w-m btn-info btn-xs" data-toggle="modal" data-target="#myModal">报名</button>
-                            </th>
-                        </tr>
+                        <tbody class="matchs">
                         </tbody>
                     </table>
 
-                    <!--                    模态框-->
+                    <!--模态框-->
 
                     <div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true"
                          style="display: none;">
@@ -195,7 +135,6 @@
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal"><span
                                             aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-
                                     <i class="fa fa-laptop modal-icon"></i>
                                     <h4 class="modal-title">邀请码</h4>
                                     <small class="font-bold">请输入你的邀请码</small>
@@ -206,20 +145,19 @@
 
                                     <p><strong>邀请码</strong> 没有邀请码点击继续即可</p>
 
-                                    <div class="form-group"><label>样品输入</label> <input type="email"
+                                    <div class="form-group"><label>样品输入</label> <input type="text"
                                                                                        placeholder="比赛邀请码"
                                                                                        class="form-control"></div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
-                                    <button type="button" class="btn btn-primary">确认</button>
+                                    <button type="button" class="btn btn-primary" onclick="ic()">确认</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
         <div class="footer">
             <div class="pull-right">
@@ -259,11 +197,94 @@
 
 
 <script>
-    $(document).ready(function () {
-        $("button[value='报名']").click(function () {
-            $("myModal").modal(options);
-        });
+    $(function() {
+        $.ajax({
+            url:"matchList",
+            datatype:"json",
+            data:[],
+            type:"get",
+            success: function (data) {
+                $.ajax({
+                    url:"matchList",
+                    datatype:"json",
+                    data:[],
+                    type:"post",
+                    success: function(obj) {
+                        //双重循环来标记是否参加过这个比赛
+                        for(var i=0;i<data.data.length;i++) {
+                            var ms = data.data[i];
+                            var mode = "";
+                            var status = "";
+                            var btn = "";
+                            var id = ms.matchId;
+                            if(ms.matchStatus == 0) {
+                                status = "<th><span class=\"label label-primary\">未开始</span></th>";
+                                btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" data-toggle=\"modal\" data-target=\"#myModal\" onclick=\"cc("+id+")\">报名</button></th>";
+                            }else if(ms.matchStatus == 2){
+                                status = "<th><span class=\"label label-danger\">已结束</span></th>";
+                                btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" disabled style=\"background-color:#DCDCDC;\">报名</button></th>";
+                            }else{
+                                status = "<th><span class=\"label label-warning\">进行中</span></th>";
+                                btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" disabled style=\"background-color:#DCDCDC;\">报名</button></th>";
+                            }
+                            if(ms.matchMode == 0) {
+                                mode = "<th><span class=\"label label-info\">个人赛</span></th>";
+                                btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" data-toggle=\"modal\" data-target=\"#myModal\" onclick=\"cc("+id+")\">报名</button></th>";
+                            }else{
+                                mode = "<th><span class=\"label label-primary\">团队赛</span></th>";
+                                btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" disabled style=\"background-color:#DCDCDC;\">报名</button></th>";
+                            }
+                            for(var j=0;j<obj.data.length;j++) {
+                                console.log();
+                                var myMatchs = obj.data[j];
+                                if(myMatchs.matchId == ms.matchId) {
+                                    btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" disabled style=\"background-color:#DCDCDC;\">报名</button></th>";
+                                    break;
+                                }
+                            }
+                            $(".matchs").append("<tr>" +
+                                "<th>"+(i+1)+"</th>" +
+                                "<th>"+ms.matchTitle+"</th>" +
+                                "<th>"+ms.matchStarTime+"</th>" +
+                                "<th>"+ms.matchEndTime+"</th>" +
+                                mode + status + btn +
+                                "</tr>");
+                        }
+                    }
+                });
+            }
+        })
     });
+    function cc(x) {
+        var iv = "<input type='text' value='"+x+"' class='inv' style='display: none'>";
+        $('.modal-footer').append(iv);
+    }
+    function ic() {
+        var v = $('.inv').val();
+        var matchpwd = $('.form-control').val();
+        console.log(v);
+        $.ajax({
+            url: "enroll",
+            dataType: "json",
+            data: {"matchId":v,"matchPassword":matchpwd},
+            type: "post",
+            success: function (data) {
+                //清空matchid
+                $('.inv').remove();
+                //清空输入框
+                $('.form-control').val("");
+                //关闭模态框
+                $('#myModal').modal("hide");
+
+                if(data.code != 200) {
+                    alert("报名失败!");
+                }else{
+                    alert("报名成功!");
+                }
+
+            }
+        })
+    }
 </script>
 
 </body>
