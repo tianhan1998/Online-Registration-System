@@ -53,7 +53,7 @@
 										<input id="mem_id" name="id" type="text" class="form-control" placeholder="学号" required="">
 									</div>
 									<div class="form-group">
-										<input name="password" type="password" class="form-control" placeholder="密码" required="">
+										<input id="mem_pwd" name="password" type="password" class="form-control" placeholder="密码" required="">
 									</div>
 									<button id="mem_submit" type="button" class="btn btn-primary block full-width m-b">登陆</button>
 									<a href="#"><small>忘记密码?</small></a>
@@ -74,7 +74,7 @@
 									</div>
 									<input name="type" type="hidden" value="1">
 									<div class="form-group">
-										<input name="password" type="password" class="form-control" placeholder="密码" required="">
+										<input id="team_pwd" name="password" type="password" class="form-control" placeholder="密码" required="">
 									</div>
 									<button id="team_submit" type="button" class="btn btn-primary block full-width m-b">登陆</button>
 								
@@ -95,10 +95,31 @@
 		<!-- Mainly scripts -->
 		<script src="js/jquery-2.1.1.js"></script>
 		<script src="js/bootstrap.min.js"></script>
+<!--		引入加密-->
+		<script src="https://cdn.bootcss.com/jsencrypt/3.0.0-beta.1/jsencrypt.js"></script>
 
 	</body>
 	<script>
+		var publicKey;
+		var encrypt = new JSEncrypt();//RSA加密对象
+
+		$(function () {
+			//获取RSA公钥
+			$.ajax({
+				url:"./api/getPublicKey",
+				dataType:"json",
+				type:"get",
+				success:function (result) {
+					console.log("公钥为"+result.data);//获取公钥
+					publicKey=result.data;
+					encrypt.setPublicKey(publicKey)//设置公钥
+				}
+			});
+		});
+
 		$(document).ready(function() {
+
+
 			//个人登陆
 			$("#mem_submit").click(function () {
 				var memId=$("#mem_id").val();
@@ -107,6 +128,13 @@
 				}
 				else{
 					//进行登录尝试
+
+					var password=$("#mem_pwd").val();
+					var item=password;
+
+					password=encrypt.encrypt(password);
+					$("#mem_pwd").val(password);//替换个人登陆的密码
+
 					$.ajax({
 						type:"post",
 						url:"./signIn",
@@ -118,16 +146,25 @@
 								window.location.href="/ORS/mem_tables";
 							}else{//登录失败
 								$("#mem_log").show();
+								$("#mem_pwd").val(item);//登陆失败替换回密码
 							}
 						},
 						error:function () {
 							console.log(result.msg);
+							$("#mem_pwd").val(item);//登陆失败替换回密码
 						}
 					});
 				}
 			});
 			//团队登陆
 			$("#team_submit").click(function () {
+
+				var password=$("#team_pwd").val();
+				var item=password;
+
+				password=encrypt.encrypt(password);
+				$("#team_pwd").val(password);//替换个人登陆的密码
+
 				//进行登录尝试
 				$.ajax({
 					type:"post",
@@ -140,10 +177,12 @@
 							window.location.href="/ORS/team_tables";
 						}else{//登录失败
 							$("#team_log").show();
+							$("#team_pwd").val(item);//登陆失败替换回密码
 						}
 					},
 					error:function () {
 						console.log(result.msg);
+						$("#team_pwd").val(item);//登陆失败替换回密码
 					}
 				});
 			});

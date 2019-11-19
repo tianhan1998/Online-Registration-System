@@ -87,7 +87,7 @@
 										<input type="email" name="team_email" class="form-control" placeholder="邮箱" required="">
 									</div>
 									<div class="form-group">
-										<input type="password" name="team_password" class="form-control" placeholder="密码" required="">
+										<input id="team_pwd" type="password" name="team_password" class="form-control" placeholder="密码" required="">
 									</div>
 									<div class="form-group">
 										<input id="team-pwd2" type="password" class="form-control" placeholder="二次密码" required="">
@@ -112,7 +112,27 @@
 		<script src="js/bootstrap.min.js"></script>
 		<!-- iCheck -->
 		<script src="js/plugins/iCheck/icheck.min.js"></script>
+		<!--		引入加密-->
+		<script src="https://cdn.bootcss.com/jsencrypt/3.0.0-beta.1/jsencrypt.js"></script>
+
 		<script>
+			var publicKey;
+			var encrypt = new JSEncrypt();//RSA加密对象
+
+			$(function () {
+				//获取RSA公钥
+				$.ajax({
+					url:"./api/getPublicKey",
+					dataType:"json",
+					type:"get",
+					success:function (result) {
+						console.log("公钥为"+result.data);//获取公钥
+						publicKey=result.data;
+						encrypt.setPublicKey(publicKey)//设置公钥
+					}
+				});
+			});
+
 			$(document).ready(function() {
 
 				//学号是否通过验证
@@ -122,6 +142,15 @@
 				//个人注册
 				$("#memSubmit").click(function () {
 					if(flagMemId==1&&flagMedPwd==1){
+
+						var password=$('#pwd1').val();
+						var item=password;
+
+						console.log("加密前"+password);
+						password=encrypt.encrypt(password);
+						$('#pwd1').val(password);
+						console.log("加密后"+password);
+
 						$.ajax({
 							type:"post",
 							url:"./signUp",
@@ -134,6 +163,7 @@
 									alert("注册成功");
 								}else {//登陆失败
 									console.log(result.msg);
+									$('#pwd1').val(item);//失败密码替换掉
 								}
 							},
 							error:function (result) {
@@ -208,6 +238,14 @@
 				
 				$("#team-submit").click(function () {
 					if(falgTeamAccound==1&&falgTeamPwd==1){
+						var password=$('#team_pwd').val();
+						var item=password;
+
+						console.log("加密前"+password);
+						password=encrypt.encrypt(password);
+						$('#team_pwd').val(password);
+						console.log("加密后"+password);
+
 						$.ajax({
 							type:"post",
 							dataType:"json",
@@ -218,10 +256,13 @@
 									console.log(result.msg);
 									alert("注册成功");
 									window.location.href="login";
+								}else{
+									$('#team_pwd').val(item);//失败密码还回去
 								}
 							},
 							error:function (result) {
 								console.log(result.msg);
+								$('#team_pwd').val(item);//失败密码还回去
 							}
 						});					
 					}else{
