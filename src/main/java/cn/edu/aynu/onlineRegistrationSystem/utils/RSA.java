@@ -1,7 +1,7 @@
 package cn.edu.aynu.onlineRegistrationSystem.utils;
 
 import cn.edu.aynu.onlineRegistrationSystem.entity.RSABean;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.Cipher;
@@ -14,12 +14,11 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Random;
 
-@Component("rsa")
+@PropertySource(value = {"classpath:application.yml"})
+@Component
 public class RSA {
-    @Value("rsa.count")
-    private static int count=10;
-    @Value("rsa.length")
-    private static int length=512;
+    private static int count=10;//密钥个数
+    private static int length=512;//必须是2的n次幂
     private static ArrayList<RSABean> keys=new ArrayList<RSABean>();//用于封装随机产生的公钥与私钥
     private static RSA rsa=null;
 

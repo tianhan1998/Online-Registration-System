@@ -16,8 +16,3 @@ spring:
     encoding:
       charset: utf-8
       force: true
-rsa:
-  # rsa密钥生成数量
-  count: 5
-  # rsa密钥长度
-  length: 100
