@@ -218,7 +218,7 @@
                         mode = "<th><span class=\"label label-primary\">团队赛</span></th>";
                     }
 
-                    var btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-danger btn-xs\" onclick=\"cc('+id+')\" data-toggle='modal' data-target='#myModal'>删除</button></th>";
+                    var btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-danger btn-xs\" onclick=\"cc("+id+")\" data-toggle='modal' data-target='#myModal'>删除</button></th>";
 
                     $(".matchs").append("<tr>" +
                         "<th>"+(i+1)+"</th>" +
@@ -240,10 +240,10 @@
         var matchpwd = $('.form-control').val();
         console.log(v);
         $.ajax({
-            url: "enroll",
+            url: "/ORS/admin/deleteMatch",
             dataType: "json",
-            data: {},
-            type: "post",
+            data: {"id":v},
+            type: "get",
             success: function (data) {
                 //清空matchid
                 $('.inv').remove();
@@ -252,8 +252,9 @@
                 //关闭模态框
                 $('#myModal').modal("hide");
 
-                if(data.code != 200) {
+                if(data.code == 200) {
                     alert("删除成功!");
+                    window.location.reload();
                 }else{
                     alert("删除失败!");
                 }
