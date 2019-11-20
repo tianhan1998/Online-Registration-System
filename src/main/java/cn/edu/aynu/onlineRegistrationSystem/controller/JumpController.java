@@ -102,4 +102,8 @@ public class JumpController {
         return "team/search_join";
     }
 
+    @RequestMapping(value = "/mem_info",method = RequestMethod.GET)
+    public String jumpMemInfo() {
+        return "mem/mem_info";
+    }
 }

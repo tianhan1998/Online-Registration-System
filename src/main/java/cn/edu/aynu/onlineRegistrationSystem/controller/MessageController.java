@@ -113,23 +113,23 @@ public class MessageController {
     @GetMapping("/getReceivedMessage")
     public JSONObject getReceivedMessage(HttpServletRequest request){
         JSONObject json=new JSONObject();
-        HttpSession session=request.getSession();
-        Integer id;
-        List<MessageInfo>lists;
-        try{
-            if("mem".equals(session.getAttribute("type"))){
-                id= (Integer) session.getAttribute("mem_id");
-            }else{
-                id= (Integer) session.getAttribute("team_id");
-            }
-            lists=service.getReceivedMessagesById(id);
-            if(lists!=null) {
-                if (lists.size() > 0) {
-                    json.put("code", 200);
-                    json.put("msg", "查找成功");
-                    json.put("data", lists);
-                } else {
-                    json.put("code", 404);
+                    HttpSession session=request.getSession();
+                    Integer id;
+                    List<MessageInfo>lists;
+                    try{
+                        if("mem".equals(session.getAttribute("type"))){
+                            id= (Integer) session.getAttribute("mem_id");
+                        }else{
+                            id= (Integer) session.getAttribute("team_id");
+                        }
+                        lists=service.getReceivedMessagesById(id);
+                        if(lists!=null) {
+                            if (lists.size() > 0) {
+                                json.put("code", 200);
+                                json.put("msg", "查找成功");
+                                json.put("data", lists);
+                            } else {
+                                json.put("code", 404);
                     json.put("data",lists);
                     json.put("msg", "消息数为零");
                 }
