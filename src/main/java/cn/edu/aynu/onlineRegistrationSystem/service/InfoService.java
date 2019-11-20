@@ -105,5 +105,30 @@ public class InfoService {
         return map;
     }
 
+    /**
+     * 根据id获取个信息
+     * @param id 个人id
+     * @return
+     */
+    public memInfo getMemInfo(Integer id){//获取个人信息
+        List<Integer> in=new ArrayList<Integer>();
+        in.add(id);
+        List<memInfo> list=memInfoMapper.getMemInfoByIds(in);
+        if(list.size()>0)
+            return list.get(0);
+        else
+            return null;
+    }
+
+    /**
+     * 根据id获取团队个人信息
+     * @param id
+     * @return
+     */
+    public teamInfo getTeamInfo(Integer id){
+        return teamInfoMapper.selectByPrimaryKey(id);
+    }
+
+
 
 }
