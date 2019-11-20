@@ -83,28 +83,24 @@
                     <div class="ibox-content">
                         <form method="get" class="form-horizontal">
                             <div class="form-group"><label class="col-lg-2 control-label">学号</label>
-                                <div class="col-lg-5"><p class="form-control-static">1354669134</p></div>
+                                <div class="col-lg-5"><p class="form-control-static" id="memId"></p></div>
                             </div>
                             <div class="form-group"><label class="col-lg-2 control-label">姓名</label>
-                                <div class="col-lg-5"><input type="text" disabled="" placeholder="张三" class="form-control"></div>
-                            </div>9
-
+                                <div class="col-lg-5"><input type="text" disabled="disabled" class="form-control" id="name"></div>
+                            </div>
                             <div class="form-group"><label class="col-lg-2 control-label">电子邮箱</label>
-                                <div class="col-lg-5"><p class="form-control-static">15993343299@163.com</p></div>
+                                <div class="col-lg-5"><p class="form-control-static" id="mail"></p></div>
                             </div>
 
                             <div class="form-group"><label class="col-lg-2 control-label">性别</label>
                                 <div class="col-lg-5">
-                                    <select class="form-control m-b" name="account" disabled="disabled">
-                                        <option value="F">男</option>
-                                        <option value="M">女</option>
+                                    <select class="form-control m-b" name="account" disabled="disabled" id="sex">
+                                        <option value="M" id="M">男</option>
+                                        <option value="F" id="F">女</option>
                                     </select>
                                 </div>
                             </div>
 
-                            <div class="form-group"><label class="col-lg-2 control-label">密码</label>
-                                <div class="col-lg-5"><input type="text" disabled="" placeholder="******" class="form-control"></div>
-                            </div>
 
 
                             <div class="ibox-content">
@@ -112,7 +108,7 @@
                                     <button class="btn btn-w-m btn-primary" type="button">确认</button>
                                 </div>
                                 <div class="col-lg-3 right">
-                                    <button class="btn btn-w-m btn-danger" type="button">修改</button>
+                                    <button class="btn btn-w-m btn-danger" type="button" onclick="updateMem()">修改</button>
                                 </div>
                             </div>
 
@@ -162,15 +158,33 @@
 <script>
     $(document).ready(function () {
         $.ajax({
-            url:"matchList",
+            url:"getInfo",
             dataType:"json",
             type:"get",
             data:[],
             success:function (data) {
                 console.log(data);
+                //学号
+                $('#memId').text(data.data['memId']);
+                //姓名
+                $('#name').val(data.data['memName']);
+                //电子邮箱
+                $('#mail').text(data.data['memEmail']);
+                //性别
+                if(data.data['memSex']=="M"){
+                    $('#M').attr("selected","selected");
+                }else{
+                    $('#F').attr("selected","selected");
+                }
+                //密码
+                //$('.form-control-static').val(data.data['memId']);
             }
         })
     });
+    function updateMem() {
+        $('#name').removeAttr("disabled");
+        $('#sex').removeAttr("disabled");
+    }
 </script>
 
 </body>
