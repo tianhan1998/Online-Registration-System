@@ -180,7 +180,7 @@
 						$("#team_pwd").val(item);//登陆失败替换回密码
 					}
 				},
-				error:function () {
+				error:function (result) {
 					console.log(result.msg);
 					$("#team_pwd").val(item);//登陆失败替换回密码
 				}
