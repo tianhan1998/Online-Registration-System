@@ -1,8 +1,8 @@
 package cn.edu.aynu.onlineRegistrationSystem.entity;
 
 public class RSABean {
-    private String publicKey;//¹«Ô¿
-    private String privateKey;//Ë½Ô¿
+    private String publicKey;
+    private String privateKey;
 
     public String getPublicKey() {
         return publicKey;

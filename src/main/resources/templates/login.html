@@ -1,191 +1,191 @@
 <!DOCTYPE html>
 <html>
 
-	<head>
+<head>
 
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-		<title>INSPINIA | Login</title>
+	<title>INSPINIA | Login</title>
 
-		<link href="css/bootstrap.min.css" rel="stylesheet">
-		<link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="font-awesome/css/font-awesome.css" rel="stylesheet">
 
-		<link href="css/animate.css" rel="stylesheet">
-		<link href="css/style.css" rel="stylesheet">
-		<link rel="shortcut icon" href="#" />
+	<link href="css/animate.css" rel="stylesheet">
+	<link href="css/style.css" rel="stylesheet">
+	<link rel="shortcut icon" href="#" />
 
-	</head>
+</head>
 
-	<body class="gray-bg">
+<body class="gray-bg">
 
-		<div class="middle-box text-center loginscreen animated fadeInDown">
-			<div>
-				<div>
+<div class="middle-box text-center loginscreen animated fadeInDown">
+	<div>
+		<div>
 
-					<h1 class="logo-name">IN+</h1>
+			<h1 class="logo-name">IN+</h1>
 
+		</div>
+		<h3>欢迎您使用</h3>
+		<p>
+			团队报名请登陆团队账户，个人账号报名请登陆个人账号
+		</p>
+		<div class="tabbable" id="tabs-215554">
+			<ul class="nav nav-tabs">
+				<li class="active">
+					<a href="#panel-967992" data-toggle="tab">个人账号</a>
+				</li>
+				<li>
+					<a href="#panel-884429" data-toggle="tab">团队账户</a>
+				</li>
+			</ul>
+			<div class="tab-content">
+				<div class="tab-pane active" id="panel-967992">
+					<p>
+						<form id="memForm" class="m-t" role="form">
+
+							<div id="mem_log" class="alert alert-danger alert-dismissable" hidden="true">
+								<button  aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+								账号或者密码错误 <a class="alert-link" href="#"></a>
+							</div>
+							<input name="type" type="hidden" value="0">
+							<div class="form-group">
+								<input id="mem_id" name="id" type="text" class="form-control" placeholder="学号" required="">
+							</div>
+							<div class="form-group">
+								<input id="mem_pwd" name="password" type="password" class="form-control" placeholder="密码" required="">
+							</div>
+							<button id="mem_submit" type="button" class="btn btn-primary block full-width m-b">登陆</button>
+							<a href="#"><small>忘记密码?</small></a>
+					<p class="text-muted text-center"><small>没有账号吗？</small></p>
+					<a class="btn btn-sm btn-white btn-block" href="register">创建账号</a>
+					</form>
+					</p>
 				</div>
-				<h3>欢迎您使用</h3>
-				<p>
-					团队报名请登陆团队账户，个人账号报名请登陆个人账号
-				</p>
-				<div class="tabbable" id="tabs-215554">
-					<ul class="nav nav-tabs">
-						<li class="active">
-							<a href="#panel-967992" data-toggle="tab">个人账号</a>
-						</li>
-						<li>
-							<a href="#panel-884429" data-toggle="tab">团队账户</a>
-						</li>
-					</ul>
-					<div class="tab-content">
-						<div class="tab-pane active" id="panel-967992">
-							<p>
-								<form id="memForm" class="m-t" role="form">
+				<div class="tab-pane" id="panel-884429">
+					<p>
+						<form id="teamForm" class="m-t" role="form" >
+							<div id="team_log" class="alert alert-danger alert-dismissable" hidden="true">
+								<button  aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+								账号或者密码错误 <a class="alert-link" href="#"></a>
+							</div>
+							<div class="form-group">
+								<input type="text" name="team_account" class="form-control" placeholder="账号" required="">
+							</div>
+							<input name="type" type="hidden" value="1">
+							<div class="form-group">
+								<input id="team_pwd" name="password" type="password" class="form-control" placeholder="密码" required="">
+							</div>
+							<button id="team_submit" type="button" class="btn btn-primary block full-width m-b">登陆</button>
 
-									<div id="mem_log" class="alert alert-danger alert-dismissable" hidden="true">
-										<button  aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-										账号或者密码错误 <a class="alert-link" href="#"></a>
-									</div>
-									<input name="type" type="hidden" value="0">
-									<div class="form-group">
-										<input id="mem_id" name="id" type="text" class="form-control" placeholder="学号" required="">
-									</div>
-									<div class="form-group">
-										<input id="mem_pwd" name="password" type="password" class="form-control" placeholder="密码" required="">
-									</div>
-									<button id="mem_submit" type="button" class="btn btn-primary block full-width m-b">登陆</button>
-									<a href="#"><small>忘记密码?</small></a>
-									<p class="text-muted text-center"><small>没有账号吗？</small></p>
-									<a class="btn btn-sm btn-white btn-block" href="register">创建账号</a>
-								</form>
-							</p>
-						</div>
-						<div class="tab-pane" id="panel-884429">
-							<p>
-								<form id="teamForm" class="m-t" role="form" >
-									<div id="team_log" class="alert alert-danger alert-dismissable" hidden="true">
-										<button  aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-										账号或者密码错误 <a class="alert-link" href="#"></a>
-									</div>
-									<div class="form-group">
-										<input type="text" name="team_account" class="form-control" placeholder="账号" required="">
-									</div>
-									<input name="type" type="hidden" value="1">
-									<div class="form-group">
-										<input id="team_pwd" name="password" type="password" class="form-control" placeholder="密码" required="">
-									</div>
-									<button id="team_submit" type="button" class="btn btn-primary block full-width m-b">登陆</button>
-								
-									<a href="#"><small>忘记密码?</small></a>
-									<p class="text-muted text-center"><small>没有账号吗？</small></p>
-									<a class="btn btn-sm btn-white btn-block" href="register">创建账号</a>
-								</form>
-							</p>
-						</div>
-					</div>
+							<a href="#"><small>忘记密码?</small></a>
+					<p class="text-muted text-center"><small>没有账号吗？</small></p>
+					<a class="btn btn-sm btn-white btn-block" href="register">创建账号</a>
+					</form>
+					</p>
 				</div>
-
-				
-				<p class="m-t"> <small>Inspinia we app framework base on Bootstrap 3 &copy; 2014</small> </p>
 			</div>
 		</div>
 
-		<!-- Mainly scripts -->
-		<script src="js/jquery-2.1.1.js"></script>
-		<script src="js/bootstrap.min.js"></script>
+
+		<p class="m-t"> <small>Inspinia we app framework base on Bootstrap 3 &copy; 2014</small> </p>
+	</div>
+</div>
+
+<!-- Mainly scripts -->
+<script src="js/jquery-2.1.1.js"></script>
+<script src="js/bootstrap.min.js"></script>
 <!--		引入加密-->
-		<script src="https://cdn.bootcss.com/jsencrypt/3.0.0-beta.1/jsencrypt.js"></script>
+<script src="https://cdn.bootcss.com/jsencrypt/3.0.0-beta.1/jsencrypt.js"></script>
 
-	</body>
-	<script>
-		var publicKey;
-		var encrypt = new JSEncrypt();//RSA加密对象
+</body>
+<script>
+	var publicKey;
+	var encrypt = new JSEncrypt();//RSA加密对象
 
-		$(function () {
-			//获取RSA公钥
-			$.ajax({
-				url:"./api/getPublicKey",
-				dataType:"json",
-				type:"get",
-				success:function (result) {
-					console.log("公钥为"+result.data);//获取公钥
-					publicKey=result.data;
-					encrypt.setPublicKey(publicKey)//设置公钥
-				}
-			});
+	$(function () {
+		//获取RSA公钥
+		$.ajax({
+			url:"./api/getPublicKey",
+			dataType:"json",
+			type:"get",
+			success:function (result) {
+				console.log("公钥为"+result.data);//获取公钥
+				publicKey=result.data;
+				encrypt.setPublicKey(publicKey)//设置公钥
+			}
 		});
+	});
 
-		$(document).ready(function() {
+	$(document).ready(function() {
 
 
-			//个人登陆
-			$("#mem_submit").click(function () {
-				var memId=$("#mem_id").val();
-				if(memId.length!=9){//学号长度有误
-					$("#mem_log").show().html("账号长度有误");
-				}
-				else{
-					//进行登录尝试
+		//个人登陆
+		$("#mem_submit").click(function () {
+			var memId=$("#mem_id").val();
+			if(memId.length!=9){//学号长度有误
+				$("#mem_log").show().html("账号长度有误");
+			}
+			else{
+				//进行登录尝试
 
-					var password=$("#mem_pwd").val();
-					var item=password;
-
-					password=encrypt.encrypt(password);
-					$("#mem_pwd").val(password);//替换个人登陆的密码
-
-					$.ajax({
-						type:"post",
-						url:"./signIn",
-						data:$("#memForm").serialize(),
-						dataType:"json",
-						success:function (result) {
-							console.log(result);
-							if(result.code=="200"){//登录成功
-								window.location.href="/ORS/mem_tables";
-							}else{//登录失败
-								$("#mem_log").show();
-								$("#mem_pwd").val(item);//登陆失败替换回密码
-							}
-						},
-						error:function () {
-							console.log(result.msg);
-							$("#mem_pwd").val(item);//登陆失败替换回密码
-						}
-					});
-				}
-			});
-			//团队登陆
-			$("#team_submit").click(function () {
-
-				var password=$("#team_pwd").val();
+				var password=$("#mem_pwd").val();
 				var item=password;
 
 				password=encrypt.encrypt(password);
-				$("#team_pwd").val(password);//替换个人登陆的密码
+				$("#mem_pwd").val(password);//替换个人登陆的密码
 
-				//进行登录尝试
 				$.ajax({
 					type:"post",
 					url:"./signIn",
-					data:$("#teamForm").serialize(),
+					data:$("#memForm").serialize(),
 					dataType:"json",
 					success:function (result) {
 						console.log(result);
 						if(result.code=="200"){//登录成功
-							window.location.href="/ORS/team_tables";
+							window.location.href="/ORS/mem_tables";
 						}else{//登录失败
-							$("#team_log").show();
-							$("#team_pwd").val(item);//登陆失败替换回密码
+							$("#mem_log").show();
+							$("#mem_pwd").val(item);//登陆失败替换回密码
 						}
 					},
 					error:function () {
 						console.log(result.msg);
-						$("#team_pwd").val(item);//登陆失败替换回密码
+						$("#mem_pwd").val(item);//登陆失败替换回密码
 					}
 				});
+			}
+		});
+		//团队登陆
+		$("#team_submit").click(function () {
+
+			var password=$("#team_pwd").val();
+			var item=password;
+
+			password=encrypt.encrypt(password);
+			$("#team_pwd").val(password);//替换个人登陆的密码
+
+			//进行登录尝试
+			$.ajax({
+				type:"post",
+				url:"./signIn",
+				data:$("#teamForm").serialize(),
+				dataType:"json",
+				success:function (result) {
+					console.log(result);
+					if(result.code=="200"){//登录成功
+						window.location.href="/ORS/team_tables";
+					}else{//登录失败
+						$("#team_log").show();
+						$("#team_pwd").val(item);//登陆失败替换回密码
+					}
+				},
+				error:function () {
+					console.log(result.msg);
+					$("#team_pwd").val(item);//登陆失败替换回密码
+				}
 			});
 		});
-	</script>
+	});
+</script>
 </html>

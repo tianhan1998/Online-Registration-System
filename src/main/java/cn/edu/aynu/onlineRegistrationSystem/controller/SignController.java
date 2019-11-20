@@ -40,43 +40,56 @@ public class SignController {
      * @param team_name 队伍名称
      * @param team_password 队伍密码
      * @param type 类型，0是个人，1是团队
+     * @param code 验证码
      * @return json{code:200,msg:xxx,data:[]}
      */
     @RequestMapping(value = "/signUp",method = RequestMethod.POST)
-    public JSONObject signUp(String memId, String memName, String memPassword, String memEmail, String memSex, HttpServletRequest request,Integer type,String team_account,String team_name,String team_password,String team_email)  {
+    public JSONObject signUp(String memId, String memName, String memPassword, String memEmail, String memSex, String code,HttpServletRequest request,Integer type,String team_account,String team_name,String team_password,String team_email)  {
         HttpSession session;
         try {
             session=request.getSession();
-            if(session.getAttribute("privateKey")!=null) {
-                if (type == 0) {
-                    memPassword = RSA.decrypt(memPassword, session.getAttribute("privateKey").toString());//获取私钥解密
+            String sessionCode=session.getAttribute("code").toString();
+            if(sessionCode!=null) {
+                if(sessionCode.equals(code)) {
+                    System.out.println("请求验证码"+code+"正确验证码"+sessionCode);
+                    if (session.getAttribute("privateKey") != null) {
+                        if (type == 0) {
+                            memPassword = RSA.decrypt(memPassword, session.getAttribute("privateKey").toString());//获取私钥解密
 
-                    memInfo memInfo = new memInfo(Integer.valueOf(memId), memName, memEmail, memSex, memPassword);
-                    if (service.signUp(memInfo)) {
-                        String obj = JSONObject.toJSONString(memInfo);
-                        json.put("code", 200);
-                        json.put("msg", "注册成功");
-                        json.put("data", obj);
+                            memInfo memInfo = new memInfo(Integer.valueOf(memId), memName, memEmail, memSex, memPassword);
+                            if (service.signUp(memInfo)) {
+                                String obj = JSONObject.toJSONString(memInfo);
+                                json.put("code", 200);
+                                json.put("msg", "注册成功");
+                                json.put("data", obj);
+                            } else {
+                                json.put("code", 404);
+                                json.put("msg", "用户已存在");
+                            }
+                        } else {
+                            team_password = RSA.decrypt(team_password, session.getAttribute("privateKey").toString());//获取私钥解密
+                            teamInfo team = new teamInfo(team_name, team_account, team_password, team_email);
+                            if (service.signUpTeam(team)) {
+                                String obj = JSONArray.toJSONString(team);
+                                json.put("code", 200);
+                                json.put("msg", "注册队伍成功");
+                                json.put("data", obj);
+                            } else {
+                                json.put("code", 404);
+                                json.put("msg", "队伍已存在");
+                            }
+                        }
                     } else {
-                        json.put("code", 404);
-                        json.put("msg", "用户已存在");
+                        json.put("code", 500);
+                        json.put("msg", "你没有获取公钥,请刷新重试");
                     }
-                } else {
-                    team_password = RSA.decrypt(team_password, session.getAttribute("privateKey").toString());//获取私钥解密
-                    teamInfo team = new teamInfo(team_name, team_account, team_password, team_email);
-                    if (service.signUpTeam(team)) {
-                        String obj = JSONArray.toJSONString(team);
-                        json.put("code", 200);
-                        json.put("msg", "注册队伍成功");
-                        json.put("data", obj);
-                    } else {
-                        json.put("code", 404);
-                        json.put("msg", "队伍已存在");
-                    }
+                }else{
+                    json.put("code", 400);
+                    json.put("msg", "验证码错误,请刷新重试");
                 }
             }else{
-                json.put("code",500);
-                json.put("msg","你没有获取公钥");
+                json.put("code", 500);
+                json.put("msg", "验证码为空,请刷新重试");
             }
         }catch (Exception e){
             json.put("code",500);
