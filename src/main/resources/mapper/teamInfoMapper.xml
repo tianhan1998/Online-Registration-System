@@ -15,6 +15,9 @@
   <select id="getTeamList" resultMap="BaseResultMap">
     select team_id,team_name,team_account,mem_id1,mem_id2,mem_id3,team_email from team_info
   </select>
+  <select id="getTeamInfoByMemId" resultMap="BaseResultMap">
+    select * from team_info where mem_id1=#{memId} or mem_id2=#{memId} or mem_id3=#{memId}
+  </select>
   <select id="selectByTeamAccount" parameterType="String" resultMap="BaseResultMap">
     select team_account from team_info where team_account=#{team_account}
   </select>

@@ -3,6 +3,7 @@ package cn.edu.aynu.onlineRegistrationSystem.controller;
 import cn.edu.aynu.onlineRegistrationSystem.entity.memInfo;
 import cn.edu.aynu.onlineRegistrationSystem.entity.teamInfo;
 import cn.edu.aynu.onlineRegistrationSystem.service.InfoService;
+import cn.edu.aynu.onlineRegistrationSystem.service.SignService;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,9 @@ public class InfoController {
 
     @Autowired
     private InfoService infoService;
+    @Autowired
+    SignService signService;
+
 
     /**
      * 根据传入的学号返回详细信息
@@ -83,13 +87,12 @@ public class InfoController {
      * 获取当前登录用户的个人信息
      * @return
      */
-    @GetMapping(value = "/getInfo")
+    @GetMapping(value = "/getInfo") //TODO 新增方法
     public JSONObject getInfo(HttpServletRequest request){
         JSONObject json=new JSONObject();
         HttpSession session=request.getSession();
-        String type=session.getAttribute("type").toString();
-
         try{
+            String type=session.getAttribute("type").toString();
             if(type.equals("mem")==true){//获取个人信息
                 Integer myId= (Integer)session.getAttribute("mem_id");
                 memInfo mem=infoService.getMemInfo(myId);
@@ -126,7 +129,7 @@ public class InfoController {
     }
 
     /**
-     * 根据id修改团队姓名名字
+     * 根据id修改团队姓名名字//TODO 新增方法
      * @param teamName 修改后的姓名
      * @return
      */
@@ -135,22 +138,28 @@ public class InfoController {
         JSONObject jsonObject=new JSONObject();
 
         HttpSession session=request.getSession();
-        Integer id=(Integer) session.getAttribute("team_id");
-        teamInfo teamInfo=new teamInfo();
-        teamInfo.setTeamName(teamName);
-        int rel=infoService.setTeamInfo(id,teamInfo);
-        if(rel!=0){//修改成功
-            jsonObject.put("code","200");
-            jsonObject.put("msg","修改成功");
-        }else{//修改失败
-            jsonObject.put("code","400");
-            jsonObject.put("msg","修改失败,请重新登录稍后在尝试");
+        try {
+            Integer id=(Integer) session.getAttribute("team_id");
+            teamInfo teamInfo=new teamInfo();
+            teamInfo.setTeamName(teamName);
+            int rel=infoService.setTeamInfo(id,teamInfo);
+            if(rel!=0){//修改成功
+                jsonObject.put("code",200);
+                jsonObject.put("msg","修改成功");
+            }else{//修改失败
+                jsonObject.put("code",400);
+                jsonObject.put("msg","修改失败,请重新登录稍后在尝试");
+            }
+        }catch (Exception e){
+            jsonObject.put("code",500);
+            jsonObject.put("msg",e.getMessage());
         }
+
         return jsonObject;
     }
 
     /**
-     * 根据id修改个人信息
+     * 根据id修改个人信息 //TODO 新增方法
      * @param memName 修改后的姓名
      * @param memSex 修改后的性别
      * @return
@@ -158,20 +167,109 @@ public class InfoController {
     @PostMapping(value = "/setMemmInfo")
     public JSONObject setMemInfo(String memSex,String memName,HttpServletRequest request){
         JSONObject jsonObject=new JSONObject();
+        try {
+            HttpSession session=request.getSession();
+            Integer id=(Integer) session.getAttribute("mem_id");
+            memInfo memInfo=new memInfo();
+            memInfo.setMemSex(memSex);
+            memInfo.setMemName(memName);
+            int rel=infoService.setMemInfo(id,memInfo);
+            if(rel!=0){//修改成功
+                jsonObject.put("code",200);
+                jsonObject.put("msg","修改成功");
+            }else{//修改失败
+                jsonObject.put("code",400);
+                jsonObject.put("msg","修改失败,请重新登录稍后在尝试");
+            }
+        }catch (Exception e){
+            jsonObject.put("code",500);
+            jsonObject.put("msg",e.getMessage());
+        }
 
+        return jsonObject;
+    }
+
+    /**
+     * 获取当前个人账号加入团队的列表 //TODO 获取这个人加入过的团队列表
+     * @return
+     */
+    @GetMapping(value = "/getJoinTeamList")
+    public JSONObject getJoinTeamInfoList(HttpServletRequest request){
+        JSONObject jsonObject=new JSONObject();
         HttpSession session=request.getSession();
-        Integer id=(Integer) session.getAttribute("mem_id");
-        memInfo memInfo=new memInfo();
-        memInfo.setMemSex(memSex);
-        memInfo.setMemName(memName);
-        int rel=infoService.setMemInfo(id,memInfo);
-        if(rel!=0){//修改成功
-            jsonObject.put("code","200");
-            jsonObject.put("msg","修改成功");
-        }else{//修改失败
-            jsonObject.put("code","400");
-            jsonObject.put("msg","修改失败,请重新登录稍后在尝试");
+        try{
+            if(session.getAttribute("type").toString().equals("mem")) {//个人账号
+                Integer id = (Integer) session.getAttribute("mem_id");
+                if (id != null) {
+                    List<teamInfo> list = infoService.getJoinTeamInfoList(id);
+
+                    for (teamInfo teamInfo : list) {
+                        teamInfo.setTeamPassword(null);
+                    }
+                    jsonObject.put("code", 200);
+                    jsonObject.put("msg", "获取成功");
+                    jsonObject.put("data", list);
+                }
+            }else {
+                jsonObject.put("code", 400);
+                jsonObject.put("msg", "你不是个人账号");
+            }
+        }catch (Exception e){
+            jsonObject.put("code",500);
+            jsonObject.put("msg",e.getMessage());
         }
         return jsonObject;
     }
+
+    /**
+     * 修改个人和团队的密码
+     * @param lastPassword 上次密码
+     * @param newPassword 新的密码
+     * @return
+     */
+    @PostMapping(value = "/setPassword")//TODO 修改密码
+    public JSONObject setPassword(String lastPassword,String newPassword,HttpServletRequest request){
+        JSONObject jsonObject=new JSONObject();
+        HttpSession session=request.getSession();
+        try{
+            if(session.getAttribute("type").toString().equals("mem")){//个人账号
+                Integer id=(Integer)session.getAttribute("mem_id");
+                if(signService.signInMem(id, lastPassword).size()!=0){//验证密码通过
+                    int rel=infoService.setMemPassword(id,newPassword);
+                    if(rel!=0){
+                        jsonObject.put("code",200);
+                        jsonObject.put("msg","修改成功");
+                    }else{
+                        jsonObject.put("code",400);
+                        jsonObject.put("msg","密码未成功修改请刷新页面重试");
+                    }
+                }else{
+                    jsonObject.put("code",400);
+                    jsonObject.put("msg","原密码错误");
+                }
+            }else{//团队账号
+
+                Integer id=(Integer)session.getAttribute("team_id");
+                String accound=session.getAttribute("team_account").toString();
+                if(signService.signInTeam(accound, lastPassword).size()!=0){//验证密码通过
+                    int rel=infoService.setTeamPassword(id,newPassword);
+                    if(rel!=0){
+                        jsonObject.put("code",200);
+                        jsonObject.put("msg","修改失败");
+                    }else{
+                        jsonObject.put("code",400);
+                        jsonObject.put("msg","密码未成功修改请刷新页面重试");
+                    }
+                }else{
+                    jsonObject.put("code",400);
+                    jsonObject.put("msg","原密码错误");
+                }
+            }
+        }catch (Exception e){
+            jsonObject.put("code",500);
+            jsonObject.put("msg",e.getMessage());
+        }
+        return jsonObject;
+    }
+
 }
