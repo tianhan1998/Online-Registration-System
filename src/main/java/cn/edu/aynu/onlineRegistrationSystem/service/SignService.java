@@ -9,8 +9,6 @@ import cn.edu.aynu.onlineRegistrationSystem.mapper.teamInfoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpSession;
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -25,7 +23,7 @@ public class SignService {
     @Autowired
     teamInfoMapper teamInfoMapper;
 
-    public List<memInfo> signInMem(Integer id,String password){
+    public List<memInfo> signInMem(Integer id, String password){
         memInfoExample example=new memInfoExample();
         example.setOrderByClause("mem_id desc");
         example.setDistinct(false);

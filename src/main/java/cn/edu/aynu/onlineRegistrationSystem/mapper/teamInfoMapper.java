@@ -2,9 +2,10 @@ package cn.edu.aynu.onlineRegistrationSystem.mapper;
 
 import cn.edu.aynu.onlineRegistrationSystem.entity.teamInfo;
 import cn.edu.aynu.onlineRegistrationSystem.entity.teamInfoExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface teamInfoMapper {
@@ -35,5 +36,7 @@ public interface teamInfoMapper {
     int updateByPrimaryKey(teamInfo record);
 
     int joinTeam(@Param("team") teamInfo team,@Param("memId") Integer memId);
+
+    List<teamInfo> getTeamInfoByMemId(Integer memId);
 
 }

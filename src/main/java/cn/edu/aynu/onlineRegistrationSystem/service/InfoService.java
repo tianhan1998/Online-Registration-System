@@ -154,7 +154,38 @@ public class InfoService {
     }
 
 
+    /**
+     * 获取当前个人账号加入团队的列表
+     * @return
+     */
+    public List<teamInfo> getJoinTeamInfoList(Integer memId){
+        return teamInfoMapper.getTeamInfoByMemId(memId);
+    }
 
+    /**
+     * 修改个人账号密码
+     * @param id 带修改人的id
+     * @param password 修改后的密码
+     * @return
+     */
+    public Integer setMemPassword(Integer id,String password){
+        memInfo mem=new memInfo();
+        mem.setMemId(id);
+        mem.setMemPassword(password);
+        return memInfoMapper.updateByPrimaryKeySelective(mem);
+    }
 
+    /**
+     * 修改团队账号密码
+     * @param id 带修改团队的id
+     * @param password 修改后的密码
+     * @return
+     */
+    public Integer setTeamPassword(Integer id,String password){
+        teamInfo team=new teamInfo();
+        team.setTeamId(id);
+        team.setTeamPassword(password);
+        return teamInfoMapper.updateByPrimaryKeySelective(team);
+    }
 
 }
