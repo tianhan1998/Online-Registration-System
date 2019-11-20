@@ -6,6 +6,7 @@ import cn.edu.aynu.onlineRegistrationSystem.service.InfoService;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -124,4 +125,53 @@ public class InfoController {
         return json;
     }
 
+    /**
+     * 根据id修改团队姓名名字
+     * @param teamName 修改后的姓名
+     * @return
+     */
+    @PostMapping(value = "/setTeamInfo")
+    public JSONObject setTeamInfo(String teamName,HttpServletRequest request){
+        JSONObject jsonObject=new JSONObject();
+
+        HttpSession session=request.getSession();
+        Integer id=(Integer) session.getAttribute("team_id");
+        teamInfo teamInfo=new teamInfo();
+        teamInfo.setTeamName(teamName);
+        int rel=infoService.setTeamInfo(id,teamInfo);
+        if(rel!=0){//修改成功
+            jsonObject.put("code","200");
+            jsonObject.put("msg","修改成功");
+        }else{//修改失败
+            jsonObject.put("code","400");
+            jsonObject.put("msg","修改失败,请重新登录稍后在尝试");
+        }
+        return jsonObject;
+    }
+
+    /**
+     * 根据id修改个人信息
+     * @param memName 修改后的姓名
+     * @param memSex 修改后的性别
+     * @return
+     */
+    @PostMapping(value = "/setMemmInfo")
+    public JSONObject setMemInfo(String memSex,String memName,HttpServletRequest request){
+        JSONObject jsonObject=new JSONObject();
+
+        HttpSession session=request.getSession();
+        Integer id=(Integer) session.getAttribute("mem_id");
+        memInfo memInfo=new memInfo();
+        memInfo.setMemSex(memSex);
+        memInfo.setMemName(memName);
+        int rel=infoService.setMemInfo(id,memInfo);
+        if(rel!=0){//修改成功
+            jsonObject.put("code","200");
+            jsonObject.put("msg","修改成功");
+        }else{//修改失败
+            jsonObject.put("code","400");
+            jsonObject.put("msg","修改失败,请重新登录稍后在尝试");
+        }
+        return jsonObject;
+    }
 }
