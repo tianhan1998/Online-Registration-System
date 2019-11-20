@@ -105,10 +105,10 @@
 
                             <div class="ibox-content">
                                 <div class="col-lg-3 left">
-                                    <button class="btn btn-w-m btn-primary" type="button">确认</button>
+                                    <button class="btn btn-w-m btn-primary" type="button" disabled="disabled" id="confirm" onclick="updataMem()">确认</button>
                                 </div>
                                 <div class="col-lg-3 right">
-                                    <button class="btn btn-w-m btn-danger" type="button" onclick="updateMem()">修改</button>
+                                    <button class="btn btn-w-m btn-danger" type="button" onclick="setNameAndSex()">修改</button>
                                 </div>
                             </div>
 
@@ -163,7 +163,6 @@
             type:"get",
             data:[],
             success:function (data) {
-                console.log(data);
                 //学号
                 $('#memId').text(data.data['memId']);
                 //姓名
@@ -181,9 +180,27 @@
             }
         })
     });
-    function updateMem() {
+    function setNameAndSex() {
         $('#name').removeAttr("disabled");
         $('#sex').removeAttr("disabled");
+        $('#confirm').removeAttr("disabled");
+    }
+    function updataMem() {
+
+        $.ajax({
+            url:"setMemmInfo",
+            type:"post",
+            dataType: "json",
+            data:{"memSex":$('#sex').val(),"memName":$('#name').val()},
+            success: function (data) {
+                if(data.code=="200"){
+                    alert("修改成功!");
+                }else{
+                    alert("修改失败!");
+                }
+                window.location.reload();
+            }
+        })
     }
 </script>
 
