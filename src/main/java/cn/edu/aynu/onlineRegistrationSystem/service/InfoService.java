@@ -121,6 +121,18 @@ public class InfoService {
     }
 
     /**
+     * 根据id修改这个人的信息不能修改密码
+     * @param id
+     * @param mem
+     * @return
+     */
+    public Integer setMemInfo(Integer id,memInfo mem){
+        mem.setMemId(id);
+        mem.setMemPassword(null);
+        return memInfoMapper.updateByPrimaryKeySelective(mem);
+    }
+
+    /**
      * 根据id获取团队个人信息
      * @param id
      * @return
@@ -128,6 +140,20 @@ public class InfoService {
     public teamInfo getTeamInfo(Integer id){
         return teamInfoMapper.selectByPrimaryKey(id);
     }
+
+    /**
+     * 根据主键修改团队信息但是不能修改密码
+     * @param id
+     * @param team
+     * @return
+     */
+    public Integer setTeamInfo(Integer id,teamInfo team){
+        team.setTeamPassword(null);
+        team.setTeamId(id);
+        return teamInfoMapper.updateByPrimaryKeySelective(team);
+    }
+
+
 
 
 
