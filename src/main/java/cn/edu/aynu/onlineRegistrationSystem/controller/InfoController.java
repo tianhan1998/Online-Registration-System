@@ -1,11 +1,16 @@
 package cn.edu.aynu.onlineRegistrationSystem.controller;
 
+import cn.edu.aynu.onlineRegistrationSystem.entity.memInfo;
+import cn.edu.aynu.onlineRegistrationSystem.entity.teamInfo;
 import cn.edu.aynu.onlineRegistrationSystem.service.InfoService;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -71,6 +76,52 @@ public class InfoController {
             jsonObject.put("msg","数据库错误"+e.getMessage());
         }
         return jsonObject;
+    }
+
+    /**
+     * 获取当前登录用户的个人信息
+     * @return
+     */
+    @GetMapping(value = "/getInfo")
+    public JSONObject getInfo(HttpServletRequest request){
+        JSONObject json=new JSONObject();
+        HttpSession session=request.getSession();
+        String type=session.getAttribute("type").toString();
+
+        try{
+            if(type.equals("mem")==true){//获取个人信息
+                Integer myId= (Integer)session.getAttribute("mem_id");
+                memInfo mem=infoService.getMemInfo(myId);
+                if (mem!=null) {
+                    mem.setMemPassword("null");
+                    json.put("code",200);
+                    json.put("msg","获取个人信息成功");
+                    json.put("data",mem);
+                }else{
+                    json.put("code",400);
+                    json.put("msg","获取个人信息失败");
+                    json.put("data",mem);
+                }
+            }else{//获取团队信息
+                Integer myId= (Integer)session.getAttribute("team_id");
+                teamInfo mem=infoService.getTeamInfo(myId);
+                if (mem!=null) {
+                    json.put("code",200);
+                    mem.setTeamPassword("null");
+                    json.put("msg","获取团队信息成功");
+                    json.put("data",mem);
+                }else{
+                    json.put("code",400);
+                    json.put("msg","获取团队信息失败");
+                    json.put("data",mem);
+                }
+            }
+        }catch (Exception e)
+        {
+            json.put("code",500);
+            json.put("msg",e.getMessage());
+        }
+        return json;
     }
 
 }
