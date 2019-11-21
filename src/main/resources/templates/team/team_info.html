@@ -79,7 +79,7 @@
                         <form method="get" class="form-horizontal">
 
                             <div class="form-group"><label class="col-lg-2 control-label">团队名</label>
-                                <div class="col-lg-5"><input type="text" disabled="" placeholder="XXXXX团队" class="form-control" id="team_name"></div>
+                                <div class="col-lg-5"><input type="text" disabled="" placeholder="" class="form-control" id="team_name"></div>
                             </div>
 
                             <div class="form-group"><label class="col-lg-2 control-label">队员1姓名</label>
@@ -96,10 +96,10 @@
 
                             <div class="ibox-content">
                                 <div class="col-lg-3 left">
-                                    <button class="btn btn-w-m btn-primary" type="button">确认</button>
+                                    <button class="btn btn-w-m btn-primary" type="button" disabled="disabled" id="confirm" onclick="updataTeamName()">确认</button>
                                 </div>
                                 <div class="col-lg-3 right">
-                                    <button class="btn btn-w-m btn-danger" type="button">修改</button>
+                                    <button class="btn btn-w-m btn-danger" type="button" onclick="setConfirm()">修改</button>
                                 </div>
                             </div>
 
@@ -149,34 +149,59 @@
 <script>
     $(function() {
         var teamName = "";
-        var memOne = "";
-        var memTwo = "";
-        var memThree = "";
-
+        var mems = new Array();
         $.ajax({
             url:"member",
             dataType:"json",
             type:"get",
             data:[],
             success:function(data) {
-                if(data['data'] == null){
-                    memOne = "无";
-                    memTwo = "无";
-                    memThree = "无";
+                for(var i=0;i<data['data'].length;i++) {
+                    mems[i] = data['data'][i]['memName'];
                 }
-                console.log(data);
-            }
-        })
-        $.ajax({
-            url:"getInfo",
-            dataType:"json",
-            type:"get",
-            data:[],
-            success: function (data) {
-                console.log(data);
+                $.ajax({
+                    url:"getInfo",
+                    dataType:"json",
+                    type:"get",
+                    data:[],
+                    success: function (data) {
+                        teamName = data['data']['teamName'];
+                        if(mems[0]!="") {
+                            $('#mem_one').text(mems[0]);
+                        }
+                        if(mems[1]!="") {
+                            $('#mem_two').text(mems[1]);
+                        }
+                        if(mems[2]!="") {
+                            $('#mem_three').text(mems[2]);
+                        }
+                        $("#team_name").attr("placeholder",teamName);
+                    }
+                })
             }
         })
     });
+    function setConfirm() {
+        $('#confirm').removeAttr("disabled");
+        $('#team_name').removeAttr("disabled");
+    }
+    function updataTeamName() {
+        $.ajax({
+            url:"setTeamInfo",
+            type:"post",
+            dataType:"json",
+            data:{"teamName":$('#team_name').val()},
+            success:function (data) {
+                if(data['code']==200){
+                    alert("修改成功!");
+                    window.location.reload();
+                }else{
+                    alert("修改失败!");
+                }
+
+            }
+        })
+    }
 </script>
 
 </body>
