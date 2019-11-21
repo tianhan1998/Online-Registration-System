@@ -106,12 +106,15 @@ public class InfoController {
                     json.put("msg","获取个人信息失败");
                     json.put("data",mem);
                 }
-            }else{//获取团队信息
+            }else{//获取团队的部分信息
                 Integer myId= (Integer)session.getAttribute("team_id");
                 teamInfo mem=infoService.getTeamInfo(myId);
                 if (mem!=null) {
                     json.put("code",200);
                     mem.setTeamPassword("null");
+                    mem.setTeamId(-1);
+                    mem.setTeamAccount("-1");
+                    mem.setTeamEmail("-1");
                     json.put("msg","获取团队信息成功");
                     json.put("data",mem);
                 }else{
