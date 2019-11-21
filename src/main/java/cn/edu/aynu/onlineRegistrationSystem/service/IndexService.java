@@ -234,4 +234,13 @@ public class IndexService {
             throw new Exception("没有任何被邀请信息");
         }
     }
+
+    /**
+     * 根据比赛id获取报名信息//TODO 还没写
+     * @param matchId
+     */
+    public memInfo getMatchInfoByMatchId(Integer matchId){
+
+        return null;
+    }
 }
