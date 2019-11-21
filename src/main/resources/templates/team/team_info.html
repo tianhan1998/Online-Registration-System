@@ -42,16 +42,9 @@
                         </li>
                     </ul>
                     <ul class="nav navbar-top-links navbar-right">
-                        <!--                    通知-->
-                        <li class="dropdown open">
-                            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#" aria-expanded="true">
-                                <!--                            信息条数-->
-                                <i class="fa fa-envelope"></i> <span class="label label-warning">2</span>
-                            </a>
-                        </li>
 <!--                        个人信息-->
                         <li class="dropdown">
-                            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#" aria-expanded="true">
+                            <a class="dropdown-toggle count-info" href="team_info" >
                                 <!--                            信息条数-->
                                 <i class="glyphicon glyphicon-user"></i> <span class="label label-warning"></span>
                             </a>
@@ -86,27 +79,19 @@
                         <form method="get" class="form-horizontal">
 
                             <div class="form-group"><label class="col-lg-2 control-label">团队名</label>
-                                <div class="col-lg-5"><input type="text" disabled="" placeholder="XXXXX团队" class="form-control"></div>
-                            </div>
-
-                            <div class="form-group"><label class="col-lg-2 control-label">账号</label>
-                                <div class="col-lg-5"><input type="text" disabled="" placeholder="1354669134" class="form-control"></div>
-                            </div>
-
-                            <div class="form-group"><label class="col-lg-2 control-label">密码</label>
-                                <div class="col-lg-5"><input type="password" disabled="" placeholder="******" class="form-control"></div>
+                                <div class="col-lg-5"><input type="text" disabled="" placeholder="XXXXX团队" class="form-control" id="team_name"></div>
                             </div>
 
                             <div class="form-group"><label class="col-lg-2 control-label">队员1姓名</label>
-                                <div class="col-lg-5"><p class="form-control-static">李四</p></div>
+                                <div class="col-lg-5"><p class="form-control-static" id="mem_one"></p></div>
                             </div>
 
                             <div class="form-group"><label class="col-lg-2 control-label">队员2姓名</label>
-                                <div class="col-lg-5"><p class="form-control-static">李四</p></div>
+                                <div class="col-lg-5"><p class="form-control-static" id="mem_two"></p></div>
                             </div>
 
                             <div class="form-group"><label class="col-lg-2 control-label">队员3姓名</label>
-                                <div class="col-lg-5"><p class="form-control-static">空</p></div>
+                                <div class="col-lg-5"><p class="form-control-static" id="mem_three"></p></div>
                             </div>
 
                             <div class="ibox-content">
@@ -162,8 +147,35 @@
 
 
 <script>
-    $(document).ready(function () {
+    $(function() {
+        var teamName = "";
+        var memOne = "";
+        var memTwo = "";
+        var memThree = "";
 
+        $.ajax({
+            url:"member",
+            dataType:"json",
+            type:"get",
+            data:[],
+            success:function(data) {
+                if(data['data'] == null){
+                    memOne = "无";
+                    memTwo = "无";
+                    memThree = "无";
+                }
+                console.log(data);
+            }
+        })
+        $.ajax({
+            url:"getInfo",
+            dataType:"json",
+            type:"get",
+            data:[],
+            success: function (data) {
+                console.log(data);
+            }
+        })
     });
 </script>
 

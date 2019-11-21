@@ -160,7 +160,7 @@ public class IndexController {
         List<memInfo> lists;
         try {
             if("team".equals(session.getAttribute("type"))) {
-                teamId= (Integer) session.getAttribute("team_account");
+                teamId= (Integer) session.getAttribute("team_id");
                 List<Integer> ids = service.getMemidsByTeamId(teamId);//service层有异常抛出，不用判断队伍是否存在
                 if (ids.size() > 0) {
                     lists = service.getMemInfoByIds(ids);
