@@ -236,11 +236,41 @@ public class IndexService {
     }
 
     /**
-     * 根据比赛id获取报名信息//TODO 还没写
+     * 根据比赛id获取个人比赛报名信息
+     * @param matchId
+     * @return
+     */
+    public List<MatchAppleInfo> getMatchInfoByMatchIdWithMemInfo(Integer matchId){
+        return memMatchMapper.getMemMatchInfoByMatchId(matchId);
+    }
+
+    /**
+     * 根据比赛id获取团队报名信息
      * @param matchId
      */
-    public memInfo getMatchInfoByMatchId(Integer matchId){
+    public List<MatchAppleInfo> getMatchInfoByMatchIdWithTeamInfo(Integer matchId){
+        List<MatchAppleInfo> list=teamMatchMapper.getTeamMatchInfoByMatchId(matchId);
 
-        return null;
+        for (MatchAppleInfo matchAppleInfo : list) {
+            List<Integer> memList=new ArrayList<Integer>();
+            if (matchAppleInfo.getTeamInfo()!=null){
+                if(matchAppleInfo.getTeamInfo().getMemId1()!=null){
+                    memList.add(matchAppleInfo.getTeamInfo().getMemId1());
+                }
+                if(matchAppleInfo.getTeamInfo().getMemId2()!=null){
+                    memList.add(matchAppleInfo.getTeamInfo().getMemId2());
+                }
+                if(matchAppleInfo.getTeamInfo().getMemId3()!=null){
+                    memList.add(matchAppleInfo.getTeamInfo().getMemId3());
+                }
+            }
+            else
+                matchAppleInfo.setTeamInfo(new teamInfo());
+            List<memInfo> memInfoList=null;
+            if(memList.size()!=0)
+                memInfoList=memInfoMapper.getMemInfoByIds(memList);
+            matchAppleInfo.getTeamInfo().setMemList(memInfoList);
+        }
+        return list;
     }
 }

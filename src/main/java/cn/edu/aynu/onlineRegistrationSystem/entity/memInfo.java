@@ -11,6 +11,17 @@ public class memInfo {
 
     private String memPassword;
 
+    @Override
+    public String toString() {
+        return "memInfo{" +
+                "memId=" + memId +
+                ", memName='" + memName + '\'' +
+                ", memEmail='" + memEmail + '\'' +
+                ", memSex='" + memSex + '\'' +
+                ", memPassword='" + memPassword + '\'' +
+                '}';
+    }
+
     public memInfo() {
     }
 

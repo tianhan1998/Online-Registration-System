@@ -1,9 +1,14 @@
 package cn.edu.aynu.onlineRegistrationSystem;
 
+import cn.edu.aynu.onlineRegistrationSystem.entity.MatchAppleInfo;
 import cn.edu.aynu.onlineRegistrationSystem.entity.memInfo;
+import cn.edu.aynu.onlineRegistrationSystem.entity.memMatch;
 import cn.edu.aynu.onlineRegistrationSystem.entity.teamInfo;
 import cn.edu.aynu.onlineRegistrationSystem.mapper.memInfoMapper;
+import cn.edu.aynu.onlineRegistrationSystem.mapper.memMatchMapper;
 import cn.edu.aynu.onlineRegistrationSystem.mapper.teamInfoMapper;
+import cn.edu.aynu.onlineRegistrationSystem.mapper.teamMatchMapper;
+import cn.edu.aynu.onlineRegistrationSystem.service.IndexService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +29,14 @@ public class SqlTest {
     memInfoMapper map;
     @Autowired
     teamInfoMapper teamInfoMapper;
+    @Autowired
+    memMatchMapper memMapper;
 
+    @Autowired
+    teamMatchMapper teamMapper;
 
+    @Autowired
+    IndexService service;
     /**
      * 插入个人信息
      */
@@ -41,5 +52,30 @@ public class SqlTest {
             System.out.println(teamInfo.getTeamName());
         }
     }
+
+
+    @Test
+    public void getAppleTeam(){
+        List<MatchAppleInfo> match=service.getMatchInfoByMatchIdWithTeamInfo(6);
+        for (MatchAppleInfo matchAppleInfo : match) {
+            System.out.println(matchAppleInfo.getMatchTitle()+"--"+matchAppleInfo.getTeamInfo());
+        }
+    }
+
+    @Test
+    public void getAppleMem(){
+        List<MatchAppleInfo> match=memMapper.getMemMatchInfoByMatchId(4);
+        System.out.println(match.size());
+        for (MatchAppleInfo matchAppleInfo : match) {
+            System.out.println(matchAppleInfo.getMatchTitle()+"--"+match.size()+"**"+matchAppleInfo.getMemInfo().getMemName());
+        }
+    }
+
+    @Test
+    public void getAll(){
+        List<memMatch> list=memMapper.getAll();
+        System.out.println(list.size());
+    }
+
 }
 

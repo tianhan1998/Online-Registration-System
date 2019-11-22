@@ -1,11 +1,12 @@
 package cn.edu.aynu.onlineRegistrationSystem.mapper;
 
-import cn.edu.aynu.onlineRegistrationSystem.entity.matchInfo;
+import cn.edu.aynu.onlineRegistrationSystem.entity.MatchAppleInfo;
 import cn.edu.aynu.onlineRegistrationSystem.entity.memMatch;
 import cn.edu.aynu.onlineRegistrationSystem.entity.memMatchExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface memMatchMapper {
@@ -34,4 +35,7 @@ public interface memMatchMapper {
     int checkExistInMemMatch(@Param("mem_id") Integer mem_id,@Param("match_id") Integer match_id);
 
     List<Integer> getJoinedMemByMatchId(Integer id);
+
+    List<MatchAppleInfo> getMemMatchInfoByMatchId(Integer matchId);
+    List<memMatch> getAll();
 }

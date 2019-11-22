@@ -1,5 +1,7 @@
 package cn.edu.aynu.onlineRegistrationSystem.entity;
 
+import java.util.List;
+
 public class teamInfo {
     private Integer teamId;
 
@@ -15,10 +17,46 @@ public class teamInfo {
 
     private Integer memId3;
 
+    private List<memInfo> memList;
+
     private String teamEmail;
+
+    public List<memInfo> getMemList() {
+        return memList;
+    }
+
+    @Override
+    public String toString() {
+        return "teamInfo{" +
+                "teamId=" + teamId +
+                ", teamName='" + teamName + '\'' +
+                ", teamAccount='" + teamAccount + '\'' +
+                ", teamPassword='" + teamPassword + '\'' +
+                ", memId1=" + memId1 +
+                ", memId2=" + memId2 +
+                ", memId3=" + memId3 +
+                ", memList=" + memList +
+                ", teamEmail='" + teamEmail + '\'' +
+                '}';
+    }
+
+    public void setMemList(List<memInfo> memList) {
+        this.memList = memList;
+    }
+
+    public teamInfo(Integer teamId, String teamName, String teamAccount, String teamPassword, List<memInfo> memList, String teamEmail) {
+        this.teamId = teamId;
+        this.teamName = teamName;
+        this.teamAccount = teamAccount;
+        this.teamPassword = teamPassword;
+        this.memList = memList;
+        this.teamEmail = teamEmail;
+    }
 
     public teamInfo() {
     }
+
+
 
     public teamInfo(String teamName, String teamAccount, String teamPassword, String teamEmail) {
         this.teamName = teamName;

@@ -6,6 +6,24 @@
     <result column="team_id" jdbcType="INTEGER" property="teamId" />
     <result column="match_id" jdbcType="INTEGER" property="matchId" />
   </resultMap>
+
+  <resultMap id="AppleResultMap" type="cn.edu.aynu.onlineRegistrationSystem.entity.MatchAppleInfo">
+    <id column="team_info.match_id" jdbcType="INTEGER" property="matchId" />
+    <result column="match_title" property="matchTitle" />
+    <collection  property="teamInfo" ofType="cn.edu.aynu.onlineRegistrationSystem.entity.teamInfo">
+      <id property="teamId" column="team_id"></id>
+      <result property="teamName" column="team_name"></result>
+      <result property="teamId" column="team_id"></result>
+      <result property="memId1" column="mem_id1"></result>
+      <result property="memId2" column="mem_id2"></result>
+      <result property="memId3" column="mem_id3"></result>
+    </collection >
+  </resultMap>
+
+  <select id="getTeamMatchInfoByMatchId" resultMap="AppleResultMap">
+        select * from match_info,team_info,team_match where match_info.match_id=team_match.match_id AND team_match.team_id=team_info.team_id AND match_info.match_id=#{teamId};
+  </select>
+
   <select id="getJoinedTeamByMatchId" resultType="int" parameterType="int">
     select team_id from team_match where match_id=#{id}
   </select>

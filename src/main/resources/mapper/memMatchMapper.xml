@@ -6,6 +6,25 @@
     <result column="mem_id" jdbcType="INTEGER" property="memId" />
     <result column="match_id" jdbcType="INTEGER" property="matchId" />
   </resultMap>
+
+  <resultMap id="AppleResultMap" type="cn.edu.aynu.onlineRegistrationSystem.entity.MatchAppleInfo">
+    <id column="mem_match.match_id" jdbcType="INTEGER" property="matchId" />
+    <result column="match_title" property="matchTitle" />
+    <collection  property="memInfo" ofType="cn.edu.aynu.onlineRegistrationSystem.entity.memInfo">
+      <id property="memId" column="mem_id"></id>
+      <result property="memName" column="mem_name"></result>
+      <result property="memSex" column="mem_sex"></result>
+    </collection >
+  </resultMap>
+
+  <select id="getMemMatchInfoByMatchId" resultMap="AppleResultMap">
+        select * from match_info,mem_info,mem_match where  match_info.match_id=mem_match.match_id AND mem_match.mem_id=mem_info.mem_id AND match_info.match_id=#{matchId};
+  </select>
+
+  <select id="getAll" resultMap="BaseResultMap">
+    select * from mem_match
+  </select>
+
   <select id="getJoinedMemByMatchId" resultType="int">
     select mem_id from mem_match where match_id=#{id}
   </select>

@@ -1,10 +1,12 @@
 package cn.edu.aynu.onlineRegistrationSystem.mapper;
 
+import cn.edu.aynu.onlineRegistrationSystem.entity.MatchAppleInfo;
 import cn.edu.aynu.onlineRegistrationSystem.entity.teamMatch;
 import cn.edu.aynu.onlineRegistrationSystem.entity.teamMatchExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface teamMatchMapper {
@@ -33,4 +35,6 @@ public interface teamMatchMapper {
     int checkExistInTeamMatch(@Param("team_id") Integer team_id,@Param("match_id") Integer match_id);
 
     List<Integer> getJoinedTeamByMatchId(Integer id);
+
+    List<MatchAppleInfo> getTeamMatchInfoByMatchId(Integer matchId);
 }
