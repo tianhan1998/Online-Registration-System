@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
 
@@ -12,6 +12,7 @@
     <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
     <link href="css/animate.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
+    <link rel="shortcut icon" href="#" />
 
 </head>
 
@@ -29,98 +30,32 @@
                 </div>
                 <div class="navbar-collapse collapse" id="navbar">
                     <ul class="nav navbar-nav">
-                        <li class="active">
-                            <a aria-expanded="false" role="button" href="mem_index.html"> 我参加的比赛</a>
+                        <li class="dropdown">
+                            <a aria-expanded="false" role="button" href="mem_tables"> 我参加的比赛</a>
                         </li>
 
                         <li class="dropdown">
-                            <a aria-expanded="false" role="button" href="mem_index_all_list.html"> 所有比赛</a>
+                            <a aria-expanded="false" role="button" href="mem_tables_all"> 所有比赛</a>
                         </li>
-                        <li class="dropdown">
-                            <a aria-expanded="false" role="button" href="search_join_team.html"> 加入一个比赛团队</a>
-                        </li>
-                        <li class="dropdown">
-                            <a aria-expanded="false" role="button" href="join_team_list.html"> 我加入的团队</a>
-                        </li>
+
                     </ul>
                     <ul class="nav navbar-top-links navbar-right">
                         <!--                    通知-->
                         <li class="dropdown open">
-                            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#" aria-expanded="true">
+                            <a class="dropdown-toggle count-info" href="message">
                                 <!--                            信息条数-->
                                 <i class="fa fa-envelope"></i> <span class="label label-warning">2</span>
                             </a>
-                            <ul class="dropdown-menu dropdown-messages">
-
-                                <li class="divider"></li>
-                                <li>
-                                    <div class="dropdown-messages-box">
-                                        <div class="media-body ">
-                                            <strong>我们是第一 团队</strong> 邀请您加入<br>
-                                            <small class="text-muted">2017.10.06 7:58</small>
-<!--                                            同意按钮-->
-                                            <button class="btn btn-primary btn-xs" type="button">√同意</i></button>
-<!--                                            不同意按钮-->
-                                            <button class="btn btn-danger btn-xs" type="button">×不同意</button>
-                                        </div>
-                                    </div>
-                                </li>
-
-                                <li class="divider"></li>
-                                <li>
-                                    <div class="dropdown-messages-box">
-                                        <div class="media-body ">软件学院第一届ACM大赛开始报名了</strong> <br>
-                                            <small class="text-muted">2017.10.06 7:58</small>
-                                        </div>
-                                    </div>
-                                </li>
-
-                                <li class="divider"></li>
-                                <li>
-                                    <div class="text-center link-block">
-                                        <a href="mailbox.html">
-                                            <i class="fa fa-envelope"></i> <strong>阅读所有消息</strong>
-                                        </a>
-                                    </div>
-                                </li>
-                            </ul>
                         </li>
-<!--                        个人信息-->
                         <li class="dropdown">
-                            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#" aria-expanded="true">
+                            <a class="dropdown-toggle count-info" href="mem_info">
                                 <!--                            信息条数-->
                                 <i class="glyphicon glyphicon-user"></i> <span class="label label-warning"></span>
                             </a>
-                            <ul class="dropdown-menu dropdown-alerts">
-                                <li>
-                                        <div>
-                                            <i class="fa fa-envelope fa-fw"></i> 姓名：XXX
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="divider"></li>
-
-                                <li>
-                                        <div>
-                                            <i class="fa fa-envelope fa-fw"></i> 学号：XXX
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="divider"></li>
-
-                                <li>
-                                    <div class="text-center link-block">
-                                        <a href="mem_info.html">
-                                            <strong>查看所有信息</strong>
-                                            <i class="fa fa-angle-right"></i>
-                                        </a>
-                                    </div>
-                                </li>
-                            </ul>
                         </li>
 
                         <li>
-                            <a href="login.html">
+                            <a href="login">
                                 <i class="fa fa-sign-out"></i> 退出登录
                             </a>
                         </li>
@@ -156,15 +91,8 @@
                             <th>队员三</th>
                         </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <th>1</th>
-                                <th>团队赛</th>
-                                <th>对酒当歌</th>
-                                <th>哈哈</th>
-                                <th>嘿嘿</th>
-                                <th>嘻嘻</th>
-                            </tr>
+                        <tbody id="tbody">
+
                         </tbody>
                     </table>
 
@@ -240,10 +168,48 @@
 
 
 <script>
-    $(document).ready(function () {
-        $("button[value='报名']").click(function () {
-            $("myModal").modal(options);
-        });
+    $(function () {
+        $.ajax({
+            url:"api/getMatchInfo",
+            dataType:"json",
+            type:"post",
+            success:function (result) {
+                console.log(result)
+                if(result.code==200){
+                    // $('#tbody').remove();
+                // <tr>
+                //     <th>1</th>
+                //     <th>团队赛</th>
+                //     <th>对酒当歌</th>
+                //     <th>哈哈</th>
+                //     <th>嘿嘿</th>
+                //     <th>嘻嘻</th>
+                // </tr>
+                    for(var i=0;i<result.data.length;i++){
+                        var html1="<tr>\n" +
+                            "                                <th>"+(i+1)+"</th>\n" +
+                            "                                <th><span class=\"label label-primary\">团队赛</span></th>\n" +
+                            "                                <th>"+result.data[i].matchTitle+"</th>\n";
+
+                        if(result.data[i].teamInfo.memList.length==0){
+                            html1+="<th></th><th></th><th></th>"
+                        }else{
+                            var count=0;
+                            for( var j=0;j<result.data[i].teamInfo.memList.length&&j<3;j++){
+                                item=result.data[i].teamInfo.memList[j];
+                                html1+="                         <th>"+item.memName+"</th>\n";
+                                count++;
+                            }
+                            for(var j=count;j<3;j++){
+                                html1+="<th></th>";
+                            }
+                        }
+                        html1+="                            </tr>";
+                        $('#tbody').append(html1);
+                    }
+                }
+            }
+        })
     });
 </script>
 

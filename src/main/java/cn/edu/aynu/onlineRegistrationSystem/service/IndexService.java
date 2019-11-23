@@ -267,7 +267,8 @@ public class IndexService {
             }
             else
                 matchAppleInfo.setTeamInfo(new teamInfo());
-            List<memInfo> memInfoList=null;
+
+            List<memInfo> memInfoList=new ArrayList<memInfo>();
             if(memList.size()!=0)
                 memInfoList=memInfoMapper.getMemInfoByIds(memList);
             matchAppleInfo.getTeamInfo().setMemList(memInfoList);

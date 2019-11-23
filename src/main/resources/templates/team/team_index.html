@@ -164,6 +164,23 @@
 
 
 <script>
+    function matchList(matchId,type){
+        $.ajax({
+            url: "api/setMatchId",
+            dataType:"json",
+            type:"get",
+            data:{"matchId":matchId,"type":type},
+            success:function (result) {
+                console.log(result);
+                if(result.code==200){
+                    if(type==0)
+                        document.location.href="matchMemByteam";
+                    else
+                        document.location.href="matchTeamByteam";
+                }
+            }
+        });
+    }
     $(function () {
         $.ajax({
             url:"matchList",
@@ -193,7 +210,7 @@
 
                     $(".matchs").append("<tr>" +
                         "<th>"+ms.matchId+"</th>" +
-                        "<th>"+ms.matchTitle+"</th>" +
+                        "<th><a onclick='matchList("+ms.matchId+","+ms.matchMode+")'>"+ms.matchTitle+"</a></th>" +
                         "<th>"+ms.matchStarTime+"</th>" +
                         "<th>"+ms.matchEndTime+"</th>" +
                         mode + status +

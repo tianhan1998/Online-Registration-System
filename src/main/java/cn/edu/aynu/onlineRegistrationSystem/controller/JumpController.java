@@ -132,4 +132,13 @@ public class JumpController {
     public String jumpMatchTeamInfoByteam() {
         return "team/matchTeam_list";
     }
+
+    @RequestMapping(value = "sys/matchTeamBysystem",method = RequestMethod.GET)
+    public String jumpMatchTeamInfoBysystem() {
+        return "system/matchTeam_list";
+    }
+    @RequestMapping(value = "sys/matchMemBysystem",method = RequestMethod.GET)
+    public String jumpMatchMemInfoBysystem() {
+        return "system/matchMem_list";
+    }
 }

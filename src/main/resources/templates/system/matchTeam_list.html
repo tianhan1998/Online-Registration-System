@@ -8,11 +8,10 @@
 
     <title>INSPINIA | Dashboard v.4</title>
 
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
-    <link href="css/animate.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
-    <link rel="shortcut icon" href="#" />
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="../css/animate.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
 
 </head>
 
@@ -26,30 +25,25 @@
                             class="navbar-toggle collapsed" type="button">
                         <i class="fa fa-reorder"></i>
                     </button>
-                    <a href="#" class="navbar-brand">报名系统</a>
+                    <a href="#" class="navbar-brand">后台管理系统</a>
                 </div>
                 <div class="navbar-collapse collapse" id="navbar">
                     <ul class="nav navbar-nav">
                         <li class="dropdown">
-                            <a aria-expanded="false" role="button" href="team_tables"> 我参加的比赛</a>
+                            <a aria-expanded="false" role="button" href="getMem"> 所有个人账号</a>
                         </li>
 
                         <li class="dropdown">
-                            <a aria-expanded="false" role="button" href="team_tables_all"> 所有比赛</a>
+                            <a aria-expanded="false" role="button" href="getTeam"> 所有团队账号</a>
                         </li>
                         <li class="dropdown">
-                            <a aria-expanded="false" role="button" href="search_join"> 邀请队员加入我的团队</a>
+                            <a aria-expanded="false" role="button" href="List"> 所有比赛列表</a>
+                        </li>
+                        <li class="dropdown">
+                            <a aria-expanded="false" role="button" href="putMatch"> 发布新比赛</a>
                         </li>
                     </ul>
                     <ul class="nav navbar-top-links navbar-right">
-                        <!--                        团队信息-->
-                        <li class="dropdown">
-                            <a class="dropdown-toggle count-info" href="team_info">
-                                <!--                            信息条数-->
-                                <i class="glyphicon glyphicon-user"></i> <span class="label label-warning"></span>
-                            </a>
-                        </li>
-
                         <li>
                             <a href="login">
                                 <i class="fa fa-sign-out"></i> 退出登录
@@ -81,7 +75,10 @@
                         <tr>
                             <th>#</th>
                             <th>比赛模式</th>
-                            <th>姓名</th>
+                            <th>队伍名</th>
+                            <th>队员一</th>
+                            <th>队员二</th>
+                            <th>队员三</th>
                         </tr>
                         </thead>
                         <tbody id="tbody">
@@ -137,50 +134,72 @@
 
 
 <!-- Mainly scripts -->
-<script src="js/jquery-2.1.1.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
-<script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="../js/jquery-2.1.1.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="../js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
 <!-- Custom and plugin javascript -->
-<script src="js/inspinia.js"></script>
-<script src="js/plugins/pace/pace.min.js"></script>
+<script src="../js/inspinia.js"></script>
+<script src="../js/plugins/pace/pace.min.js"></script>
 
 <!-- Flot -->
-<script src="js/plugins/flot/jquery.flot.js"></script>
-<script src="js/plugins/flot/jquery.flot.tooltip.min.js"></script>
-<script src="js/plugins/flot/jquery.flot.resize.js"></script>
+<script src="../js/plugins/flot/jquery.flot.js"></script>
+<script src="../js/plugins/flot/jquery.flot.tooltip.min.js"></script>
+<script src="../js/plugins/flot/jquery.flot.resize.js"></script>
 
 <!-- ChartJS-->
-<script src="js/plugins/chartJs/Chart.min.js"></script>
+<script src="../js/plugins/chartJs/Chart.min.js"></script>
 
 <!-- Peity -->
-<script src="js/plugins/peity/jquery.peity.min.js"></script>
+<script src="../js/plugins/peity/jquery.peity.min.js"></script>
 <!-- Peity demo -->
-<script src="js/demo/peity-demo.js"></script>
+<script src="../js/demo/peity-demo.js"></script>
 
 
 <script>
     $(function () {
-       $.ajax({
-           url:"api/getMatchInfo",
-           dataType:"json",
-           type:"post",
-           success:function (result) {
-               console.log(result)
-               if(result.code==200){
-                   // $('#tbody').remove();
-                   for(var i=0;i<result.data.length;i++){
-                        var html="<tr>\n" +
+        $.ajax({
+            url:"../api/getMatchInfo",
+            dataType:"json",
+            type:"post",
+            success:function (result) {
+                console.log(result)
+                if(result.code==200){
+                    // $('#tbody').remove();
+                // <tr>
+                //     <th>1</th>
+                //     <th>团队赛</th>
+                //     <th>对酒当歌</th>
+                //     <th>哈哈</th>
+                //     <th>嘿嘿</th>
+                //     <th>嘻嘻</th>
+                // </tr>
+                    for(var i=0;i<result.data.length;i++){
+                        var html1="<tr>\n" +
                             "                                <th>"+(i+1)+"</th>\n" +
-                            "                                <th><span class=\"label label-info\">个人赛</span></th>\n" +
-                            "                                <th>"+result.data[i].memInfo.memName+"</th>\n" +
-                            "                            </tr>";
-                       $('#tbody').append(html);
-                   }
-               }
-           }
-       })
+                            "                                <th><span class=\"label label-primary\">团队赛</span></th>\n" +
+                            "                                <th>"+result.data[i].matchTitle+"</th>\n";
+
+                        if(result.data[i].teamInfo.memList.length==0){
+                            html1+="<th></th><th></th><th></th>"
+                        }else{
+                            var count=0;
+                            for( var j=0;j<result.data[i].teamInfo.memList.length&&j<3;j++){
+                                item=result.data[i].teamInfo.memList[j];
+                                html1+="                         <th>"+item.memName+"</th>\n";
+                                count++;
+                            }
+                            for(var j=count;j<3;j++){
+                                html1+="<th></th>";
+                            }
+                        }
+                        html1+="                            </tr>";
+                        $('#tbody').append(html1);
+                    }
+                }
+            }
+        })
     });
 </script>
 
