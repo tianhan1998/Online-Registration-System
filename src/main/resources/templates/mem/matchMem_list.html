@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 
 <head>
 
@@ -12,7 +12,6 @@
     <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
     <link href="css/animate.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
-    <link rel="shortcut icon" href="#" />
 
 </head>
 
@@ -31,31 +30,97 @@
                 <div class="navbar-collapse collapse" id="navbar">
                     <ul class="nav navbar-nav">
                         <li class="active">
-                            <a aria-expanded="false" role="button" href="mem_tables"> 我参加的比赛</a>
+                            <a aria-expanded="false" role="button" href="mem_index.html"> 我参加的比赛</a>
                         </li>
 
                         <li class="dropdown">
-                            <a aria-expanded="false" role="button" href="mem_tables_all"> 所有比赛</a>
+                            <a aria-expanded="false" role="button" href="mem_index_all_list.html"> 所有比赛</a>
                         </li>
-
+                        <li class="dropdown">
+                            <a aria-expanded="false" role="button" href="search_join_team.html"> 加入一个比赛团队</a>
+                        </li>
+                        <li class="dropdown">
+                            <a aria-expanded="false" role="button" href="join_team_list.html"> 我加入的团队</a>
+                        </li>
                     </ul>
                     <ul class="nav navbar-top-links navbar-right">
                         <!--                    通知-->
                         <li class="dropdown open">
-                            <a class="dropdown-toggle count-info" href="message">
+                            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#" aria-expanded="true">
                                 <!--                            信息条数-->
                                 <i class="fa fa-envelope"></i> <span class="label label-warning">2</span>
                             </a>
+                            <ul class="dropdown-menu dropdown-messages">
+
+                                <li class="divider"></li>
+                                <li>
+                                    <div class="dropdown-messages-box">
+                                        <div class="media-body ">
+                                            <strong>我们是第一 团队</strong> 邀请您加入<br>
+                                            <small class="text-muted">2017.10.06 7:58</small>
+<!--                                            同意按钮-->
+                                            <button class="btn btn-primary btn-xs" type="button">√同意</i></button>
+<!--                                            不同意按钮-->
+                                            <button class="btn btn-danger btn-xs" type="button">×不同意</button>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li class="divider"></li>
+                                <li>
+                                    <div class="dropdown-messages-box">
+                                        <div class="media-body ">软件学院第一届ACM大赛开始报名了</strong> <br>
+                                            <small class="text-muted">2017.10.06 7:58</small>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li class="divider"></li>
+                                <li>
+                                    <div class="text-center link-block">
+                                        <a href="mailbox.html">
+                                            <i class="fa fa-envelope"></i> <strong>阅读所有消息</strong>
+                                        </a>
+                                    </div>
+                                </li>
+                            </ul>
                         </li>
+<!--                        个人信息-->
                         <li class="dropdown">
-                            <a class="dropdown-toggle count-info" href="mem_info">
+                            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#" aria-expanded="true">
                                 <!--                            信息条数-->
                                 <i class="glyphicon glyphicon-user"></i> <span class="label label-warning"></span>
                             </a>
+                            <ul class="dropdown-menu dropdown-alerts">
+                                <li>
+                                        <div>
+                                            <i class="fa fa-envelope fa-fw"></i> 姓名：XXX
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="divider"></li>
+
+                                <li>
+                                        <div>
+                                            <i class="fa fa-envelope fa-fw"></i> 学号：XXX
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="divider"></li>
+
+                                <li>
+                                    <div class="text-center link-block">
+                                        <a href="mem_info.html">
+                                            <strong>查看所有信息</strong>
+                                            <i class="fa fa-angle-right"></i>
+                                        </a>
+                                    </div>
+                                </li>
+                            </ul>
                         </li>
 
                         <li>
-                            <a href="login">
+                            <a href="login.html">
                                 <i class="fa fa-sign-out"></i> 退出登录
                             </a>
                         </li>
@@ -84,14 +149,11 @@
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th>比赛名称</th>
-                            <th>比赛开始时间</th>
-                            <th>比赛结束时间</th>
                             <th>比赛模式</th>
-                            <th>比赛状态</th>
+                            <th>姓名</th>
                         </tr>
                         </thead>
-                        <tbody class="matchs">
+                        <tbody id="tbody">
 
                         </tbody>
                     </table>
@@ -168,62 +230,26 @@
 
 
 <script>
-    function matchList(matchId,type){
-        $.ajax({
-            url: "api/setMatchId",
-            dataType:"json",
-            type:"get",
-            data:{"matchId":matchId,"type":type},
-            success:function (result) {
-                console.log(result);
-                if(result.code==200){
-                    if(type==0)
-                        document.location.href="matchMemBymem";
-                    else
-                        document.location.href="matchTeamBymem";
-                }
-            }
-        });
-    }
-
     $(function () {
-        $.ajax({
-            url:"matchList",
-            datatype:"json",
-            data:[],
-            type:"post",
-            success: function (data) {
-
-                for(var i=0;i<data.data.length;i++) {
-
-                    var ms = data.data[i];
-                    var mode = "";
-                    var status = "";
-                    console.log(ms);
-                    if(ms.matchMode == "0") {
-                        mode = "<th><span class=\"label label-info\">个人赛</span></th>";
-
-                    }else{
-                        mode = "<th><span class=\"label label-primary\">团队赛</span></th>";
-                    }
-                    if(ms.matchStatus == 0) {
-                        status = "<th><span class=\"label label-primary\">未开始</span></th>";
-                    }else if(ms.matchStatus == 2){
-                        status = "<th><span class=\"label label-danger\">已结束</span></th>";
-                    }else{
-                        status = "<th><span class=\"label label-warning\">进行中</span></th>";
-                    }
-
-                    $(".matchs").append("<tr>" +
-                        "<th>"+(i+1)+"</th>" +
-                        "<th><a onclick='matchList("+ms.matchId+","+ms.matchMode+")'>"+ms.matchTitle+"</a></th>" +
-                        "<th>"+ms.matchStarTime+"</th>" +
-                        "<th>"+ms.matchEndTime+"</th>" +
-                            mode + status +
-                        "</tr>");
-                }
-            }
-        })
+       $.ajax({
+           url:"api/getMatchInfo",
+           dataType:"json",
+           type:"post",
+           success:function (result) {
+               console.log(result)
+               if(result.code==200){
+                   // $('#tbody').remove();
+                   for(var i=0;i<result.data.length;i++){
+                        var html="<tr>\n" +
+                            "                                <th>"+(i+1)+"</th>\n" +
+                            "                                <th><span class=\"label label-info\">个人赛</span></th>\n" +
+                            "                                <th>"+result.data[i].memInfo.memName+"</th>\n" +
+                            "                            </tr>";
+                       $('#tbody').append(html);
+                   }
+               }
+           }
+       })
     });
 </script>
 

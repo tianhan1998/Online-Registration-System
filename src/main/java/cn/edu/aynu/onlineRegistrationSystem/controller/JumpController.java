@@ -111,4 +111,25 @@ public class JumpController {
     public String jumpTeamInfo() {
         return "team/team_info";
     }
+
+
+    @RequestMapping(value = "/matchMemBymem",method = RequestMethod.GET)
+    public String jumpMatchMemInfoBymem() {
+        return "mem/matchMem_list";
+    }
+
+    @RequestMapping(value = "/matchTeamBymem",method = RequestMethod.GET)
+    public String jumpMatchTeamInfoBymem() {
+        return "mem/matchTeam_list";
+    }
+
+    @RequestMapping(value = "/matchMemByteam",method = RequestMethod.GET)
+    public String jumpMatchMemInfoByTeam() {
+        return "team/matchMem_list";
+    }
+
+    @RequestMapping(value = "/matchTeamByteam",method = RequestMethod.GET)
+    public String jumpMatchTeamInfoByteam() {
+        return "team/matchTeam_list";
+    }
 }

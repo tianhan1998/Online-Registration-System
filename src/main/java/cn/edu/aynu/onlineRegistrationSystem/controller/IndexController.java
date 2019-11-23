@@ -437,32 +437,6 @@ public class IndexController {
         return json;
     }
 
-    /**
-     * 获取比赛报名信息
-     * @param matchId 比赛id
-     * @param type 比赛的类型（0团队赛，1个人赛）
-     * @return
-     */
-    @PostMapping(value = "/getMatchInfo")
-    public JSONObject getMatchInfo(Integer matchId,String type){
-        JSONObject json=new JSONObject();
-        try{
-            if(type.equals("0")){//获取个人比赛列表
-                List<MatchAppleInfo> list=service.getMatchInfoByMatchIdWithMemInfo(matchId);
-                json.put("code",200);
-                json.put("msg","获取成功");
-                json.put("data",list);
-            }else{//获取团队比赛报名信息列表
-                List<MatchAppleInfo> list=service.getMatchInfoByMatchIdWithTeamInfo(matchId);
-                json.put("code",200);
-                json.put("msg","获取成功");
-                json.put("data",list);
-            }
-        }catch (Exception e){
-            json.put("code",500);
-            json.put("msg",e.getMessage());
-        }
-        return json;
-    }
+
 
 }

@@ -241,7 +241,8 @@ public class IndexService {
      * @return
      */
     public List<MatchAppleInfo> getMatchInfoByMatchIdWithMemInfo(Integer matchId){
-        return memMatchMapper.getMemMatchInfoByMatchId(matchId);
+        return memMatchMapper.getMemMatchInfoByMatchId(matchId);//getMemMatchInfoByMatchId
+
     }
 
     /**

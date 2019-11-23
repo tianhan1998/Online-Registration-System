@@ -1,10 +1,14 @@
 package cn.edu.aynu.onlineRegistrationSystem.controller;
 
+import cn.edu.aynu.onlineRegistrationSystem.entity.MatchAppleInfo;
 import cn.edu.aynu.onlineRegistrationSystem.entity.RSABean;
+import cn.edu.aynu.onlineRegistrationSystem.service.IndexService;
 import cn.edu.aynu.onlineRegistrationSystem.utils.RSA;
 import cn.edu.aynu.onlineRegistrationSystem.utils.VerifyCode;
 import com.alibaba.fastjson.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,11 +16,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api")
 public class UtilsController {
-
+    @Autowired
+    IndexService service;
     /**
      * 获取公钥
      * @return
@@ -48,4 +54,68 @@ public class UtilsController {
         code.output(code.getImage(),response.getOutputStream());
         session.setAttribute("code",code.getText());
     }
+
+    /**
+     * 设置用户点击获取比赛信息按钮时候转发比赛id和比赛类型
+     */
+    @GetMapping(value = "/setMatchId")
+    public JSONObject setMatchId(Integer matchId,String type, HttpServletRequest request){
+        HttpSession session=request.getSession();
+        JSONObject jsonObject=new JSONObject();
+
+        try{
+            if(matchId!=null&&type!=null){
+                session.setAttribute("matchId",matchId);
+                session.setAttribute("matchType",type);
+                jsonObject.put("code",200);
+                jsonObject.put("msg","获取成功");
+            }else{
+                jsonObject.put("code",400);
+                jsonObject.put("msg","请求参数不正确");
+            }
+        }catch (Exception e) {
+            jsonObject.put("code",500);
+            jsonObject.put("msg",e.getMessage());
+        }
+        return jsonObject;
+    }
+    /**
+     * 获取比赛报名信息
+     * @return
+     */
+    @PostMapping(value = "/getMatchInfo")
+    public JSONObject getMatchInfo(HttpServletRequest request){
+        JSONObject json=new JSONObject();
+        HttpSession session=request.getSession();
+        Integer matchId;
+        String type;
+        try{
+            matchId=Integer.parseInt(session.getAttribute("matchId").toString());
+            type=session.getAttribute("matchType").toString();
+            if(type!=null&&matchId!=null){
+
+                if(type.equals("0")){//获取个人比赛列表
+                    System.out.println("个人matchId="+matchId+"matchType="+type);
+                    List<MatchAppleInfo> list=service.getMatchInfoByMatchIdWithMemInfo(matchId);
+                    json.put("code",200);
+                    json.put("msg","获取成功");
+                    json.put("data",list);
+                }else{//获取团队比赛报名信息列表
+                    System.out.println("团队matchId="+matchId+"matchType="+type);
+                    List<MatchAppleInfo> list=service.getMatchInfoByMatchIdWithTeamInfo(matchId);
+                    json.put("code",200);
+                    json.put("msg","获取成功");
+                    json.put("data",list);
+                }
+            }else{
+                json.put("code",400);
+                json.put("msg","没有获取到指定的参数");
+            }
+        }catch (Exception e){
+            json.put("code",500);
+            json.put("msg",e.getMessage());
+        }
+        return json;
+    }
 }
+
