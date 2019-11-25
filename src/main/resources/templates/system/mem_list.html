@@ -155,7 +155,7 @@
 <script src="../js/plugins/peity/jquery.peity.min.js"></script>
 <!-- Peity demo -->
 <script src="../js/demo/peity-demo.js"></script>
-
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <script>
 
@@ -211,10 +211,11 @@
 
                 $('.inv').remove();
                 if(data.code == "200"){
-                    alert("删除成功!");
-                    window.location.reload();
+                    swal("删除成功!").then(function () {
+                        window.location.reload();
+                    })
                 }else{
-                    alert("删除失败!");
+                    swal("删除失败!");
                 }
             }
         })

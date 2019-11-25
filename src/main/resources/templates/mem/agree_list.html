@@ -159,7 +159,7 @@
 <script src="js/plugins/peity/jquery.peity.min.js"></script>
 <!-- Peity demo -->
 <script src="js/demo/peity-demo.js"></script>
-
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <script>
 
@@ -218,9 +218,11 @@
             type:"get",
             data:{"id":id},
             success:function (result) {
-                alert(result.msg);
+
                 if(result.code==200){
-                    location.reload();
+                    swal(result.msg).then(function () {
+                        window.location.reload();
+                    });
                     // $.ajax({
                     //     dataType:json,
                     //     url:"./deleteReceivedMessage",
@@ -234,7 +236,7 @@
                 }
             },
             error:function (result) {
-                alert(result.msg);
+               swal(result.msg);
             }
         })
     }
@@ -246,9 +248,11 @@
             type:"get",
             data:{"id":id},
             success:function (result) {
-                alert(result.msg);
+
                 if(result.code==200) {
-                    location.reload();
+                    swal(result.msg).then(function () {
+                        window.location.reload();
+                    })
                     //     $.ajax({
                     //         dataType:json,
                     //         url:"./deleteReceivedMessage",
@@ -263,7 +267,7 @@
                 }
             },
             error:function (result) {
-                alert(result.msg);
+                swal(result.msg);
             }
         })
     }

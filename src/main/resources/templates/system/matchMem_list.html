@@ -155,7 +155,7 @@
 <script src="../js/plugins/peity/jquery.peity.min.js"></script>
 <!-- Peity demo -->
 <script src="../js/demo/peity-demo.js"></script>
-
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <script>
     // 将一个sheet转成最终的excel文件的blob对象，然后利用URL.createObjectURL下载
@@ -230,7 +230,7 @@
                 openDownloadDialog(sheet2blob(sheet), item.data[0].matchTitle+".xlsx");
 
             }else{
-                alert("没有报名信息无法导出");
+                swal("没有报名信息无法导出");
             }
         });
 

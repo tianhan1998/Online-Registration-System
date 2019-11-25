@@ -52,7 +52,7 @@
 <!-- Mainly scripts -->
 <script src="../js/jquery-2.1.1.js"></script>
 <script src="../js/bootstrap.min.js"></script>
-
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </body>
 <script>
 	$(document).ready(function() {
@@ -70,8 +70,10 @@
 					password:password
 				},
 				success: function(msg){
-					alert( "Data Saved: " + msg );
-					window.location.href='./getTeam';
+
+					swal( "Data Saved: " + msg ).then(function () {
+						window.location.href='./getTeam';
+					});
 				}
 			});
 		});

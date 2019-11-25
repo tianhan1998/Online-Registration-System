@@ -121,7 +121,7 @@
 <script src="js/plugins/iCheck/icheck.min.js"></script>
 <!--		引入加密-->
 <script src="https://cdn.bootcss.com/jsencrypt/3.0.0-beta.1/jsencrypt.js"></script>
-
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
 	var publicKey;
 	var encrypt = new JSEncrypt();//RSA加密对象
@@ -172,13 +172,15 @@
 					success:function (result) {
 						console.log(result);
 						if(result.code=="200"){//注册成功需要重新登录
-							window.location.href="login";
-							alert("注册成功");
+							swal("注册成功").then(function () {
+								window.location.href="login";
+							});
 						}else {//登陆失败
 							console.log(result.msg);
 							$('#pwd1').val(item);//失败密码替换掉
-							window.location.reload();
-							alert(result.msg);
+							swal(result.msg).then(function () {
+								window.location.reload();
+							});
 						}
 					},
 					error:function (result) {
@@ -269,18 +271,20 @@
 					success:function (result) {
 						if(result.code=="200"){
 							console.log(result.msg);
-							alert("注册成功");
-							window.location.href="login";
+							swal("注册成功").then(function () {
+								window.location.href="login";
+							});
 						}else{
 							$('#team_pwd').val(item);//失败密码还回去
-							alert(result.msg);
-							window.location.reload();
+							swal(result.msg).then(function () {
+								window.location.reload();
+							});
 						}
 					},
 					error:function (result) {
 						console.log(result.msg);
 						$('#team_pwd').val(item);//失败密码还回去
-						alert(result.msg);
+						swal(result.msg);
 					}
 				});
 			}else{

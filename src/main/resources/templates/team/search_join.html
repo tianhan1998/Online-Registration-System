@@ -146,28 +146,35 @@
 <script src="js/plugins/peity/jquery.peity.min.js"></script>
 <!-- Peity demo -->
 <script src="js/demo/peity-demo.js"></script>
-
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <script>
     function tren(memId){
-        if(confirm("确定要踢出这个队员吗？")){
-            $.ajax({
-                url:"./deleteMemInTeam",
-                type:"post",
-                dataType: "json",
-                data:{"memId":memId},
-                success:function (result) {
-                    if(result.code==200){
-                        alert("已经踢出");
-                        window.location.reload();
-                    }else{
-                        alert("失败原因："+result.msg);
+        swal({
+            text:"确定要踢出这个队员吗？",
+            showCancelButton: true,
+            confirmButtonText: "确定"
+        }).then(function (isConfirm) {
+            if(isConfirm == true) {
+                $.ajax({
+                    url:"./deleteMemInTeam",
+                    type:"post",
+                    dataType: "json",
+                    data:{"memId":memId},
+                    success:function (result) {
+                        if(result.code==200){
+                            swal("已经踢出").then(function () {
+                                window.location.reload();
+                            });
+                        }else{
+                            swal("失败原因："+result.msg);
+                        }
                     }
-                }
-            });
-        }else {
+                });
+            }else{
 
-        }
+            }
+        })
     }
     $(document).ready(function () {
         $.ajax({
@@ -196,7 +203,7 @@
         $("#submit").click(function () {
             var memId=$("#id").val();
             if(memId.length!=9){
-                alert("学号长度有问题"+memId.length+memId+$("#id").val());
+                swal("学号长度有问题"+memId.length+memId+$("#id").val());
             }else{
                 $.ajax({
                     type:"post",
@@ -204,7 +211,7 @@
                     data:$("#id").serialize(),
                     datatype:"json",
                     success:function (result) {
-                        alert(result.msg);
+                        swal(result.msg);
                         console.log(result);
                         if(result.code!=200){//加入失败
 
@@ -213,7 +220,7 @@
                         }
                     },
                     error:function (result) {
-                        alert("出现未知错误请重试");
+                        swal("出现未知错误请重试");
                     }
                 });
             }

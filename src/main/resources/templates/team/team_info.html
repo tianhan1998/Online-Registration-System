@@ -144,6 +144,7 @@
 <script src="js/plugins/peity/jquery.peity.min.js"></script>
 <!-- Peity demo -->
 <script src="js/demo/peity-demo.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 
 <script>
@@ -193,10 +194,13 @@
             data:{"teamName":$('#team_name').val()},
             success:function (data) {
                 if(data['code']==200){
-                    alert("修改成功!");
-                    window.location.reload();
+                    swal({
+                        text:"修改成功！"
+                    }).then(function () {
+                        window.location.reload();
+                    })
                 }else{
-                    alert("修改失败!");
+                    swal("修改失败！");
                 }
 
             }

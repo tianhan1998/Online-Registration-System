@@ -161,7 +161,7 @@
 <script src="js/plugins/peity/jquery.peity.min.js"></script>
 <!-- Peity demo -->
 <script src="js/demo/peity-demo.js"></script>
-
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <script>
     function matchList(matchId,type){
@@ -261,10 +261,11 @@
                 $('#myModal').modal("hide");
 
                 if(data.code != 200) {
-                    alert("报名失败!");
+                    swal("报名失败!");
                 }else{
-                    alert("报名成功!");
-                    window.location.reload();
+                    swal("报名成功!").then(function () {
+                        window.location.reload();
+                    });
                 }
 
             }
