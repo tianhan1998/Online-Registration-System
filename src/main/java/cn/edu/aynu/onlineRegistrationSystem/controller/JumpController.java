@@ -146,4 +146,9 @@ public class JumpController {
     public String jumpGetJoinTeamInfo() {
         return "mem/myJoinTeamList";
     }
+
+    @RequestMapping(value = "/retrievePassword",method = RequestMethod.GET)
+    public String jumpRetrievePassword() {
+        return "retrievePassword";
+    }
 }

@@ -210,5 +210,21 @@ public class InfoService {
         return teamInfoMapper.updateByPrimaryKeySelective(team);
     }
 
+    /**
+     * 重置个人密码，查找数据库是否有个人邮箱
+     * @param mail 邮箱
+     * @return 是否有邮箱
+     */
+    public boolean memRetrievePassword(String mail) {
+        memInfoExample memInfoExample = new memInfoExample();
+        memInfoExample.setDistinct(true);
+        memInfoExample.Criteria criteria = memInfoExample.createCriteria();
+        criteria.andMemEmailEqualTo(mail);
+        List<memInfo> memInfos = memInfoMapper.selectByExample(memInfoExample);
+        if(memInfos.isEmpty()){
+            return false;
+        }
+        return true;
+    }
 
 }

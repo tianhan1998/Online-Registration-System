@@ -3,6 +3,8 @@ package cn.edu.aynu.onlineRegistrationSystem.controller;
 import cn.edu.aynu.onlineRegistrationSystem.entity.MatchAppleInfo;
 import cn.edu.aynu.onlineRegistrationSystem.entity.RSABean;
 import cn.edu.aynu.onlineRegistrationSystem.service.IndexService;
+import cn.edu.aynu.onlineRegistrationSystem.service.InfoService;
+import cn.edu.aynu.onlineRegistrationSystem.utils.MailUtils;
 import cn.edu.aynu.onlineRegistrationSystem.utils.RSA;
 import cn.edu.aynu.onlineRegistrationSystem.utils.VerifyCode;
 import com.alibaba.fastjson.JSONObject;
@@ -16,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -23,6 +26,13 @@ import java.util.List;
 public class UtilsController {
     @Autowired
     IndexService service;
+    @Autowired
+    MailUtils mailUtils;
+    @Autowired
+    InfoService infoService;
+
+    HashMap<String,String> map = new HashMap<>();
+
     /**
      * 获取公钥
      * @return
@@ -116,6 +126,31 @@ public class UtilsController {
             json.put("msg",e.getMessage());
         }
         return json;
+    }
+
+    @PostMapping(value = "/retrievePassword")
+    public JSONObject getRetrievePassword(String mail) throws Exception {
+        JSONObject jsonObject = new JSONObject();
+        System.out.println(mail);
+        if(mail==null) {
+            jsonObject.put("code","400");
+            jsonObject.put("msg","邮箱为空!");
+        }else{
+            boolean flag = infoService.memRetrievePassword(mail);
+            if(flag){
+
+                mailUtils.sendMail(mail,"报名系统","<h1>请点击下面链接修改密码</h1><a href=''>修改密码</a>");
+                jsonObject.put("code","200");
+                jsonObject.put("msg","发送成功!");
+            }else{
+                jsonObject.put("code","400");
+                jsonObject.put("msg","没有找到邮箱！");
+            }
+        }
+
+
+
+        return jsonObject;
     }
 }
 

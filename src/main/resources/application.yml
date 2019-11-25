@@ -16,6 +16,13 @@ spring:
     encoding:
       charset: utf-8
       force: true
+  mail:
+    host: smtp.sina.cn
+    username: 15993343299@sina.cn
+    password: d7be93b5a90f9333
+    default-encoding: UTF-8
+    protocol: smtp
+    port: 25
 rsa:
   # rsa密钥生成数量
   count: 5
