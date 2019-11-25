@@ -170,6 +170,8 @@ public class IndexController {
                     json.put("msg", "查询成功");
                     json.put("data", lists);
                 } else {
+                    List<memInfo> list=new ArrayList<memInfo>();
+                    json.put("data",list);
                     json.put("code", 200);
                     json.put("msg", "队员数为零");
                 }

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<title>INSPINIA | Login</title>
+
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+
+		<link href="css/animate.css" rel="stylesheet">
+		<link href="css/style.css" rel="stylesheet">
+
+	</head>
+
+	<body class="gray-bg">
+
+		<div class="middle-box text-center loginscreen animated fadeInDown">
+			<div>
+				<div>
+				</div>
+				<h3>设置您的新密码</h3>
+				<div class="tabbable" id="tabs-215554">
+					<div class="tab-content">
+						<div class="tab-pane active" id="panel-967992">
+							<p>
+								<form class="m-t" role="form" action="mem_index.html">
+									
+									<div class="alert alert-danger alert-dismissable">
+									    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+									        两次密码不一致 <a class="alert-link" href="#"></a>.
+									 </div>
+
+									<div class="form-group">
+										<input type="password" class="form-control" placeholder="密码" required="">
+									</div>
+									<div class="form-group">
+										<input type="password" class="form-control" placeholder="密码" required="">
+									</div>
+									<button id="mem_submit" type="submit" class="btn btn-primary block full-width m-b">确认</button>
+								</form>
+							</p>
+						</div>
+					</div>
+				</div>
+				<p class="m-t"> <small>Inspinia we app framework base on Bootstrap 3 &copy; 2014</small> </p>
+			</div>
+		</div>
+
+		<!-- Mainly scripts -->
+		<script src="js/jquery-2.1.1.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+
+	</body>
+	<script>
+		$(document).ready(function() {
+			//个人登陆
+			$("#mem_submit").click(function () {
+				var memId=$("#mem_id").val();
+				if(memId.length!=9){
+					$("#log-mem-id").show().html("<buttonaria-hidden='true' data-dismiss='alert' class='close' type='button'>×</button><p>密码长度不足</p>");
+				}
+				else{
+					window.location.href="mem_index.html";
+				}
+			});
+			//团队登陆
+			$("#team_submit").click(function () {
+				var memId=$("#mem_id").val();
+				if(memId.length!=9){
+					$("#log-mem-id").show().html("<buttonaria-hidden='true' data-dismiss='alert' class='close' type='button'>×</button><p>密码长度不足</p>");
+				}
+				else{
+					window.location.href="team_index.html";
+				}
+			});
+		});
+	</script>
+</html>
