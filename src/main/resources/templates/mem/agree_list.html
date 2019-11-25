@@ -168,7 +168,7 @@
         $.ajax({
             type:"get",
             dataType:"json",
-            url:"./getInvitedMessage",
+            url:"./getInvitedMessage",//getInvitedMessage
             success:function (result) {
                 //$("#messageTables").remove();
                 // messageDate: "2019-11-19 18:58:01"
@@ -221,15 +221,15 @@
                 alert(result.msg);
                 if(result.code==200){
                     location.reload();
-                    $.ajax({
-                        dataType:json,
-                        url:"./deleteReceivedMessage",
-                        type:"get",
-                        data:{"id":id},
-                        success:function (result1) {
-                            console.log(result1);
-                        }
-                    })
+                    // $.ajax({
+                    //     dataType:json,
+                    //     url:"./deleteReceivedMessage",
+                    //     type:"get",
+                    //     data:{"id":id},
+                    //     success:function (result1) {
+                    //         console.log(result1);
+                    //     }
+                    // })
 
                 }
             },
@@ -247,18 +247,19 @@
             data:{"id":id},
             success:function (result) {
                 alert(result.msg);
-                if(result.code==200){
+                if(result.code==200) {
                     location.reload();
-                    $.ajax({
-                        dataType:json,
-                        url:"./deleteReceivedMessage",
-                        type:"get",
-                        data:{"id":id},
-                        success:function (result1) {
-                            console.log(result1);
-                        }
-                    })
-
+                    //     $.ajax({
+                    //         dataType:json,
+                    //         url:"./deleteReceivedMessage",
+                    //         type:"get",
+                    //         data:{"id":id},
+                    //         success:function (result1) {
+                    //             console.log(result1);
+                    //         }
+                    //     })
+                    //
+                    // }
                 }
             },
             error:function (result) {
