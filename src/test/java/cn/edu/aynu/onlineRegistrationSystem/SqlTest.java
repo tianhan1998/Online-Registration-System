@@ -3,7 +3,6 @@ package cn.edu.aynu.onlineRegistrationSystem;
 import cn.edu.aynu.onlineRegistrationSystem.entity.MatchAppleInfo;
 import cn.edu.aynu.onlineRegistrationSystem.entity.memInfo;
 import cn.edu.aynu.onlineRegistrationSystem.entity.memMatch;
-import cn.edu.aynu.onlineRegistrationSystem.entity.teamInfo;
 import cn.edu.aynu.onlineRegistrationSystem.mapper.memInfoMapper;
 import cn.edu.aynu.onlineRegistrationSystem.mapper.memMatchMapper;
 import cn.edu.aynu.onlineRegistrationSystem.mapper.teamInfoMapper;
@@ -47,10 +46,10 @@ public class SqlTest {
 
     @Test
     public void getList(){
-        List<teamInfo> list=teamInfoMapper.getTeamInfoByMemId(174804155);
-        for (teamInfo teamInfo : list) {
-            System.out.println(teamInfo.getTeamName());
-        }
+//        List<teamInfo> list=teamInfoMapper.getTeamInfoByMemId(174804155);
+//        for (teamInfo teamInfo : list) {
+//            System.out.println(teamInfo.getTeamName());
+//        }
     }
 
 

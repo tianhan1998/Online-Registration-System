@@ -1,5 +1,6 @@
 package cn.edu.aynu.onlineRegistrationSystem.controller;
 
+import cn.edu.aynu.onlineRegistrationSystem.entity.MatchAppleInfo;
 import cn.edu.aynu.onlineRegistrationSystem.entity.memInfo;
 import cn.edu.aynu.onlineRegistrationSystem.entity.teamInfo;
 import cn.edu.aynu.onlineRegistrationSystem.service.InfoService;
@@ -204,11 +205,7 @@ public class InfoController {
             if(session.getAttribute("type").toString().equals("mem")) {//个人账号
                 Integer id = (Integer) session.getAttribute("mem_id");
                 if (id != null) {
-                    List<teamInfo> list = infoService.getJoinTeamInfoList(id);
-
-                    for (teamInfo teamInfo : list) {
-                        teamInfo.setTeamPassword(null);
-                    }
+                    List<MatchAppleInfo> list = infoService.getJoinTeamInfoList(id);
                     jsonObject.put("code", 200);
                     jsonObject.put("msg", "获取成功");
                     jsonObject.put("data", list);

@@ -158,8 +158,30 @@ public class InfoService {
      * 获取当前个人账号加入团队的列表
      * @return
      */
-    public List<teamInfo> getJoinTeamInfoList(Integer memId){
-        return teamInfoMapper.getTeamInfoByMemId(memId);
+    public List<MatchAppleInfo> getJoinTeamInfoList(Integer memId){
+        List<MatchAppleInfo> teamInfoList=teamInfoMapper.getTeamInfoByMemId(memId);
+        for (MatchAppleInfo matchAppleInfo : teamInfoList) {
+            List<Integer> memList=new ArrayList<Integer>();
+            if (matchAppleInfo.getTeamInfo()!=null){
+                if(matchAppleInfo.getTeamInfo().getMemId1()!=null){
+                    memList.add(matchAppleInfo.getTeamInfo().getMemId1());
+                }
+                if(matchAppleInfo.getTeamInfo().getMemId2()!=null){
+                    memList.add(matchAppleInfo.getTeamInfo().getMemId2());
+                }
+                if(matchAppleInfo.getTeamInfo().getMemId3()!=null){
+                    memList.add(matchAppleInfo.getTeamInfo().getMemId3());
+                }
+            }
+            else
+                matchAppleInfo.setTeamInfo(new teamInfo());
+
+            List<memInfo> memInfoList=new ArrayList<memInfo>();
+            if(memList.size()!=0)
+                memInfoList=memInfoMapper.getMemInfoByIds(memList);
+            matchAppleInfo.getTeamInfo().setMemList(memInfoList);
+        }
+        return teamInfoList;
     }
 
     /**

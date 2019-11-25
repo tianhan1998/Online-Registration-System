@@ -141,4 +141,9 @@ public class JumpController {
     public String jumpMatchMemInfoBysystem() {
         return "system/matchMem_list";
     }
+
+    @RequestMapping(value = "/getJoinTeamInfo",method = RequestMethod.GET)
+    public String jumpGetJoinTeamInfo() {
+        return "mem/myJoinTeamList";
+    }
 }

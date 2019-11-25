@@ -38,6 +38,9 @@
                             <a aria-expanded="false" role="button" href="mem_tables_all"> 所有比赛</a>
                         </li>
 
+                        <li class="dropdown">
+                            <a aria-expanded="false" role="button" href="getJoinTeamInfo"> 我加入的团队</a>
+                        </li>
                     </ul>
                     <ul class="nav navbar-top-links navbar-right">
                         <!--                    通知-->
@@ -167,7 +170,7 @@
             dataType:"json",
             url:"./getInvitedMessage",
             success:function (result) {
-                $("#messageTables").remove();
+                //$("#messageTables").remove();
                 // messageDate: "2019-11-19 18:58:01"
                 // messageFromId: 4
                 // messageFromName: "测试二队"
@@ -216,8 +219,19 @@
             data:{"id":id},
             success:function (result) {
                 alert(result.msg);
-                if(result.code==200)
+                if(result.code==200){
                     location.reload();
+                    $.ajax({
+                        dataType:json,
+                        url:"./deleteReceivedMessage",
+                        type:"get",
+                        data:{"id":id},
+                        success:function (result1) {
+                            console.log(result1);
+                        }
+                    })
+
+                }
             },
             error:function (result) {
                 alert(result.msg);
@@ -233,8 +247,19 @@
             data:{"id":id},
             success:function (result) {
                 alert(result.msg);
-                if(result.code==200)
+                if(result.code==200){
                     location.reload();
+                    $.ajax({
+                        dataType:json,
+                        url:"./deleteReceivedMessage",
+                        type:"get",
+                        data:{"id":id},
+                        success:function (result1) {
+                            console.log(result1);
+                        }
+                    })
+
+                }
             },
             error:function (result) {
                 alert(result.msg);

@@ -1,5 +1,6 @@
 package cn.edu.aynu.onlineRegistrationSystem.mapper;
 
+import cn.edu.aynu.onlineRegistrationSystem.entity.MatchAppleInfo;
 import cn.edu.aynu.onlineRegistrationSystem.entity.teamInfo;
 import cn.edu.aynu.onlineRegistrationSystem.entity.teamInfoExample;
 import org.apache.ibatis.annotations.Param;
@@ -37,6 +38,6 @@ public interface teamInfoMapper {
 
     int joinTeam(@Param("team") teamInfo team,@Param("memId") Integer memId);
 
-    List<teamInfo> getTeamInfoByMemId(Integer memId);
+    List<MatchAppleInfo> getTeamInfoByMemId(Integer memId);
 
 }

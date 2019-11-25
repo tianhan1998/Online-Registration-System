@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.edu.aynu.onlineRegistrationSystem.mapper.teamInfoMapper">
+  <resultMap id="AppleResultMap" type="cn.edu.aynu.onlineRegistrationSystem.entity.MatchAppleInfo">
+    <id column="team_info.match_id" jdbcType="INTEGER" property="matchId" />
+    <result column="match_title" property="matchTitle" />
+    <collection  property="teamInfo" ofType="cn.edu.aynu.onlineRegistrationSystem.entity.teamInfo">
+      <id property="teamId" column="team_id"></id>
+      <result property="teamName" column="team_name"></result>
+      <result property="teamId" column="team_id"></result>
+      <result property="memId1" column="mem_id1"></result>
+      <result property="memId2" column="mem_id2"></result>
+      <result property="memId3" column="mem_id3"></result>
+    </collection >
+  </resultMap>
   <resultMap id="BaseResultMap" type="cn.edu.aynu.onlineRegistrationSystem.entity.teamInfo">
     <id column="team_id" jdbcType="INTEGER" property="teamId" />
     <result column="team_name" jdbcType="VARCHAR" property="teamName" />
@@ -15,7 +27,7 @@
   <select id="getTeamList" resultMap="BaseResultMap">
     select team_id,team_name,team_account,mem_id1,mem_id2,mem_id3,team_email from team_info
   </select>
-  <select id="getTeamInfoByMemId" resultMap="BaseResultMap">
+  <select id="getTeamInfoByMemId" resultMap="AppleResultMap">
     select * from team_info where mem_id1=#{memId} or mem_id2=#{memId} or mem_id3=#{memId}
   </select>
   <select id="selectByTeamAccount" parameterType="String" resultMap="BaseResultMap">
