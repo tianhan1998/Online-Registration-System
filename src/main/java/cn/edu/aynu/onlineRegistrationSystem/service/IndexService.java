@@ -227,7 +227,7 @@ public class IndexService {
     public List<MessageInfo> selectListBeInvited(Integer to_id) throws Exception {
         List<Integer> list=inviteInfoMapper.selectMessageIdsBeInvited(to_id);
         List<MessageInfo> messageInfos;
-        if(list!=null){
+        if(list!=null&&list.size()!=0){
             messageInfos=messageMapper.selectListMessageByIds(list);
             return messageInfos;
         }else{

@@ -14,14 +14,14 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class FastJsonConfig {
     //fastjson注册器
-    @Bean
-    public HttpMessageConverters fastJsonConfigure(){
-        FastJsonHttpMessageConverter converter = new FastJsonHttpMessageConverter();
-        com.alibaba.fastjson.support.config.FastJsonConfig fastJsonConfig = new com.alibaba.fastjson.support.config.FastJsonConfig();
-        fastJsonConfig.setSerializerFeatures(SerializerFeature.PrettyFormat);
-        //日期格式化
-        fastJsonConfig.setDateFormat("yyyy-MM-dd HH:mm:ss");
-        converter.setFastJsonConfig(fastJsonConfig);
-        return new HttpMessageConverters(converter);
+        @Bean
+        public HttpMessageConverters fastJsonConfigure(){
+            FastJsonHttpMessageConverter converter = new FastJsonHttpMessageConverter();
+            com.alibaba.fastjson.support.config.FastJsonConfig fastJsonConfig = new com.alibaba.fastjson.support.config.FastJsonConfig();
+            fastJsonConfig.setSerializerFeatures(SerializerFeature.PrettyFormat);
+            //日期格式化
+            fastJsonConfig.setDateFormat("yyyy-MM-dd HH:mm:ss");
+            converter.setFastJsonConfig(fastJsonConfig);
+            return new HttpMessageConverters(converter);
     }
 }

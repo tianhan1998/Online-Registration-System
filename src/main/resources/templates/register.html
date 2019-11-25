@@ -52,8 +52,8 @@
 							</div>
 							<div class="form-group">
 								<select id="mem-sex" name="memSex" class="form-control">
-									<option value="F">男</option>
-									<option value="M">女</option>
+									<option value="M">男</option>
+									<option value="F">女</option>
 								</select>
 							</div>
 							<div class="form-group">
@@ -177,6 +177,7 @@
 						}else {//登陆失败
 							console.log(result.msg);
 							$('#pwd1').val(item);//失败密码替换掉
+							window.location.reload();
 							alert(result.msg);
 						}
 					},
@@ -273,6 +274,7 @@
 						}else{
 							$('#team_pwd').val(item);//失败密码还回去
 							alert(result.msg);
+							window.location.reload();
 						}
 					},
 					error:function (result) {
