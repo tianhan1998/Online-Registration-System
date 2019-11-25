@@ -3,11 +3,13 @@ package cn.edu.aynu.onlineRegistrationSystem;
 import cn.edu.aynu.onlineRegistrationSystem.entity.MatchAppleInfo;
 import cn.edu.aynu.onlineRegistrationSystem.entity.memInfo;
 import cn.edu.aynu.onlineRegistrationSystem.entity.memMatch;
+import cn.edu.aynu.onlineRegistrationSystem.entity.teamInfo;
 import cn.edu.aynu.onlineRegistrationSystem.mapper.memInfoMapper;
 import cn.edu.aynu.onlineRegistrationSystem.mapper.memMatchMapper;
 import cn.edu.aynu.onlineRegistrationSystem.mapper.teamInfoMapper;
 import cn.edu.aynu.onlineRegistrationSystem.mapper.teamMatchMapper;
 import cn.edu.aynu.onlineRegistrationSystem.service.IndexService;
+import cn.edu.aynu.onlineRegistrationSystem.service.InfoService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,9 @@ public class SqlTest {
 
     @Autowired
     teamMatchMapper teamMapper;
+
+    @Autowired
+    InfoService infoService;
 
     @Autowired
     IndexService service;
@@ -74,6 +79,19 @@ public class SqlTest {
     public void getAll(){
         List<memMatch> list=memMapper.getAll();
         System.out.println(list.size());
+    }
+    @Test
+    public void delete(){
+        Integer rel=service.deleteMemInTeamByMemId(174804155,6);
+        System.out.println(rel);
+    }
+    @Test
+    public void setTeamInfo(){
+        teamInfo team=new teamInfo();
+        team.setTeamName("测试");
+        team.setMemId2(174804155);
+        int count=infoService.setTeamInfo(4,team);
+        System.out.println(count);
     }
 
 }

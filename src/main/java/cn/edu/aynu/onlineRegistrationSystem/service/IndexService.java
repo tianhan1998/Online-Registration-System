@@ -275,4 +275,28 @@ public class IndexService {
         }
         return list;
     }
+
+    /**
+     * 根据学号和团队号把该个人账号踢出队伍
+     * @return 成功返回0
+     */
+    public Integer deleteMemInTeamByMemId(Integer memId,Integer teamId){
+        teamInfo teamInfo=teamInfoMapper.selectByPrimaryKey(teamId);
+        teamInfo item=new teamInfo();
+        item.setTeamId(teamInfo.getTeamId());
+        item.setTeamName(teamInfo.getTeamName());
+        item.setTeamPassword(teamInfo.getTeamPassword());
+        item.setTeamAccount(teamInfo.getTeamAccount());
+        item.setTeamEmail(teamInfo.getTeamEmail());
+        if(teamInfo.getMemId1()!=null&&!teamInfo.getMemId1().equals(memId)){
+            item.setMemId1(teamInfo.getMemId1());
+        }
+        if(teamInfo.getMemId2()!=null&&!teamInfo.getMemId2().equals(memId)){
+            item.setMemId2(teamInfo.getMemId2());
+        }
+        if(teamInfo.getMemId3()!=null&&!teamInfo.getMemId3().equals(memId)){
+            item.setMemId3(teamInfo.getMemId3());
+        }
+        return teamInfoMapper.updateByPrimaryKey(item);
+    }
 }

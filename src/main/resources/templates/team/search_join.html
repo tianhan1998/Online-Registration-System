@@ -38,7 +38,7 @@
                             <a aria-expanded="false" role="button" href="team_tables_all"> 所有比赛</a>
                         </li>
                         <li class="dropdown">
-                            <a aria-expanded="false" role="button" href="search_join"> 邀请队员加入我的团队</a>
+                            <a aria-expanded="false" role="button" href="search_join"> 管理我的团队</a>
                         </li>
                     </ul>
                     <ul class="nav navbar-top-links navbar-right">
@@ -62,7 +62,7 @@
         </div>
         <div class="wrapper wrapper-content">
             <h2 class="text-center">
-                <span class="text-navy">邀请队员加入我</span>
+                <span class="text-navy">邀请队员加入我的团队</span>
             </h2>
             <form action="index.html" method="get">
                 <div class="input-group">
@@ -77,43 +77,39 @@
                 </div>
 
             </form>
+            <h2 class="text-center">
+                <span class="text-navy">管理我的团队</span>
+            </h2>
             <!--            表格-->
-<!--            <div class="ibox float-e-margins">-->
-<!--                <div class="ibox-title">-->
-<!--                    <h5>搜索结果 </h5>-->
-<!--                    <div class="ibox-tools">-->
-<!--                        <a class="collapse-link">-->
-<!--                            <i class="fa fa-chevron-up"></i>-->
-<!--                        </a>-->
-<!--                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">-->
-<!--                            <i class="fa fa-wrench"></i>-->
-<!--                        </a>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <div class="ibox-content">-->
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>管理我的团队</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
 
-<!--                    <table class="table table-bordered">-->
-<!--                        <thead>-->
-<!--                        <tr>-->
-<!--                            <th>#</th>-->
-<!--                            <th>学号</th>-->
-<!--                            <th>姓名</th>-->
-<!--                            <th>操作</th>-->
-<!--                        </tr>-->
-<!--                        </thead>-->
-<!--                        <tbody>-->
-<!--                        <tr>-->
-<!--                            <th>1</th>-->
-<!--                            <th>174804155</th>-->
-<!--                            <th>XXXXX</a></th>-->
-<!--                            <th>-->
-<!--                                <button type="button" class="btn btn-w-m btn-info btn-xs" data-toggle="modal" data-target="#myModal">邀请加入我的团队</button>-->
-<!--                            </th>-->
-<!--                        </tr>-->
-<!--                        </tbody>-->
-<!--                    </table>-->
-<!--                </div>-->
-<!--            </div>-->
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>学号</th>
+                            <th>姓名</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody id="table">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
         <div class="footer">
             <div class="pull-right">
@@ -153,9 +149,50 @@
 
 
 <script>
-    $(document).ready(function () {
+    function tren(memId){
+        if(confirm("确定要踢出这个队员吗？")){
+            $.ajax({
+                url:"./deleteMemInTeam",
+                type:"post",
+                dataType: "json",
+                data:{"memId":memId},
+                success:function (result) {
+                    if(result.code==200){
+                        alert("已经踢出");
+                        window.location.reload();
+                    }else{
+                        alert("失败原因："+result.msg);
+                    }
+                }
+            });
+        }else {
 
-        
+        }
+    }
+    $(document).ready(function () {
+        $.ajax({
+            url:"./member",
+            dataType:"json",
+            type:"get",
+            success:function (result) {
+                if(result.hasOwnProperty("data")){
+                    for(var i=0;i<result.data.length;i++){
+                        var ms=result.data[i];
+                        var html=" <tr>\n" +
+                            "                                <th>"+(i+1)+"</th>\n" +
+                            "                                <th>"+ms.memId+"</th>\n" +
+                            "                                <th>"+ms.memName+"</a></th>\n" +
+                            "                                <th>\n" +
+                            "                                    <button type=\"button\" class=\"btn btn-w-m btn-warning btn-xs\" onclick='tren("+ms.memId+")'>踢出队员</button>\n" +
+                            "                                </th>\n" +
+                            "                            </tr>";
+                        $("#table").append(html);
+                    }
+                }else{
+                    $("#table").append("无信息");
+                }
+            }
+        });
         $("#submit").click(function () {
             var memId=$("#id").val();
             if(memId.length!=9){

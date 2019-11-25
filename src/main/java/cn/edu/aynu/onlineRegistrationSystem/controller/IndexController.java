@@ -7,7 +7,9 @@ import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -437,6 +439,31 @@ public class IndexController {
         return json;
     }
 
-
+    /**
+     * 踢出队员
+     * @param memId 带踢出队员的学号
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/deleteMemInTeam",produces = "application/json;charset=utf-8" )
+    public JSONObject deleteMemInTeam(Integer memId,HttpServletRequest request){
+        HttpSession session=request.getSession();
+        JSONObject jsonObject=new JSONObject();
+        try{
+            Integer teamId= (Integer) session.getAttribute("team_id");
+            if(memId!=null&&teamId!=null){
+                service.deleteMemInTeamByMemId(memId,teamId);
+                jsonObject.put("code",200);
+                jsonObject.put("msg","成功");
+            }else{
+                jsonObject.put("code",400);
+                jsonObject.put("msg","出现错误这个接口必须是团队账号请求，或者您发送请求参数为空");
+            }
+        }catch (Exception e){
+            jsonObject.put("code",500);
+            jsonObject.put("msg",e.getMessage());
+        }
+        return jsonObject;
+    }
 
 }
