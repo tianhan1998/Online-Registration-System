@@ -68,7 +68,7 @@
 								账号或者密码错误 <a class="alert-link" href="#"></a>
 							</div>
 							<div class="form-group">
-								<input type="text" name="team_account" class="form-control" placeholder="账号" required="">
+								<input id="team_id" type="text" name="team_account" class="form-control" placeholder="账号" required="">
 							</div>
 							<input name="type" type="hidden" value="1">
 							<div class="form-group">
@@ -163,26 +163,32 @@
 			password=encrypt.encrypt(password);
 			$("#team_pwd").val(password);//替换个人登陆的密码
 
-			//进行登录尝试
-			$.ajax({
-				type:"post",
-				url:"./signIn",
-				data:$("#teamForm").serialize(),
-				dataType:"json",
-				success:function (result) {
-					console.log(result);
-					if(result.code=="200"){//登录成功
-						window.location.href="/ORS/team_tables";
-					}else{//登录失败
-						$("#team_log").show();
+			var teamId=$("#team_id").val();
+
+			if(teamId!=null&&teamId.length!=0){//团队账号为空
+				$("#team_log").show().html("账号不能为空");
+			}else{
+				//进行登录尝试
+				$.ajax({
+					type:"post",
+					url:"./signIn",
+					data:$("#teamForm").serialize(),
+					dataType:"json",
+					success:function (result) {
+						console.log(result);
+						if(result.code=="200"){//登录成功
+							window.location.href="/ORS/team_tables";
+						}else{//登录失败
+							$("#team_log").show();
+							$("#team_pwd").val(item);//登陆失败替换回密码
+						}
+					},
+					error:function (result) {
+						console.log(result.msg);
 						$("#team_pwd").val(item);//登陆失败替换回密码
 					}
-				},
-				error:function (result) {
-					console.log(result.msg);
-					$("#team_pwd").val(item);//登陆失败替换回密码
-				}
-			});
+				});
+			}
 		});
 	});
 </script>

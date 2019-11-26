@@ -49,6 +49,7 @@
 							</div>
 							<div class="form-group">
 								<input id="mem-name" name="memName" type="text" class="form-control" placeholder="姓名" required="">
+								<div id="mem-name-log" class="badge badge-primary" style="display: none">该学号已被注册</div>
 							</div>
 							<div class="form-group">
 								<select id="mem-sex" name="memSex" class="form-control">
@@ -58,6 +59,7 @@
 							</div>
 							<div class="form-group">
 								<input id="mem-email" name="memEmail" type="email" class="form-control" placeholder="电子邮箱" required="">
+								<div id="mem-email-log" class="badge badge-primary" style="display: none">该学号已被注册</div>
 							</div>
 							<div class="form-group">
 								<input id="pwd1" name="memPassword" type="password" class="form-control" placeholder="密码" required="">
@@ -81,14 +83,16 @@
 						<form id="teamForm" class="teamForm" role="form">
 							<input type="hidden" name="type" value="1">
 							<div class="form-group">
-								<input type="text" name="team_account" class="form-control" placeholder="账号" required="">
+								<input id="team-accound" type="text" name="team_account" class="form-control" placeholder="账号" required="">
 								<div id="team-accound-log" class="badge badge-primary" style="display: none">该账户已被注册</div>
 							</div>
 							<div class="form-group">
-								<input type="text" name="team_name" class="form-control" placeholder="团队名称" required="">
+								<input id="team_name" type="text" name="team_name" class="form-control" placeholder="团队名称" required="">
+								<div id="team_name-log" class="badge badge-primary" style="display: none">该账户已被注册</div>
 							</div>
 							<div class="form-group">
-								<input type="email" name="team_email" class="form-control" placeholder="邮箱" required="">
+								<input id="team_email"type="email" name="team_email" class="form-control" placeholder="邮箱" required="">
+								<div id="team_email-log" class="badge badge-primary" style="display: none">该账户已被注册</div>
 							</div>
 							<div class="form-group">
 								<input id="team_pwd" type="password" name="team_password" class="form-control" placeholder="密码" required="">
@@ -98,7 +102,7 @@
 								<div id="team-pwd-log" class="label label-danger" style="display: none">两次密码不一致</div>
 							</div>
 							<div class="form-group">
-								<input name="code" type="text" class="form-control" placeholder="验证码" required="">
+								<input id="code1" name="code" type="text" class="form-control" placeholder="验证码" required="">
 								<img src="./api/getVeifyCode" onclick="yzm(this)">
 							</div>
 							<button id="team-submit" type="button" class="btn btn-primary block full-width m-b">注册</button>
@@ -152,10 +156,62 @@
 		//学号是否通过验证
 		var flagMemId=0;
 		var flagMedPwd=0;
+		var flagMemName=0;
+		var falgMemEmail=0;
+		var flagyzm=0;
+		
+		//个人验证码校验
+		$("#code").blur(function () {
+			var reg=/^\d{4}$/;
+
+			var code=$("#code").val();
+
+			if(reg.test(code)){
+				flagyzm=1;
+			}else{
+				swal("验证码不合法");
+				flagyzm=0;
+			}
+		});
+		
+		//个人注册邮箱验证
+		$("#mem-email").blur(function () {
+			var email=$("#mem-email").val();
+			var reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+			if(reg.test(email)){//邮箱合法性校验
+				falgMemEmail=1;
+				var log=$("#mem-email-log").show().removeClass().addClass("badge badge-primary");
+				log.empty().append("通过验证");
+			}else{
+				var log=$("#mem-email-log").show().removeClass().addClass("badge label-danger");
+				log.empty().append("邮箱格式有误");
+				falgMemEmail=0;
+			}
+		});
+
+		//个人注册姓名验证
+		$("#mem-name").blur(function () {
+			var name=$("#mem-name").val();
+			if(name.length>0&&name.length<10){
+				flagMemName=1;
+				var log=$("#mem-name-log").show().removeClass().addClass("badge badge-primary");
+				log.empty().append("通过验证");
+			}else{
+				var log=$("#mem-name-log").show().removeClass().addClass("badge label-danger");
+				log.empty().append("姓名长度要合法");
+				flagMemName=0;
+			}
+		});
+
+		// var flagMemId=0;
+		// var flagMedPwd=0;
+		// var flagMemName=0;
+		// var falgMemEmail=0;
+		// var flagyzm=0;
 
 		//个人注册
 		$("#memSubmit").click(function () {
-			if(flagMemId==1&&flagMedPwd==1){
+			if(flagMemId==1&&flagMedPwd==1&&flagMemName==1&&falgMemEmail==1&&flagyzm==1){
 
 				var password=$('#pwd1').val();
 				var item=password;
@@ -185,16 +241,19 @@
 						}
 					},
 					error:function (result) {
-
 						console.log(result.msg);
 					}
 				})
+			}else{
+				swal("请完善您的信息");
 			}
 		});
 
 		$("#mem-id").blur(function () {//验证该账户是否被注册
 			var memId=$("#mem-id").val();
-			if(memId.length>0){
+			var reg=/^\d{9}$/;
+
+			if(reg.test(memId)){
 				$.ajax({
 					type:"get",
 					url:"./signUp",
@@ -204,11 +263,10 @@
 						console.log(result);
 
 						if(result.code=="200"){//可以注册
+							var log=$("#mem-id-log").show().removeClass().addClass("badge badge-primary");
+							log.empty().append("可以使用");
 							//label label-danger 失败
 							//badge badge-primary 成功
-							var log=$("#mem-id-log").show().removeClass().addClass("badge badge-primary");
-							log.empty().append("可以注册");
-							flagMemId=1;
 						}else{//不能注册
 							var log=$("#mem-id-log").show().removeClass().addClass("badge label-danger");
 							log.empty().append("该学号已经被注册不能使用");
@@ -221,9 +279,9 @@
 						flagMemId=0;
 					}
 				});
-			}else{//学号长度有误
+			}else{
 				var log=$("#mem-id-log").show().removeClass().addClass("badge label-danger");
-				log.empty().append("请输入你的学号");
+				log.empty().append("学号长度不合法,且学号必须是纯数字");
 				flagMemId=0;
 			}
 		});
@@ -232,18 +290,26 @@
 		$("#pwd2").blur(function () {
 			var pwd1=$("#pwd1").val();
 			var pwd2=$("#pwd2").val();
-			if(pwd1!=pwd2) {
-				$("#pwd-log").show().empty().append("两次密码不一致");
-				flagMedPwd=0;
+			if(pwd1.length>3){
+				if(pwd1!=pwd2) {
+					$("#pwd-log").show().empty().append("两次密码不一致");
+					flagMedPwd=0;
+				}else{
+					$("#pwd-log").hide();
+					flagMedPwd=1;
+				}
 			}else{
-				$("#pwd-log").hide();
-				flagMedPwd=1;
+				swal("密码位数最小需要3位");
+				flagMedPwd=0;
 			}
 		});
 
 
 		var falgTeamAccound=0;
 		var falgTeamPwd=0;
+		var flagTeamName=0;
+		var flagTeamEmail=0;
+		var flagTeamCode=0;
 		// * @param memEmail 安全邮箱
 		// * @param team_account 队伍账号
 		// * @param team_name 队伍名称
@@ -252,8 +318,51 @@
 		//label label-danger 失败
 		//badge badge-primary 成功
 
-		//提交团队注册
+		//团队验证码
+		//个人验证码校验
+		$("#code1").blur(function () {
+			var reg=/^\d{4}$/;
 
+			var code=$("#code1").val();
+
+			if(reg.test(code)){
+				flagyzm=1;
+			}else{
+				swal("验证码不合法");
+				flagyzm=0;
+			}
+		});
+
+		//验证团队团队邮箱
+		$("#team_email").blur(function () {
+			var name=$("#team_email").val();
+			if(name.length>0){
+				var log=$("#team_email-log").show().removeClass().addClass("badge badge-primary");
+				log.empty().append("该邮箱可以使用");
+				flagTeamEmail=1;
+			}else{
+				var log=$("#team_email-log").show().removeClass().addClass("badge label-danger");
+				log.empty().append("邮箱格式不合法");
+				flagTeamEmail=0;
+			}
+		});
+
+		//验证团队名称
+		$("#team_name").blur(function () {
+			var name=$("#team_name").val();
+			if(name.length>0){
+				var log=$("#team_name-log").show().removeClass().addClass("badge badge-primary");
+				log.empty().append("该队名可以使用");
+				flagTeamName=1;
+			}else{
+				var log=$("#team_name-log").show().removeClass().addClass("badge label-danger");
+				log.empty().append("队名不能为空");
+				flagTeamName=0;
+			}
+		});
+
+
+		//提交团队注册
 		$("#team-submit").click(function () {
 			if(falgTeamAccound==1&&falgTeamPwd==1){
 				var password=$('#team_pwd').val();
@@ -289,7 +398,7 @@
 					}
 				});
 			}else{
-				console.log("验证没有通过");
+				swal("请填写所有的信息");
 			}
 		});
 
@@ -299,13 +408,18 @@
 			var pwd2=$("#team-pwd2").val();
 
 			var pwdLog=$("#team-pwd-log");
+			if(pwd1.length>3){
 
-			if(pwd1!=pwd2){
-				pwdLog.show();
-				falgTeamPwd=0;
+				if(pwd1!=pwd2){
+					pwdLog.show();
+					falgTeamPwd=0;
+				}else{
+					pwdLog.hide();
+					falgTeamPwd=1;
+				}
 			}else{
-				pwdLog.hide();
-				falgTeamPwd=1;
+				swal("密码长度应该大于3位");
+				falgTeamPwd=0;
 			}
 		});
 
