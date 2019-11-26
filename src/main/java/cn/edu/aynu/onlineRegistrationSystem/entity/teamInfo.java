@@ -1,14 +1,20 @@
 package cn.edu.aynu.onlineRegistrationSystem.entity;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 public class teamInfo {
     private Integer teamId;
 
+    @NotBlank
     private String teamName;
 
+    @NotBlank
     private String teamAccount;
 
+    @NotBlank
     private String teamPassword;
 
     private Integer memId1;
@@ -19,6 +25,8 @@ public class teamInfo {
 
     private List<memInfo> memList;
 
+    @NotBlank
+    @Email
     private String teamEmail;
 
     public List<memInfo> getMemList() {

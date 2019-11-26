@@ -1,14 +1,23 @@
 package cn.edu.aynu.onlineRegistrationSystem.entity;
 
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Range;
+
+import javax.validation.constraints.*;
+
 public class memInfo {
+    @NotNull
+    @Min(100000000)
+    @Max(999999999)
     private Integer memId;
-
+    @NotBlank
     private String memName;
-
+    @NotBlank
+    @Email
     private String memEmail;
-
+    @NotBlank
     private String memSex;
-
+    @NotBlank
     private String memPassword;
 
     @Override

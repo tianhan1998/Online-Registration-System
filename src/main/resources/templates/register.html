@@ -42,7 +42,6 @@
 				<div class="tab-pane active" id="panel-967992">
 					<p>
 						<form id="memForm" class="m-t" role="form">
-							<input type="hidden" name="type" value="0">
 							<div class="form-group">
 								<input id="mem-id" name="memId" type="text"  class="form-control" placeholder="学号" required="">
 								<div id="mem-id-log" class="badge badge-primary" style="display: none">该学号已被注册</div>
@@ -79,19 +78,18 @@
 				<div class="tab-pane" id="panel-884429">
 					<p>
 						<form id="teamForm" class="teamForm" role="form">
-							<input type="hidden" name="type" value="1">
 							<div class="form-group">
-								<input type="text" name="team_account" class="form-control" placeholder="账号" required="">
+								<input type="text" name="teamAccount" class="form-control" placeholder="账号" required="">
 								<div id="team-accound-log" class="badge badge-primary" style="display: none">该账户已被注册</div>
 							</div>
 							<div class="form-group">
-								<input type="text" name="team_name" class="form-control" placeholder="团队名称" required="">
+								<input type="text" name="teamName" class="form-control" placeholder="团队名称" required="">
 							</div>
 							<div class="form-group">
-								<input type="email" name="team_email" class="form-control" placeholder="邮箱" required="">
+								<input type="email" name="teamEmail" class="form-control" placeholder="邮箱" required="">
 							</div>
 							<div class="form-group">
-								<input id="team_pwd" type="password" name="team_password" class="form-control" placeholder="密码" required="">
+								<input id="team_pwd" type="password" name="teamPassword" class="form-control" placeholder="密码" required="">
 							</div>
 							<div class="form-group">
 								<input id="team-pwd2" type="password" class="form-control" placeholder="二次密码" required="">
@@ -167,7 +165,7 @@
 
 				$.ajax({
 					type:"post",
-					url:"./signUp",
+					url:"./signUpMem",
 					dataType:"json",
 					data:$("#memForm").serialize(),
 					success:function (result) {
@@ -268,7 +266,7 @@
 					type:"post",
 					dataType:"json",
 					data:$("#teamForm").serialize(),
-					url:"./signUp",
+					url:"./signUpTeam",
 					success:function (result) {
 						if(result.code=="200"){
 							console.log(result.msg);
@@ -295,7 +293,7 @@
 
 		//校验团队注册密码两次是否一致
 		$("#team-pwd2").blur(function () {
-			var pwd1=$("input[name='team_password']").val();
+			var pwd1=$("input[name='teamPassword']").val();
 			var pwd2=$("#team-pwd2").val();
 
 			var pwdLog=$("#team-pwd-log");
@@ -310,15 +308,15 @@
 		});
 
 		//校验团队账号是否存在
-		$("input[name='team_account']").blur(function () {
-			var teamAccount=$("input[name='team_account']").val();
+		$("input[name='teamAccount']").blur(function () {
+			var teamAccount=$("input[name='teamAccount']").val();
 
 			if(teamAccount.length!=0){
 				$.ajax({
 					type:"get",
 					dataType:"json",
 					url:"./signUpTeam",
-					data:{"team_account":teamAccount},
+					data:{"teamAccount":teamAccount},
 					success:function (result) {
 						if(result.code=="200"){//可以注册
 							falgTeamAccound=1;

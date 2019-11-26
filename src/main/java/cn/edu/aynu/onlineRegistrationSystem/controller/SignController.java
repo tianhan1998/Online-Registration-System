@@ -6,14 +6,16 @@ import cn.edu.aynu.onlineRegistrationSystem.service.SignService;
 import cn.edu.aynu.onlineRegistrationSystem.utils.RSA;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -25,26 +27,13 @@ import java.util.List;
 public class SignController {
     @Autowired
     SignService service;
-
-
-    @Autowired
-    JSONObject json;
     /**
-     *注册
-     * @param memId 学号
-     * @param memName 姓名
-     * @param memPassword 密码
-     * @param memSex 性别
-     * @param memEmail 安全邮箱
-     * @param team_account 队伍账号
-     * @param team_name 队伍名称
-     * @param team_password 队伍密码
-     * @param type 类型，0是个人，1是团队
-     * @param code 验证码
+     *个人注册
      * @return json{code:200,msg:xxx,data:[]}
      */
-    @RequestMapping(value = "/signUp",method = RequestMethod.POST)
-    public JSONObject signUp(String memId, String memName, String memPassword, String memEmail, String memSex, String code,HttpServletRequest request,Integer type,String team_account,String team_name,String team_password,String team_email)  {
+    @RequestMapping(value = "/signUpMem",method = RequestMethod.POST)
+    public JSONObject signUpMem(@Valid memInfo user,BindingResult result, String code, HttpServletRequest request)  {
+        JSONObject json=new JSONObject();
         HttpSession session;
         try {
             session=request.getSession();
@@ -52,32 +41,20 @@ public class SignController {
             if(sessionCode!=null) {
                 if(sessionCode.equals(code)) {
                     System.out.println("请求验证码"+code+"正确验证码"+sessionCode);
+                    if(result.hasErrors()){
+                        json.put("code",500);
+                        json.put("msg",result.getAllErrors());
+                        return json;
+                    }
                     if (session.getAttribute("privateKey") != null) {
-                        if (type == 0) {
-                            memPassword = RSA.decrypt(memPassword, session.getAttribute("privateKey").toString());//获取私钥解密
-
-                            memInfo memInfo = new memInfo(Integer.valueOf(memId), memName, memEmail, memSex, memPassword);
-                            if (service.signUp(memInfo)) {
-                                String obj = JSONObject.toJSONString(memInfo);
-                                json.put("code", 200);
-                                json.put("msg", "注册成功");
-                                json.put("data", obj);
-                            } else {
-                                json.put("code", 404);
-                                json.put("msg", "用户已存在");
-                            }
+                        user.setMemPassword(RSA.decrypt(user.getMemPassword(), session.getAttribute("privateKey").toString()));//获取私钥解密
+                        if (service.signUp(user)) {
+                            json.put("code", 200);
+                            json.put("msg", "注册成功");
+                            json.put("data", user);
                         } else {
-                            team_password = RSA.decrypt(team_password, session.getAttribute("privateKey").toString());//获取私钥解密
-                            teamInfo team = new teamInfo(team_name, team_account, team_password, team_email);
-                            if (service.signUpTeam(team)) {
-                                String obj = JSONArray.toJSONString(team);
-                                json.put("code", 200);
-                                json.put("msg", "注册队伍成功");
-                                json.put("data", obj);
-                            } else {
-                                json.put("code", 404);
-                                json.put("msg", "队伍已存在");
-                            }
+                            json.put("code", 404);
+                            json.put("msg", "用户已存在");
                         }
                     } else {
                         json.put("code", 500);
@@ -97,7 +74,53 @@ public class SignController {
         }
         return json;
     }
-
+    /**
+     *注册
+     * @return json{code:200,msg:xxx,data:[]}
+     */
+    @RequestMapping(value = "/signUpTeam",method = RequestMethod.POST)
+    public JSONObject signUpTeam(String code, HttpServletRequest request,@Valid teamInfo team,BindingResult result)  {
+        JSONObject json=new JSONObject();
+        HttpSession session;
+        try {
+            session=request.getSession();
+            String sessionCode=session.getAttribute("code").toString();
+            if(sessionCode!=null) {
+                if(sessionCode.equals(code)) {
+                    System.out.println("请求验证码"+code+"正确验证码"+sessionCode);
+                    if(result.hasErrors()){
+                        json.put("msg",result.getAllErrors());
+                        json.put("code",500);
+                        return json;
+                    }
+                    if (session.getAttribute("privateKey") != null) {
+                        team.setTeamPassword(RSA.decrypt(team.getTeamPassword(), session.getAttribute("privateKey").toString()));//获取私钥解密
+                        if (service.signUpTeam(team)) {
+                            json.put("code", 200);
+                            json.put("msg", "注册队伍成功");
+                            json.put("data", team);
+                        } else {
+                            json.put("code", 404);
+                            json.put("msg", "队伍已存在");
+                        }
+                    }else {
+                        json.put("code", 500);
+                        json.put("msg", "你没有获取公钥,请刷新重试");
+                    }
+                }else{
+                    json.put("code", 400);
+                    json.put("msg", "验证码错误,请刷新重试");
+                }
+            }else{
+                json.put("code", 500);
+                json.put("msg", "验证码为空,请刷新重试");
+            }
+        }catch (Exception e){
+            json.put("code",500);
+            json.put("msg",e.getMessage());
+        }
+        return json;
+    }
     /***
      *个人注册ajax检测id是否重复
      * @param memId 检查id重复
@@ -159,6 +182,7 @@ public class SignController {
      */
     @RequestMapping(value = "/signIn",method = RequestMethod.POST)
     public JSONObject signIn(String team_account,String id, String password, HttpServletRequest request,Integer type){
+        JSONObject json=new JSONObject();
         HttpSession session;
         List<memInfo> list;
         List<teamInfo> lists;
