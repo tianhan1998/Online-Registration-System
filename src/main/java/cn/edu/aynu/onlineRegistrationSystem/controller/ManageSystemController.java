@@ -6,6 +6,7 @@ import cn.edu.aynu.onlineRegistrationSystem.entity.memInfo;
 import cn.edu.aynu.onlineRegistrationSystem.entity.teamInfo;
 import cn.edu.aynu.onlineRegistrationSystem.service.IndexService;
 import cn.edu.aynu.onlineRegistrationSystem.service.ManageSystemService;
+import cn.edu.aynu.onlineRegistrationSystem.utils.SchedulingUtils;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -307,6 +308,7 @@ public class ManageSystemController {
         try {
             int rel=service.addMatch(matchTitle,matchStarTime,matchEndTime,matchMode,matchPassword);
             if(rel!=0){
+                SchedulingUtils.list=null;//清空比赛检查队列
                 json.put("code",200);
                 json.put("msg","添加成功");
             }else{

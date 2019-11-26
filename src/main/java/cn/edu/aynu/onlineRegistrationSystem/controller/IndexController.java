@@ -192,7 +192,7 @@ public class IndexController {
      * @return 返回成功或者失败的JSON信息
      */
     @Transactional
-    @PostMapping(value = "/joinTeam",produces = "application/json;charset=utf-8")//TODO 修改该方法
+    @PostMapping(value = "/joinTeam",produces = "application/json;charset=utf-8")
     public JSONObject joinTeamById(Integer memId,HttpServletRequest request){
         HttpSession session=request.getSession();
         JSONObject json=new JSONObject();
@@ -362,7 +362,7 @@ public class IndexController {
      * @param request
      * @return
      */
-    @GetMapping(value = "/getOnlineInfo",produces = "application/json;charset=utf-8")//TODO 新增方法
+    @GetMapping(value = "/getOnlineInfo",produces = "application/json;charset=utf-8")
     public JSONObject getOnlineInfo(HttpServletRequest request){
         JSONObject json=new JSONObject();
         HttpSession session=request.getSession();
@@ -409,7 +409,7 @@ public class IndexController {
      * @param request
      * @return
      */
-    @GetMapping(value = "/getInvitedMessage",produces = "application/json;charset=utf-8")//TODO 新增方法
+    @GetMapping(value = "/getInvitedMessage",produces = "application/json;charset=utf-8")
     public JSONObject getBeInvitedMessage(HttpServletRequest request){
         JSONObject json=new JSONObject();
         HttpSession session=request.getSession();
