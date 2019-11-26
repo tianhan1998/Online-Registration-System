@@ -32,7 +32,7 @@ public class SignController {
      * @return json{code:200,msg:xxx,data:[]}
      */
     @RequestMapping(value = "/signUpMem",method = RequestMethod.POST)
-    public JSONObject signUpMem(@Valid memInfo user,BindingResult result, String code, HttpServletRequest request)  {
+    public JSONObject signUpMem(@Valid memInfo user,BindingResult result, String code, HttpServletRequest request)  {//TODO 修改参数名字为实体类属性
         JSONObject json=new JSONObject();
         HttpSession session;
         try {
@@ -79,7 +79,7 @@ public class SignController {
      * @return json{code:200,msg:xxx,data:[]}
      */
     @RequestMapping(value = "/signUpTeam",method = RequestMethod.POST)
-    public JSONObject signUpTeam(String code, HttpServletRequest request,@Valid teamInfo team,BindingResult result)  {
+    public JSONObject signUpTeam(String code, HttpServletRequest request,@Valid teamInfo team,BindingResult result)  {//TODO 修改参数名字为实体类属性
         JSONObject json=new JSONObject();
         HttpSession session;
         try {
