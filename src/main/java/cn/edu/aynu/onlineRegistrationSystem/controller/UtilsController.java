@@ -9,17 +9,17 @@ import cn.edu.aynu.onlineRegistrationSystem.utils.RSA;
 import cn.edu.aynu.onlineRegistrationSystem.utils.VerifyCode;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/api")
@@ -31,7 +31,7 @@ public class UtilsController {
     @Autowired
     InfoService infoService;
 
-    HashMap<String,String> map = new HashMap<>();
+    HashMap<String,List> map = new HashMap<>();
 
     /**
      * 获取公钥
@@ -130,7 +130,9 @@ public class UtilsController {
 
     @PostMapping(value = "/retrievePassword")
     public JSONObject getRetrievePassword(String mail) throws Exception {
+
         JSONObject jsonObject = new JSONObject();
+        List list = new ArrayList();
         System.out.println(mail);
         if(mail==null) {
             jsonObject.put("code","400");
@@ -138,18 +140,47 @@ public class UtilsController {
         }else{
             boolean flag = infoService.memRetrievePassword(mail);
             if(flag){
-
-                mailUtils.sendMail(mail,"报名系统","<h1>请点击下面链接修改密码</h1><a href=''>修改密码</a>");
+                long tmp = System.currentTimeMillis();
+                //随机生成字符串作为唯一标识
+                String uuid = UUID.randomUUID().toString().replaceAll("-","")+UUID.randomUUID().toString().replaceAll("-","");
+                //如果之前存在忘记密码，则重新修改密码
+                if(map.get(mail)!=null) {
+                    Long s = (System.currentTimeMillis() - (long)map.get(mail).get(0)) / (1000 * 60);
+                    System.out.println(s);
+                    //最少间隔5分钟
+                    if(s<=5){
+                        jsonObject.put("code","402");
+                        jsonObject.put("msg","请求时间过短，请隔一段时间再发送邮件！");
+                        return jsonObject;
+                    }
+                    list.add(tmp);
+                    list.add(uuid);
+                    map.replace(mail,list);
+                }else{
+                    list.add(tmp);
+                    list.add(uuid);
+                    map.put(mail,list);
+                }
+                String h = "http://localhost:8080/ORS/setNewPassowrd?mail="+mail+"&uuid="+uuid;
+                mailUtils.sendMail(mail,"报名系统","<h1>请点击下面链接修改密码</h1><a href=\'"+h+"\'>"+h+"</a>");
                 jsonObject.put("code","200");
                 jsonObject.put("msg","发送成功!");
             }else{
-                jsonObject.put("code","400");
+                jsonObject.put("code","404");
                 jsonObject.put("msg","没有找到邮箱！");
             }
         }
-
-
-
+        return jsonObject;
+    }
+    @PostMapping("/setNewPassword")
+    public JSONObject setNewPassword(@RequestParam("newPassword") String newPassword, @RequestParam("mail") String mail, @RequestParam("uuid") String uuid) {
+        //TODO 点击邮件中的地址验证成功后就可以修改密码了，然后下面的还没写
+        System.out.println(newPassword);
+        System.out.println(mail);
+        System.out.println(uuid);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code","200");
+        jsonObject.put("msg","修改成功");
         return jsonObject;
     }
 }

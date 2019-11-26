@@ -17,9 +17,9 @@ spring:
       charset: utf-8
       force: true
   mail:
-    host: smtp.sina.cn
-    username: 15993343299@sina.cn
-    password: d7be93b5a90f9333
+    host: smtp.qq.com
+    username: 714133840@qq.com
+    password: xgxztbcpxalzbfcf
     default-encoding: UTF-8
     protocol: smtp
     port: 25

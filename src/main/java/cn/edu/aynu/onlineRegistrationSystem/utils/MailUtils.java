@@ -21,7 +21,7 @@ public class MailUtils {
     /**
      * 邮件发送方
      */
-    private final String FORM = "15993343299@sina.cn";
+    private final String FORM = "714133840@qq.com";
 
     @Autowired
     private JavaMailSender javaMailSender;
@@ -39,7 +39,7 @@ public class MailUtils {
         mimeMessageHelper.setFrom(FORM);
         mimeMessageHelper.setTo(to);
         mimeMessageHelper.setSubject(subject);
-        mimeMessageHelper.setText(content);
+        mimeMessageHelper.setText(content,true);
 
         javaMailSender.send(mimeMessage);
 

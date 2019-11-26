@@ -26,7 +26,7 @@ public class InfoTest {
 
     @Test
     public void testMail() throws Exception {
-        mailUtils.sendMail("714133840@qq.com","测试","测试邮件");
+        mailUtils.sendMail("2900086967@qq.com","测试","测试邮件");
     }
 
 }

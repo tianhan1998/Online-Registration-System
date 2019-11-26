@@ -151,4 +151,8 @@ public class JumpController {
     public String jumpRetrievePassword() {
         return "retrievePassword";
     }
+    @RequestMapping(value = "/setNewPassowrd",method = RequestMethod.GET)
+    public String jumpsetNewPassowrd() {
+        return "setNewPassowrd";
+    }
 }

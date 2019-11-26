@@ -27,21 +27,10 @@
 					<div class="tab-content">
 						<div class="tab-pane active" id="panel-967992">
 							<p>
-								<form class="m-t" role="form" action="mem_index.html">
-									
-									<div class="alert alert-danger alert-dismissable">
-									    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-									        两次密码不一致 <a class="alert-link" href="#"></a>.
-									 </div>
-
-									<div class="form-group">
-										<input type="password" class="form-control" placeholder="密码" required="">
-									</div>
-									<div class="form-group">
-										<input type="password" class="form-control" placeholder="密码" required="">
-									</div>
-									<button id="mem_submit" type="submit" class="btn btn-primary block full-width m-b">确认</button>
-								</form>
+								<div class="form-group">
+									<input type="password" class="form-control" placeholder="密码" required="" id="newPassword">
+								</div>
+								<button id="mem_submit" type="submit" class="btn btn-primary block full-width m-b" onclick="setNewPassword()">确认</button>
 							</p>
 						</div>
 					</div>
@@ -57,27 +46,30 @@
 
 	</body>
 	<script>
-		$(document).ready(function() {
-			//个人登陆
-			$("#mem_submit").click(function () {
-				var memId=$("#mem_id").val();
-				if(memId.length!=9){
-					$("#log-mem-id").show().html("<buttonaria-hidden='true' data-dismiss='alert' class='close' type='button'>×</button><p>密码长度不足</p>");
+		function GetQueryString(name)
+		{
+			var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+			var r = window.location.search.substr(1).match(reg);//search,查询？后面的参数，并匹配正则
+			if(r!=null)return  unescape(r[2]); return null;
+		}
+		function setNewPassword() {
+			const mail = GetQueryString("mail");
+			const uuid = GetQueryString("uuid");
+			console.log(mail+"-------------"+uuid);
+			$.ajax({
+				url:"api/setNewPassword",
+				type:"post",
+				dataType:"json",
+				data:{
+					newPassword:$("#newPassword").val(),
+					mail:mail,
+					uuid:uuid
+				},
+				success: function (data) {
+					console.log(data);
 				}
-				else{
-					window.location.href="mem_index.html";
-				}
-			});
-			//团队登陆
-			$("#team_submit").click(function () {
-				var memId=$("#mem_id").val();
-				if(memId.length!=9){
-					$("#log-mem-id").show().html("<buttonaria-hidden='true' data-dismiss='alert' class='close' type='button'>×</button><p>密码长度不足</p>");
-				}
-				else{
-					window.location.href="team_index.html";
-				}
-			});
-		});
+			})
+		}
+
 	</script>
 </html>
