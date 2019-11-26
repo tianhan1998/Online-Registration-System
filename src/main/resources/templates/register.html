@@ -23,9 +23,7 @@
 
 	<div>
 		<div>
-
-			<h1 class="logo-name">IN+</h1>
-
+<!--			<h1 class="logo-name">IN+</h1>-->
 		</div>
 		<h3>注册</h3>
 		<p>创建属于您的账号</p>
@@ -83,19 +81,19 @@
 						<form id="teamForm" class="teamForm" role="form">
 							<input type="hidden" name="type" value="1">
 							<div class="form-group">
-								<input id="team-accound" type="text" name="team_account" class="form-control" placeholder="账号" required="">
+								<input id="team-accound" type="text" name="teamAccount" class="form-control" placeholder="账号" required="">
 								<div id="team-accound-log" class="badge badge-primary" style="display: none">该账户已被注册</div>
 							</div>
 							<div class="form-group">
-								<input id="team_name" type="text" name="team_name" class="form-control" placeholder="团队名称" required="">
+								<input id="team_name" type="text" name="teamName" class="form-control" placeholder="团队名称" required="">
 								<div id="team_name-log" class="badge badge-primary" style="display: none">该账户已被注册</div>
 							</div>
 							<div class="form-group">
-								<input id="team_email"type="email" name="team_email" class="form-control" placeholder="邮箱" required="">
+								<input id="team_email" type="email" name="teamEmail" class="form-control" placeholder="邮箱" required="">
 								<div id="team_email-log" class="badge badge-primary" style="display: none">该账户已被注册</div>
 							</div>
 							<div class="form-group">
-								<input id="team_pwd" type="password" name="team_password" class="form-control" placeholder="密码" required="">
+								<input id="team_pwd" type="password" name="teamPassword" class="form-control" placeholder="密码" required="">
 							</div>
 							<div class="form-group">
 								<input id="team-pwd2" type="password" class="form-control" placeholder="二次密码" required="">
@@ -223,7 +221,7 @@
 
 				$.ajax({
 					type:"post",
-					url:"./signUp",
+					url:"./signUpMem",
 					dataType:"json",
 					data:$("#memForm").serialize(),
 					success:function (result) {
@@ -246,6 +244,7 @@
 				})
 			}else{
 				swal("请完善您的信息");
+				console.log(flagMemId+" "+flagMedPwd+" "+flagMemName+" "+falgMemEmail+" "+flagyzm);
 			}
 		});
 
@@ -267,6 +266,7 @@
 							log.empty().append("可以使用");
 							//label label-danger 失败
 							//badge badge-primary 成功
+							flagMemId=1;
 						}else{//不能注册
 							var log=$("#mem-id-log").show().removeClass().addClass("badge label-danger");
 							log.empty().append("该学号已经被注册不能使用");
@@ -336,7 +336,9 @@
 		//验证团队团队邮箱
 		$("#team_email").blur(function () {
 			var name=$("#team_email").val();
-			if(name.length>0){
+			var reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+
+			if(reg.test(name)){//邮箱合法性校验{
 				var log=$("#team_email-log").show().removeClass().addClass("badge badge-primary");
 				log.empty().append("该邮箱可以使用");
 				flagTeamEmail=1;
@@ -377,7 +379,7 @@
 					type:"post",
 					dataType:"json",
 					data:$("#teamForm").serialize(),
-					url:"./signUp",
+					url:"./signUpTeam",
 					success:function (result) {
 						if(result.code=="200"){
 							console.log(result.msg);
@@ -404,7 +406,7 @@
 
 		//校验团队注册密码两次是否一致
 		$("#team-pwd2").blur(function () {
-			var pwd1=$("input[name='team_password']").val();
+			var pwd1=$("input[name='teamPassword']").val();
 			var pwd2=$("#team-pwd2").val();
 
 			var pwdLog=$("#team-pwd-log");
@@ -424,8 +426,8 @@
 		});
 
 		//校验团队账号是否存在
-		$("input[name='team_account']").blur(function () {
-			var teamAccount=$("input[name='team_account']").val();
+		$("input[name='teamAccount']").blur(function () {
+			var teamAccount=$("input[name='teamAccount']").val();
 
 			if(teamAccount.length!=0){
 				$.ajax({
