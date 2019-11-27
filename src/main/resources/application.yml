@@ -8,6 +8,11 @@ mybatis:
   type-aliases-package: cn.edu.aynu.onlineRegistrationSystem.entity
 
 spring:
+  task:
+    scheduling:
+      pool:
+        size: 10
+      thread-name-prefix: myScheduling-
   mvc:
     date-format: yyyy-MM-dd HH:mm:ss
   profiles:

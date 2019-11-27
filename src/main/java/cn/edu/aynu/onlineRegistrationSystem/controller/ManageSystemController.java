@@ -308,7 +308,7 @@ public class ManageSystemController {
         try {
             int rel=service.addMatch(matchTitle,matchStarTime,matchEndTime,matchMode,matchPassword);
             if(rel!=0){
-                SchedulingUtils.list=null;//清空比赛检查队列
+                SchedulingUtils.startList =null;//清空比赛检查队列
                 json.put("code",200);
                 json.put("msg","添加成功");
             }else{
