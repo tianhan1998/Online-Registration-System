@@ -177,9 +177,30 @@
 			var email=$("#mem-email").val();
 			var reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
 			if(reg.test(email)){//邮箱合法性校验
-				falgMemEmail=1;
-				var log=$("#mem-email-log").show().removeClass().addClass("badge badge-primary");
-				log.empty().append("通过验证");
+				$.ajax({
+					type:"get",
+					url:"./checkMemEmail",
+					dataType:"json",
+					data:{"email":email},
+					success:function (result) {
+						console.log(result);
+						if(result.code=="200"){//可以注册
+							falgMemEmail=1;
+							var log=$("#mem-email-log").show().removeClass().addClass("badge badge-primary");
+							log.empty().append(result.msg);
+						}else{//不能注册
+							falgMemEmail=0;
+							var log=$("#mem-email-log").show().removeClass().addClass("badge label-danger");
+							log.empty().append(result.msg);
+						}
+					},
+					error:function (result) {
+						falgMemEmail=0;
+						var log=$("#mem-email-log").show().removeClass().addClass("badge label-danger");
+						log.empty().append(result.msg);
+					}
+				});
+
 			}else{
 				var log=$("#mem-email-log").show().removeClass().addClass("badge label-danger");
 				log.empty().append("邮箱格式有误");
@@ -339,9 +360,29 @@
 			var reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
 
 			if(reg.test(name)){//邮箱合法性校验{
-				var log=$("#team_email-log").show().removeClass().addClass("badge badge-primary");
-				log.empty().append("该邮箱可以使用");
-				flagTeamEmail=1;
+				$.ajax({
+					type:"get",
+					url:"./checkTeamEmail",
+					dataType:"json",
+					data:{"email":name},
+					success:function (result) {
+						console.log(result);
+						if(result.code=="200"){//可以注册
+							var log=$("#team_email-log").show().removeClass().addClass("badge badge-primary");
+							log.empty().append(result.msg);
+							flagTeamEmail=1;
+						}else{//不能注册
+							var log=$("#team_email-log").show().removeClass().addClass("badge label-danger");
+							log.empty().append(result.msg);
+							flagTeamEmail=0;
+						}
+					},
+					error:function (result) {
+						var log=$("#team_email-log").show().removeClass().addClass("badge label-danger");
+						log.empty().append(result.msg);
+						flagTeamEmail=0;
+					}
+				});
 			}else{
 				var log=$("#team_email-log").show().removeClass().addClass("badge label-danger");
 				log.empty().append("邮箱格式不合法");

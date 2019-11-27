@@ -6,17 +6,16 @@ import cn.edu.aynu.onlineRegistrationSystem.service.SignService;
 import cn.edu.aynu.onlineRegistrationSystem.utils.RSA;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -245,7 +244,7 @@ public class SignController {
         try{
             int status=service.checkMemEmailExist(email);
             if(status>0){
-                json.put("code",200);
+                json.put("code",400);
                 json.put("msg","邮箱已存在");
             }else{
                 json.put("code",200);
@@ -263,7 +262,7 @@ public class SignController {
         try{
             int status = service.checkTeamEmailExist(email);
             if (status > 0) {
-                json.put("code", 200);
+                json.put("code", 400);
                 json.put("msg", "邮箱已存在");
             } else {
                 json.put("code", 200);
