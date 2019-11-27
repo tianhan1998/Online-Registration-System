@@ -14,5 +14,5 @@ public interface InviteInfoMapper {
     int deleteInviteById(Integer id);
     int checkExistByFromAndTo(@Param("from_id")Integer fromId,@Param("to_id")Integer toId);
     List<Integer> selectMessageIdsBeInvited(Integer to_id);
-    int updateMessageId(InviteInfo invite,@Param("messageId") Integer messageId);
+    int updateMessageId(@Param("invite")InviteInfo invite,@Param("messageId") Integer messageId);
 }
