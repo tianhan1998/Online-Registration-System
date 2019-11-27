@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -238,5 +239,40 @@ public class SignController {
         return json;
     }
 
-
+    @GetMapping("/checkMemEmail")
+    public JSONObject checkMemEmailExist(String email){
+        JSONObject json=new JSONObject();
+        try{
+            int status=service.checkMemEmailExist(email);
+            if(status>0){
+                json.put("code",200);
+                json.put("msg","邮箱已存在");
+            }else{
+                json.put("code",200);
+                json.put("msg","此邮箱可以注册");
+            }
+        }catch (Exception e){
+            json.put("code",500);
+            json.put("msg",e.getMessage());
+        }
+        return json;
+    }
+    @GetMapping("/checkTeamEmail")
+    public JSONObject checkTeamEmailExist(String email){
+        JSONObject json=new JSONObject();
+        try{
+            int status = service.checkTeamEmailExist(email);
+            if (status > 0) {
+                json.put("code", 200);
+                json.put("msg", "邮箱已存在");
+            } else {
+                json.put("code", 200);
+                json.put("msg", "此邮箱可以注册");
+            }
+        }catch (Exception e){
+            json.put("code",500);
+            json.put("msg",e.getMessage());
+        }
+        return json;
+    }
 }

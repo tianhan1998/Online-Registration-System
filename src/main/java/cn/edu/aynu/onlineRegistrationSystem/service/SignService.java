@@ -22,6 +22,8 @@ public class SignService {
     memInfoMapper mapper;
     @Autowired
     teamInfoMapper teamInfoMapper;
+    @Autowired
+    memInfoMapper memInfoMapper;
 
     public List<memInfo> signInMem(Integer id, String password){
         memInfoExample example=new memInfoExample();
@@ -65,4 +67,21 @@ public class SignService {
         }
     }
 
+    /**
+     * 查找个人email是否重复
+     * @param email
+     * @return
+     */
+    public int checkMemEmailExist(String email){
+        return memInfoMapper.checkEmailExist(email);
+    }
+
+    /**
+     * 查看团队email是否重复
+     * @param email
+     * @return
+     */
+    public int checkTeamEmailExist(String email){
+        return teamInfoMapper.checkEmailExist(email);
+    }
 }

@@ -23,8 +23,9 @@
     <result column="mem_id3" jdbcType="INTEGER" property="memId3" />
     <result column="team_email" jdbcType="VARCHAR" property="teamEmail" />
   </resultMap>
-
-
+  <select id="checkEmailExist" resultType="int">
+    select count(*) from team_info where team_email=#{email}
+  </select>
   <select id="getTeamList" resultMap="BaseResultMap">
     select team_id,team_name,team_account,mem_id1,mem_id2,mem_id3,team_email from team_info
   </select>

@@ -40,4 +40,5 @@ public interface teamInfoMapper {
 
     List<MatchAppleInfo> getTeamInfoByMemId(Integer memId);
 
+    int checkEmailExist(String email);
 }

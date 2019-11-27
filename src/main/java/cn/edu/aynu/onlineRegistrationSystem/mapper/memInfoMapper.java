@@ -35,4 +35,6 @@ public interface memInfoMapper {
     List<memInfo>getMemInfoLists();
 
     memInfo getMemInfosWithOutPasswordById(Integer id);
+
+    int checkEmailExist(String email);
 }

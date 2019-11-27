@@ -299,4 +299,5 @@ public class IndexService {
         }
         return teamInfoMapper.updateByPrimaryKey(item);
     }
+
 }

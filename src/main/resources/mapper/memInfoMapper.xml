@@ -8,6 +8,9 @@
     <result column="mem_sex" jdbcType="CHAR" property="memSex" />
     <result column="mem_password" jdbcType="VARCHAR" property="memPassword" />
   </resultMap>
+  <select id="checkEmailExist" resultType="int">
+    select count(*) from mem_info where mem_email=#{email}
+  </select>
   <select id="getMemInfosWithOutPasswordById" resultMap="BaseResultMap">
     select mem_id,mem_name,mem_email,mem_sex from mem_info where mem_id=#{id}
   </select>
