@@ -7,6 +7,7 @@ import cn.edu.aynu.onlineRegistrationSystem.service.IndexService;
 import cn.edu.aynu.onlineRegistrationSystem.service.InfoService;
 import cn.edu.aynu.onlineRegistrationSystem.utils.MailUtils;
 import cn.edu.aynu.onlineRegistrationSystem.utils.RSA;
+import cn.edu.aynu.onlineRegistrationSystem.utils.RetrievePasswordUtils;
 import cn.edu.aynu.onlineRegistrationSystem.utils.VerifyCode;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,12 +29,12 @@ public class UtilsController {
     @Autowired
     IndexService service;
     @Autowired
-    MailUtils mailUtils;
-    @Autowired
     InfoService infoService;
+    @Autowired
+    RetrievePasswordUtils retrievePasswordUtils;
 
-    HashMap<String,List> map = new HashMap<>();
-
+    HashMap<String,List> memMap = new HashMap<>();
+    HashMap<String,List> teamMap = new HashMap<>();
     /**
      * 获取公钥
      * @return
@@ -129,115 +130,45 @@ public class UtilsController {
         return json;
     }
 
-    @PostMapping(value = "/retrievePassword")
-    public JSONObject getRetrievePassword(String mail) throws Exception {
-
-        JSONObject jsonObject = new JSONObject();
-        List list = new ArrayList();
-        System.out.println(mail);
-        if(mail==null) {
-            jsonObject.put("code","400");
-            jsonObject.put("msg","邮箱为空!");
-        }else{
-            memInfo flag = infoService.memRetrievePassword(mail);
-            if(flag!=null){
-                long tmp = System.currentTimeMillis();
-                //随机生成字符串作为唯一标识
-                String uuid = UUID.randomUUID().toString().replaceAll("-","")+UUID.randomUUID().toString().replaceAll("-","");
-                //如果之前存在忘记密码，则重新修改密码
-                if(map.get(mail)!=null) {
-                    Long s = (System.currentTimeMillis() - (long)map.get(mail).get(0)) / (1000 * 60);
-                    System.out.println(s);
-                    //最少间隔5分钟
-                    if(s<=5){
-                        jsonObject.put("code","402");
-                        jsonObject.put("msg","请求时间过短，请隔一段时间再发送邮件！");
-                        return jsonObject;
-                    }
-                    list.add(tmp);
-                    list.add(uuid);
-                    map.replace(mail,list);
-                }else{
-                    list.add(tmp);
-                    list.add(uuid);
-                    map.put(mail,list);
-                }
-                String h = "http://localhost:8080/ORS/setNewPassowrd?mail="+mail+"&uuid="+uuid;
-                mailUtils.sendMail(mail,"报名系统","<h1>请点击下面链接修改密码</h1><a href=\'"+h+"\'>"+h+"</a>");
-                jsonObject.put("code","200");
-                jsonObject.put("msg","发送成功!");
-            }else{
-                jsonObject.put("code","404");
-                jsonObject.put("msg","没有找到邮箱！");
-            }
-        }
-        return jsonObject;
-    }
-    @PostMapping("/setNewPassword")
-    public JSONObject setNewPassword(@RequestParam("newPassword") String newPassword, @RequestParam("mail") String mail, @RequestParam("uuid") String uuid) {
-        //TODO 点击邮件中的地址验证成功后就可以修改密码了，然后下面的还没写
-        System.out.println(newPassword);
-        System.out.println(mail);
-        System.out.println(uuid);
-        JSONObject jsonObject = new JSONObject();
-        //验证一下时间戳是否在有效范围内
-        long tmp = System.currentTimeMillis();
-        if(map.get(mail)!=null) {
-            Long s = (System.currentTimeMillis() - (long)map.get(mail).get(0)) / (1000 * 60);
-            if(s>=15) {
-                jsonObject.put("code","402");
-                jsonObject.put("msg","当前链接失效！");
-            } else {
-                //修改密码
-                try{
-                    memInfo mem = infoService.memRetrievePassword(mail);
-                    if(mem==null) {
-                        jsonObject.put("code","401");
-                        jsonObject.put("msg","找不到用户！");
-                    }else{
-                        infoService.setMemPassword(mem.getMemId(),newPassword);
-                        jsonObject.put("code","200");
-                        jsonObject.put("msg","修改成功！");
-                        map.remove(mail);
-                    }
-                }catch (Exception e) {
-                    jsonObject.put("code","400");
-                    jsonObject.put("msg","密码重置失败");
-                }
-
-            }
-        }else{
-            jsonObject.put("code","402");
-            jsonObject.put("msg","当前链接失效！");
-        }
-        return jsonObject;
-    }
-
     /**
-     * 验证是否在有效期内，无效的话就移除map内的值
-     * 验证当前的uuid是否有效
-     * @return
+     * 忘记密码
+     * @param mail 邮箱地址
+     * @return json字符串
+     */
+    @PostMapping("/retrievePassword")
+    public JSONObject retrievePassword(@RequestParam("mail") String mail,@RequestParam("type") String type) throws Exception {
+        if(Integer.valueOf(type) == 0) {
+            return retrievePasswordUtils.getRetrievePassword(mail,memMap,type);
+        }else{
+            return retrievePasswordUtils.getRetrievePassword(mail,teamMap,type);
+        }
+    }
+    /**
+     * 验证邮箱链接是否失效
+     * @param mail 邮箱
+     * @param uuid 唯一标识
+     * @return 返回的是状态
      */
     @GetMapping("/effective")
-    public JSONObject isTmpEffective(@RequestParam("mail") String mail,@RequestParam("uuid") String uuid) {
-        JSONObject jsonObject = new JSONObject();
-        if(map.get(mail)!=null) {
-            Long s = (System.currentTimeMillis() - (long)map.get(mail).get(0)) / (1000 * 60);
-            if(s>=15) {
-                jsonObject.put("code","402");
-                //失效就给他移除
-                map.remove("mail");
-            }else{
-                if(map.get(mail).get(1).equals(uuid)){
-                    jsonObject.put("code","200");
-                }else{
-                    jsonObject.put("code","402");
-                }
-            }
-        }else{
-            jsonObject.put("code","404");
+    public JSONObject isTmpEffective(@RequestParam("mail") String mail, @RequestParam("uuid") String uuid, @RequestParam("type") String type) {
+        if(Integer.valueOf(type) == 0) {
+            return retrievePasswordUtils.isTmpEffective(mail,uuid,memMap);
+        } else {
+          return retrievePasswordUtils.isTmpEffective(mail,uuid,teamMap);
         }
-        return jsonObject;
     }
+
+    @PostMapping("/setNewPassword")
+    public JSONObject setNewPassword(@RequestParam("newPassword") String newPassword, @RequestParam("mail") String mail, @RequestParam("uuid") String uuid, @RequestParam("type") String type) {
+        if(Integer.valueOf(type) == 0) {
+            return retrievePasswordUtils.setNewPassword(newPassword,mail,uuid,memMap,type);
+        } else {
+            return retrievePasswordUtils.setNewPassword(newPassword,mail,uuid,teamMap,type);
+        }
+    }
+
+
+
+
 }
 

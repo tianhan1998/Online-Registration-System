@@ -61,7 +61,8 @@
 				dataType:"json",
 				data:{
 					mail:GetQueryString("mail"),
-					uuid:GetQueryString("uuid")
+					uuid:GetQueryString("uuid"),
+					type:GetQueryString("type")
 				},
 				success: function (data) {
 					console.log(data);
@@ -76,6 +77,7 @@
 		function setNewPassword() {
 			const mail = GetQueryString("mail");
 			const uuid = GetQueryString("uuid");
+			const type = GetQueryString("type")
 			console.log(mail+"-------------"+uuid);
 			$.ajax({
 				url:"api/setNewPassword",
@@ -84,13 +86,14 @@
 				data:{
 					newPassword:$("#newPassword").val(),
 					mail:mail,
-					uuid:uuid
+					uuid:uuid,
+					type:type
 				},
 				success: function (data) {
 					console.log(data);
 					if(data.code!="200") {
 						swal("密码修改失败!请重新尝试！").then(function () {
-							window.location.href="setNewPassowrd";
+							window.location.href="retrievePassword";
 						});
 					}else{
 						swal("密码修改成功!").then(function () {

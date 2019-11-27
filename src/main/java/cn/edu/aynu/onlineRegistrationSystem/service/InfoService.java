@@ -227,5 +227,21 @@ public class InfoService {
         return memInfos.get(0);
     }
 
+    /**
+     * 重置团队密码，查找数据库是否有团队邮箱
+     * @param mail 邮箱
+     * @return 是否有邮箱
+     */
+    public teamInfo teamRetrievePassword(String mail) {
+        teamInfoExample teamInfoExample = new teamInfoExample();
+        teamInfoExample.setDistinct(true);
+        teamInfoExample.Criteria criteria = teamInfoExample.createCriteria();
+        criteria.andTeamEmailEqualTo(mail);
+        List<teamInfo> teamInfos = teamInfoMapper.selectByExample(teamInfoExample);
+        if(teamInfos.isEmpty()){
+            return null;
+        }
+        return teamInfos.get(0);
+    }
 
 }
