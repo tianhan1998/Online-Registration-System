@@ -166,28 +166,29 @@
 			var teamId=$("#team_id").val();
 
 			if(teamId!=null&&teamId.length!=0){//团队账号为空
-				$("#team_log").show().html("账号不能为空");
+                //进行登录尝试
+                $.ajax({
+                    type:"post",
+                    url:"./signIn",
+                    data:$("#teamForm").serialize(),
+                    dataType:"json",
+                    success:function (result) {
+                        console.log(result);
+                        if(result.code=="200"){//登录成功
+                            window.location.href="/ORS/team_tables";
+                        }else{//登录失败
+                            $("#team_log").show();
+                            $("#team_pwd").val(item);//登陆失败替换回密码
+                        }
+                    },
+                    error:function (result) {
+                        console.log(result.msg);
+                        $("#team_pwd").val(item);//登陆失败替换回密码
+                    }
+                });
 			}else{
-				//进行登录尝试
-				$.ajax({
-					type:"post",
-					url:"./signIn",
-					data:$("#teamForm").serialize(),
-					dataType:"json",
-					success:function (result) {
-						console.log(result);
-						if(result.code=="200"){//登录成功
-							window.location.href="/ORS/team_tables";
-						}else{//登录失败
-							$("#team_log").show();
-							$("#team_pwd").val(item);//登陆失败替换回密码
-						}
-					},
-					error:function (result) {
-						console.log(result.msg);
-						$("#team_pwd").val(item);//登陆失败替换回密码
-					}
-				});
+                $("#team_log").show().html("账号不能为空");
+
 			}
 		});
 	});
