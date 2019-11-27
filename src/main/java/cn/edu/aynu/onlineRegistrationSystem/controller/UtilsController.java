@@ -2,6 +2,7 @@ package cn.edu.aynu.onlineRegistrationSystem.controller;
 
 import cn.edu.aynu.onlineRegistrationSystem.entity.MatchAppleInfo;
 import cn.edu.aynu.onlineRegistrationSystem.entity.RSABean;
+import cn.edu.aynu.onlineRegistrationSystem.entity.memInfo;
 import cn.edu.aynu.onlineRegistrationSystem.service.IndexService;
 import cn.edu.aynu.onlineRegistrationSystem.service.InfoService;
 import cn.edu.aynu.onlineRegistrationSystem.utils.MailUtils;
@@ -138,8 +139,8 @@ public class UtilsController {
             jsonObject.put("code","400");
             jsonObject.put("msg","邮箱为空!");
         }else{
-            boolean flag = infoService.memRetrievePassword(mail);
-            if(flag){
+            memInfo flag = infoService.memRetrievePassword(mail);
+            if(flag!=null){
                 long tmp = System.currentTimeMillis();
                 //随机生成字符串作为唯一标识
                 String uuid = UUID.randomUUID().toString().replaceAll("-","")+UUID.randomUUID().toString().replaceAll("-","");
@@ -179,8 +180,63 @@ public class UtilsController {
         System.out.println(mail);
         System.out.println(uuid);
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("code","200");
-        jsonObject.put("msg","修改成功");
+        //验证一下时间戳是否在有效范围内
+        long tmp = System.currentTimeMillis();
+        if(map.get(mail)!=null) {
+            Long s = (System.currentTimeMillis() - (long)map.get(mail).get(0)) / (1000 * 60);
+            if(s>=15) {
+                jsonObject.put("code","402");
+                jsonObject.put("msg","当前链接失效！");
+            } else {
+                //修改密码
+                try{
+                    memInfo mem = infoService.memRetrievePassword(mail);
+                    if(mem==null) {
+                        jsonObject.put("code","401");
+                        jsonObject.put("msg","找不到用户！");
+                    }else{
+                        infoService.setMemPassword(mem.getMemId(),newPassword);
+                        jsonObject.put("code","200");
+                        jsonObject.put("msg","修改成功！");
+                        map.remove(mail);
+                    }
+                }catch (Exception e) {
+                    jsonObject.put("code","400");
+                    jsonObject.put("msg","密码重置失败");
+                }
+
+            }
+        }else{
+            jsonObject.put("code","402");
+            jsonObject.put("msg","当前链接失效！");
+        }
+        return jsonObject;
+    }
+
+    /**
+     * 验证是否在有效期内，无效的话就移除map内的值
+     * 验证当前的uuid是否有效
+     * @return
+     */
+    @GetMapping("/effective")
+    public JSONObject isTmpEffective(@RequestParam("mail") String mail,@RequestParam("uuid") String uuid) {
+        JSONObject jsonObject = new JSONObject();
+        if(map.get(mail)!=null) {
+            Long s = (System.currentTimeMillis() - (long)map.get(mail).get(0)) / (1000 * 60);
+            if(s>=15) {
+                jsonObject.put("code","402");
+                //失效就给他移除
+                map.remove("mail");
+            }else{
+                if(map.get(mail).get(1).equals(uuid)){
+                    jsonObject.put("code","200");
+                }else{
+                    jsonObject.put("code","402");
+                }
+            }
+        }else{
+            jsonObject.put("code","404");
+        }
         return jsonObject;
     }
 }

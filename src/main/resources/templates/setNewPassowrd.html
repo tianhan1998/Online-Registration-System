@@ -43,15 +43,36 @@
 		<!-- Mainly scripts -->
 		<script src="js/jquery-2.1.1.js"></script>
 		<script src="js/bootstrap.min.js"></script>
-
+		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	</body>
 	<script>
+
 		function GetQueryString(name)
 		{
 			var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
 			var r = window.location.search.substr(1).match(reg);//search,查询？后面的参数，并匹配正则
 			if(r!=null)return  unescape(r[2]); return null;
 		}
+		//判断当前链接是否失效
+		$(function () {
+			$.ajax({
+				url:"api/effective",
+				type:"get",
+				dataType:"json",
+				data:{
+					mail:GetQueryString("mail"),
+					uuid:GetQueryString("uuid")
+				},
+				success: function (data) {
+					console.log(data);
+					if(data.code!="200") {
+						swal("当前链接失效！请重新输入邮箱进行重置密码！").then(function () {
+							window.location.href = "retrievePassword";
+						});
+					}
+				}
+			})
+		});
 		function setNewPassword() {
 			const mail = GetQueryString("mail");
 			const uuid = GetQueryString("uuid");
@@ -67,6 +88,15 @@
 				},
 				success: function (data) {
 					console.log(data);
+					if(data.code!="200") {
+						swal("密码修改失败!请重新尝试！").then(function () {
+							window.location.href="setNewPassowrd";
+						});
+					}else{
+						swal("密码修改成功!").then(function () {
+							window.location.href="login";
+						})
+					}
 				}
 			})
 		}
