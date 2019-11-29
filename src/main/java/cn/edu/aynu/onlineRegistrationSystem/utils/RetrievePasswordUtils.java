@@ -6,8 +6,6 @@ import cn.edu.aynu.onlineRegistrationSystem.service.InfoService;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +57,7 @@ public class RetrievePasswordUtils {
                     list.add(uuid);
                     map.put(mail,list);
                 }
-                String h = "http://localhost:8080/ORS/setNewPassowrd?mail="+mail+"&uuid="+uuid+"&type="+type;
+                String h = "https://47.75.143.53/:8080/ORS/setNewPassowrd?mail="+mail+"&uuid="+uuid+"&type="+type;
                 mailUtils.sendMail(mail,"报名系统","<h1>请点击下面链接修改密码</h1><a href=\'"+h+"\'>"+h+"</a>");
                 jsonObject.put("code","200");
                 jsonObject.put("msg","发送成功!");
