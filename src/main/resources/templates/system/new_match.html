@@ -240,6 +240,8 @@
                 data:$("#match_form").serialize(),
                 success: function(msg){
                     console.log(msg);
+                    console.log("添加成功");
+                    window.location.href="./List";
                 }
             });
         });
