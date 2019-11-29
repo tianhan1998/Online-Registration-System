@@ -71,7 +71,12 @@
 					password:password
 				},
 				success: function(msg){
-					window.location.href='./getTeam';
+					if(msg.code==200){
+						window.location.href='./List';
+					}else{
+						swal(msg.msg);
+					}
+
 					// swal( "Data Saved: " + msg ).then(function () {
 					// 	window.location.href='./getTeam';
 					// });

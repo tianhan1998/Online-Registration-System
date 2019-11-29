@@ -177,18 +177,19 @@
                         if(result.code=="200"){//登录成功
                             window.location.href="/ORS/team_tables";
                         }else{//登录失败
+                        	swal(result.msg);
                             $("#team_log").show();
                             $("#team_pwd").val(item);//登陆失败替换回密码
                         }
                     },
                     error:function (result) {
+						swal(result.msg);
                         console.log(result.msg);
                         $("#team_pwd").val(item);//登陆失败替换回密码
                     }
                 });
 			}else{
                 $("#team_log").show().html("账号不能为空");
-
 			}
 		});
 	});

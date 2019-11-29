@@ -224,7 +224,7 @@ public class SignController {
                         json.put("data", JSONArray.toJSONString(team));
                     }else{
                         json.put("code", 404);
-                        json.put("msg", "学号不存在或密码错误");
+                        json.put("msg", "账号不存在或密码错误");
                     }
                 }
             }else{

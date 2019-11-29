@@ -241,6 +241,7 @@
                 success: function(msg){
                     console.log(msg);
                     console.log("添加成功");
+                    swal(msg.msg);
                     window.location.href="./List";
                 }
             });
