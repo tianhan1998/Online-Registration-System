@@ -183,13 +183,13 @@
     }
     $(function() {
         $.ajax({
-            url:"matchList",
+            url:"online/matchList",
             datatype:"json",
             data:[],
             type:"get",
             success: function (data) {
                 $.ajax({
-                    url:"matchList",
+                    url:"online/matchList",
                     datatype:"json",
                     data:[],
                     type:"post",
@@ -248,7 +248,7 @@
         var v = $('.inv').val();
         var matchpwd = $('.form-control').val();
         $.ajax({
-            url: "enroll",
+            url: "online/enroll",
             dataType: "json",
             data: {"matchId":v,"matchPassword":matchpwd},
             type: "post",

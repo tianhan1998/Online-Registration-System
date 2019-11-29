@@ -168,7 +168,7 @@
         $.ajax({
             type:"get",
             dataType:"json",
-            url:"./getInvitedMessage",//getInvitedMessage
+            url:"online/getInvitedMessage",//getInvitedMessage
             success:function (result) {
                 //$("#messageTables").remove();
                 // messageDate: "2019-11-19 18:58:01"
@@ -214,7 +214,7 @@
     function tongyi(id) {
         $.ajax({
             dataType:"json",
-            url:"./acceptInvite",
+            url:"online/acceptInvite",
             type:"get",
             data:{"id":id},
             success:function (result) {
@@ -244,7 +244,7 @@
     function butongyi(id) {
         $.ajax({
             dataType:"json",
-            url:"./denyInvite",
+            url:"online/denyInvite",
             type:"get",
             data:{"id":id},
             success:function (result) {

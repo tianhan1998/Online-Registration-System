@@ -157,7 +157,7 @@
         }).then(function (isConfirm) {
             if(isConfirm == true) {
                 $.ajax({
-                    url:"./deleteMemInTeam",
+                    url:"online/deleteMemInTeam",
                     type:"post",
                     dataType: "json",
                     data:{"memId":memId},
@@ -178,7 +178,7 @@
     }
     $(document).ready(function () {
         $.ajax({
-            url:"./member",
+            url:"online/member",
             dataType:"json",
             type:"get",
             success:function (result) {
@@ -207,7 +207,7 @@
             }else{
                 $.ajax({
                     type:"post",
-                    url:"./joinTeam",
+                    url:"online/joinTeam",
                     data:$("#id").serialize(),
                     datatype:"json",
                     success:function (result) {
