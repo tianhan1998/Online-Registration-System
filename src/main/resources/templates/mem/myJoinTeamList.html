@@ -46,7 +46,7 @@
                         <li class="dropdown open">
                             <a class="dropdown-toggle count-info" href="message">
                                 <!--                            信息条数-->
-                                <i class="fa fa-envelope"></i> <span class="label label-warning">2</span>
+                                <i class="fa fa-envelope"></i> <span id="msg" class="label label-warning">2</span>
                             </a>
                         </li>
                         <li class="dropdown">
@@ -172,6 +172,14 @@
 <script>
 
     $(function () {
+        $.ajax({
+            type:"get",
+            dataType:"json",
+            url:"online/getInvitedMessage",//getInvitedMessage
+            success:function (result) {
+                $("#msg").html(result.data.length);
+            }
+        });
         $.ajax({
             url:"getJoinTeamList",
             datatype:"json",
