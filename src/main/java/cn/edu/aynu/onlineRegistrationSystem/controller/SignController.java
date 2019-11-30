@@ -34,9 +34,8 @@ public class SignController {
     @RequestMapping(value = "/signUpMem",method = RequestMethod.POST)
     public JSONObject signUpMem(@Valid memInfo user,BindingResult result, String code, HttpServletRequest request)  {//TODO 修改参数名字为实体类属性
         JSONObject json=new JSONObject();
-        HttpSession session;
+        HttpSession session=request.getSession();
         try {
-            session=request.getSession();
             String sessionCode=session.getAttribute("code").toString();
             if(sessionCode!=null) {
                 if(sessionCode.equals(code)) {
@@ -72,6 +71,10 @@ public class SignController {
             json.put("code",500);
             json.put("msg",e.getMessage());
         }
+
+        //清除验证码,让原来验证码失效
+        session.setAttribute("code",null);
+
         return json;
     }
     /**
@@ -81,9 +84,8 @@ public class SignController {
     @RequestMapping(value = "/signUpTeam",method = RequestMethod.POST)
     public JSONObject signUpTeam(String code, HttpServletRequest request,@Valid teamInfo team,BindingResult result)  {//TODO 修改参数名字为实体类属性
         JSONObject json=new JSONObject();
-        HttpSession session;
+        HttpSession session=request.getSession();
         try {
-            session=request.getSession();
             String sessionCode=session.getAttribute("code").toString();
             if(sessionCode!=null) {
                 if(sessionCode.equals(code)) {
@@ -119,6 +121,8 @@ public class SignController {
             json.put("code",500);
             json.put("msg",e.getMessage());
         }
+        //清除验证码,让原来验证码失效
+        session.setAttribute("code",null);
         return json;
     }
     /***
