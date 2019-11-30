@@ -74,7 +74,7 @@ public class SignController {
 
         //清除验证码,让原来验证码失效
         session.setAttribute("code",null);
-
+        session.setAttribute("privateKey",null);
         return json;
     }
     /**
@@ -123,6 +123,7 @@ public class SignController {
         }
         //清除验证码,让原来验证码失效
         session.setAttribute("code",null);
+        session.setAttribute("privateKey",null);
         return json;
     }
     /***
@@ -187,12 +188,12 @@ public class SignController {
     @RequestMapping(value = "/signIn",method = RequestMethod.POST)
     public JSONObject signIn(String team_account,String id, String password, HttpServletRequest request,Integer type){
         JSONObject json=new JSONObject();
-        HttpSession session;
+        HttpSession session=request.getSession();
         List<memInfo> list;
         List<teamInfo> lists;
 
         try {
-            session=request.getSession();
+
             if(session.getAttribute("privateKey")!=null){
                 password=RSA.decrypt(password,session.getAttribute("privateKey").toString());//RSA解密
                 if(type==0) {
@@ -239,6 +240,8 @@ public class SignController {
             json.put("code",500);
             json.put("msg","数据库查询失败"+e.getMessage());
         }
+        session.setAttribute("code",null);
+        session.setAttribute("privateKey",null);
         return json;
     }
 

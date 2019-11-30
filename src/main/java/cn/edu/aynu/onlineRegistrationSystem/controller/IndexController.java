@@ -2,6 +2,7 @@ package cn.edu.aynu.onlineRegistrationSystem.controller;
 
 import cn.edu.aynu.onlineRegistrationSystem.entity.*;
 import cn.edu.aynu.onlineRegistrationSystem.service.IndexService;
+import cn.edu.aynu.onlineRegistrationSystem.service.InfoService;
 import cn.edu.aynu.onlineRegistrationSystem.utils.MessageUtils;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,10 @@ import java.util.List;
 public class IndexController {
     @Autowired
     IndexService service;
+
+    @Autowired
+    InfoService infoService;
+
     /**
      * 获取所有比赛列表，包括个人比赛和团队比赛
      * @return 返回所有比赛信息的JSON
@@ -71,6 +76,39 @@ public class IndexController {
             json.put("code", 200);
             json.put("data", matches);
             json.put("msg", "查询成功");
+        }catch (Exception e) {
+            json.put("code", 500);
+            json.put("msg", "数据库查询失败" + e.getMessage());
+        }
+        return json;
+    }
+
+    /**
+     * 个人获取他加入过的团队比赛列表//TODO 好好
+     * @param pn 页码
+     * @param length 每页显示记录数
+     * @return 已经报名的比赛信息
+     */
+    @PostMapping(value = "/matchListBymem",produces = "application/json;charset=utf-8")
+    public JSONObject getMatchListById1(Integer pn, Integer length, HttpServletRequest request, HttpServletResponse response) {
+        JSONObject json=new JSONObject();
+        HttpSession session =request.getSession();
+        List<matchInfo> matches=new ArrayList<matchInfo>();
+        try {
+            if ("mem".equals(session.getAttribute("type"))) {
+                Integer id= (Integer) session.getAttribute("mem_id");
+                List<MatchAppleInfo> list = infoService.getJoinTeamInfoList(id);//获取他参加过的所有团队信息
+                for (MatchAppleInfo matchAppleInfo : list) {
+                    matches.addAll(service.getMatchListByTeamId( matchAppleInfo.getTeamInfo().getTeamId()));
+                }
+                json.put("code", 200);
+                json.put("data", matches);
+                json.put("msg", "查询成功");
+            } else {
+                json.put("code", 400);
+                json.put("data", matches);
+                json.put("msg", "您不是个人账号，不能请求该方法");
+            }
         }catch (Exception e) {
             json.put("code", 500);
             json.put("msg", "数据库查询失败" + e.getMessage());

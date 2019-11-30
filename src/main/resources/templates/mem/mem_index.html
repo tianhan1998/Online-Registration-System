@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>INSPINIA | Dashboard v.4</title>
+    <title>安阳师范学院软件学院报名系统</title>
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
@@ -46,7 +46,7 @@
                         <li class="dropdown open">
                             <a class="dropdown-toggle count-info" href="message">
                                 <!--                            信息条数-->
-                                <i class="fa fa-envelope"></i> <span class="label label-warning">2</span>
+                                <i class="fa fa-envelope"></i> <span id="msg" class="label label-warning"></span>
                             </a>
                         </li>
                         <li class="dropdown">
@@ -170,6 +170,7 @@
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <script>
+
     function matchList(matchId,type){
         $.ajax({
             url: "api/setMatchId",
@@ -189,6 +190,14 @@
     }
 
     $(function () {
+        $.ajax({
+            type:"get",
+            dataType:"json",
+            url:"online/getInvitedMessage",//getInvitedMessage
+            success:function (result) {
+                $("#msg").html(result.data.length);
+            }
+        });
         $.ajax({
             url:"online/matchList",
             datatype:"json",
@@ -225,7 +234,45 @@
                         "</tr>");
                 }
             }
-        })
+        });
+        $(function () {
+            $.ajax({
+                url:"online/matchListBymem",
+                datatype:"json",
+                data:[],
+                type:"post",
+                success: function (data) {
+
+                    for(var i=0;i<data.data.length;i++) {
+
+                        var ms = data.data[i];
+                        var mode = "";
+                        var status = "";
+                        if(ms.matchMode == "0") {
+                            mode = "<th><span class=\"label label-info\">个人赛</span></th>";
+
+                        }else{
+                            mode = "<th><span class=\"label label-primary\">团队赛</span></th>";
+                        }
+                        if(ms.matchStatus == 0) {
+                            status = "<th><span class=\"label label-primary\">未开始</span></th>";
+                        }else if(ms.matchStatus == 2){
+                            status = "<th><span class=\"label label-danger\">已结束</span></th>";
+                        }else{
+                            status = "<th><span class=\"label label-warning\">进行中</span></th>";
+                        }
+
+                        $(".matchs").append("<tr>" +
+                            "<th>"+ms.matchId+"</th>" +
+                            "<th><a onclick='matchList("+ms.matchId+","+ms.matchMode+")'>"+ms.matchTitle+"</a></th>" +
+                            "<th>"+ms.matchStarTime+"</th>" +
+                            "<th>"+ms.matchEndTime+"</th>" +
+                            mode + status +
+                            "</tr>");
+                    }
+                }
+            })
+        });
     });
 </script>
 

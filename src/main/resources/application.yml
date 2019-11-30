@@ -30,6 +30,6 @@ spring:
     port: 25
 rsa:
   # rsa密钥生成数量
-  count: 5
+  count: 50
   # rsa密钥长度
   length: 512
