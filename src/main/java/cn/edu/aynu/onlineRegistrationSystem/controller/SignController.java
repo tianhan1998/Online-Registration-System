@@ -74,7 +74,7 @@ public class SignController {
 
         //清除验证码,让原来验证码失效
         session.setAttribute("code",null);
-
+        session.setAttribute("privateKey",null);
         return json;
     }
     /**
@@ -123,6 +123,7 @@ public class SignController {
         }
         //清除验证码,让原来验证码失效
         session.setAttribute("code",null);
+        session.setAttribute("privateKey",null);
         return json;
     }
     /***
