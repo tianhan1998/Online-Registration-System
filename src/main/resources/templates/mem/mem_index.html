@@ -225,7 +225,45 @@
                         "</tr>");
                 }
             }
-        })
+        });
+        $(function () {
+            $.ajax({
+                url:"online/matchListBymem",
+                datatype:"json",
+                data:[],
+                type:"post",
+                success: function (data) {
+
+                    for(var i=0;i<data.data.length;i++) {
+
+                        var ms = data.data[i];
+                        var mode = "";
+                        var status = "";
+                        if(ms.matchMode == "0") {
+                            mode = "<th><span class=\"label label-info\">个人赛</span></th>";
+
+                        }else{
+                            mode = "<th><span class=\"label label-primary\">团队赛</span></th>";
+                        }
+                        if(ms.matchStatus == 0) {
+                            status = "<th><span class=\"label label-primary\">未开始</span></th>";
+                        }else if(ms.matchStatus == 2){
+                            status = "<th><span class=\"label label-danger\">已结束</span></th>";
+                        }else{
+                            status = "<th><span class=\"label label-warning\">进行中</span></th>";
+                        }
+
+                        $(".matchs").append("<tr>" +
+                            "<th>"+ms.matchId+"</th>" +
+                            "<th><a onclick='matchList("+ms.matchId+","+ms.matchMode+")'>"+ms.matchTitle+"</a></th>" +
+                            "<th>"+ms.matchStarTime+"</th>" +
+                            "<th>"+ms.matchEndTime+"</th>" +
+                            mode + status +
+                            "</tr>");
+                    }
+                }
+            })
+        });
     });
 </script>
 
