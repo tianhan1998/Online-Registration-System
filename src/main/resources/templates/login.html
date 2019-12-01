@@ -145,11 +145,37 @@
 						}else{//登录失败
 							$("#mem_log").show();
 							$("#mem_pwd").val(item);//登陆失败替换回密码
+							$(function () {
+								//获取RSA公钥
+								$.ajax({
+									url:"./api/getPublicKey",
+									dataType:"json",
+									type:"get",
+									success:function (result) {
+										console.log("公钥为"+result.data);//获取公钥
+										publicKey=result.data;
+										encrypt.setPublicKey(publicKey)//设置公钥
+									}
+								});
+							});
 						}
 					},
 					error:function () {
 						console.log(result.msg);
 						$("#mem_pwd").val(item);//登陆失败替换回密码
+						$(function () {
+							//获取RSA公钥
+							$.ajax({
+								url:"./api/getPublicKey",
+								dataType:"json",
+								type:"get",
+								success:function (result) {
+									console.log("公钥为"+result.data);//获取公钥
+									publicKey=result.data;
+									encrypt.setPublicKey(publicKey)//设置公钥
+								}
+							});
+						});
 					}
 				});
 			}
@@ -180,12 +206,38 @@
                         	swal(result.msg);
                             $("#team_log").show();
                             $("#team_pwd").val(item);//登陆失败替换回密码
+							$(function () {
+								//获取RSA公钥
+								$.ajax({
+									url:"./api/getPublicKey",
+									dataType:"json",
+									type:"get",
+									success:function (result) {
+										console.log("公钥为"+result.data);//获取公钥
+										publicKey=result.data;
+										encrypt.setPublicKey(publicKey)//设置公钥
+									}
+								});
+							});
                         }
                     },
                     error:function (result) {
 						swal(result.msg);
                         console.log(result.msg);
                         $("#team_pwd").val(item);//登陆失败替换回密码
+						$(function () {
+							//获取RSA公钥
+							$.ajax({
+								url:"./api/getPublicKey",
+								dataType:"json",
+								type:"get",
+								success:function (result) {
+									console.log("公钥为"+result.data);//获取公钥
+									publicKey=result.data;
+									encrypt.setPublicKey(publicKey)//设置公钥
+								}
+							});
+						});
                     }
                 });
 			}else{

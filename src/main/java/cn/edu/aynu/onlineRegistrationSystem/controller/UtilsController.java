@@ -2,26 +2,21 @@ package cn.edu.aynu.onlineRegistrationSystem.controller;
 
 import cn.edu.aynu.onlineRegistrationSystem.entity.MatchAppleInfo;
 import cn.edu.aynu.onlineRegistrationSystem.entity.RSABean;
-import cn.edu.aynu.onlineRegistrationSystem.entity.memInfo;
 import cn.edu.aynu.onlineRegistrationSystem.service.IndexService;
 import cn.edu.aynu.onlineRegistrationSystem.service.InfoService;
-import cn.edu.aynu.onlineRegistrationSystem.utils.MailUtils;
 import cn.edu.aynu.onlineRegistrationSystem.utils.RSA;
 import cn.edu.aynu.onlineRegistrationSystem.utils.RetrievePasswordUtils;
 import cn.edu.aynu.onlineRegistrationSystem.utils.VerifyCode;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/api")
@@ -107,13 +102,13 @@ public class UtilsController {
             if(type!=null&&matchId!=null){
 
                 if(type.equals("0")){//获取个人比赛列表
-                    System.out.println("个人matchId="+matchId+"matchType="+type);
+//                    System.out.println("个人matchId="+matchId+"matchType="+type);
                     List<MatchAppleInfo> list=service.getMatchInfoByMatchIdWithMemInfo(matchId);
                     json.put("code",200);
                     json.put("msg","获取成功");
                     json.put("data",list);
                 }else{//获取团队比赛报名信息列表
-                    System.out.println("团队matchId="+matchId+"matchType="+type);
+//                    System.out.println("团队matchId="+matchId+"matchType="+type);
                     List<MatchAppleInfo> list=service.getMatchInfoByMatchIdWithTeamInfo(matchId);
                     json.put("code",200);
                     json.put("msg","获取成功");
@@ -166,9 +161,5 @@ public class UtilsController {
             return retrievePasswordUtils.setNewPassword(newPassword,mail,uuid,teamMap,type);
         }
     }
-
-
-
-
 }
 
