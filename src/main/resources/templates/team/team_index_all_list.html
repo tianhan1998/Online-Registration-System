@@ -201,6 +201,7 @@
                             var status = "";
                             var btn = "";
                             var id = ms.matchId;
+
                             if(ms.matchStatus == 0) {
                                 status = "<th><span class=\"label label-primary\">未开始</span></th>";
                                 btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" data-toggle=\"modal\" data-target=\"#myModal\" onclick=\"cc("+id+")\">报名</button></th>";
@@ -216,9 +217,8 @@
                                 btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" disabled style=\"background-color:#DCDCDC;\">报名</button></th>";
                             }else{
                                 mode = "<th><span class=\"label label-primary\">团队赛</span></th>";
-
-                                btn = "<th><button type=\"button\" class=\"btn btn-w-m btn-info btn-xs\" data-toggle=\"modal\" data-target=\"#myModal\" onclick=\"cc("+id+")\">报名</button></th>";
                             }
+
                             for(var j=0;j<obj.data.length;j++) {
                                 console.log();
                                 var myMatchs = obj.data[j];
