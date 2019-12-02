@@ -27,7 +27,7 @@ spring:
     password: xgxztbcpxalzbfcf
     default-encoding: UTF-8
     protocol: smtp
-    port: 25
+    port: 587
 rsa:
   # rsa密钥生成数量
   count: 50
