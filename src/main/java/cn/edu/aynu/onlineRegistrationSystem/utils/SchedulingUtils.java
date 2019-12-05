@@ -36,14 +36,14 @@ public class SchedulingUtils {//TODO 检查比赛时间，每一分钟检查一�
     public void setStartMatchStatus(){
         long currentMills=System.currentTimeMillis();
         int flag=0;//检查是否有更改
-        System.out.println("执行比赛开始检查，当前时间戳"+currentMills);
         matchInfo first= startList.peekFirst();
         long matchMills=first.getMatchStarTime().getTime();
         while(startList.size()>0&&matchMills<currentMills){
-            System.out.println(first.getMatchId()+"比赛开始时间"+matchMills);
+            System.out.println("比赛开始定时器设置函数————比赛名称="+first.getMatchTitle()+"比赛id="+first.getMatchId()+"比赛开始时间"+matchMills+"当前时间戳"+currentMills);
             first.setMatchStatus(1);
             matchInfoMapper.updateByPrimaryKeySelective(first);
             if(flag==0) {
+                System.out.println(first.getMatchTitle()+"比赛数据库设置状态完毕");
                 flag = 1;
             }
             startList.pollFirst();
@@ -79,19 +79,19 @@ public class SchedulingUtils {//TODO 检查比赛时间，每一分钟检查一�
     }
     public void setEndMatchStatus(){
         long currentMills=System.currentTimeMillis();
-        System.out.println("执行比赛结束检查，当前时间戳"+currentMills);
         matchInfo first= endList.peekFirst();
-        long matchMills=first.getMatchStarTime().getTime();
+        long matchMills=first.getMatchEndTime().getTime();
         while(endList.size()>0&&matchMills<currentMills){
-            System.out.println(first.getMatchId()+"比赛结束时间"+matchMills);
+            System.out.println("比赛结束定时器设置函数————比赛名称="+first.getMatchTitle()+"比赛id="+first.getMatchId()+"比赛开始时间"+matchMills+"当前时间戳"+currentMills);
             first.setMatchStatus(2);
             matchInfoMapper.updateByPrimaryKeySelective(first);
+            System.out.println(first.getMatchTitle()+"比赛已结束，数据库状态设置完毕");
             endList.pollFirst();
             first= endList.peekFirst();
             if(first==null)
                 break;
             else {
-                matchMills = first.getMatchStarTime().getTime();
+                matchMills = first.getMatchEndTime().getTime();
             }
         }
     }
