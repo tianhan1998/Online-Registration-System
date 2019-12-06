@@ -38,7 +38,7 @@ public class IndexController {
      * @return 返回所有比赛信息的JSON
      */
     @GetMapping(value = "/matchList",produces = "application/json;charset=utf-8")
-    public JSONObject getMatchList() {
+    public JSONObject     getMatchList() {
         JSONObject json = new JSONObject();
         try {
             List<matchInfo> lists = service.getMatchList();
