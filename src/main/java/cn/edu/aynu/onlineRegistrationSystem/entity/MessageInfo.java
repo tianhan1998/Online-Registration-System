@@ -15,6 +15,7 @@ public class MessageInfo {
     private String messageToName;
     private String messageText;
     private Date messageDate;
+    private Integer InvitedId;
 
     @Override
     public String toString() {
@@ -26,6 +27,7 @@ public class MessageInfo {
                 ", messageToName='" + messageToName + '\'' +
                 ", messageText='" + messageText + '\'' +
                 ", messageDate=" + messageDate +
+                ", InvitedId=" + InvitedId +
                 '}';
     }
 
@@ -95,5 +97,13 @@ public class MessageInfo {
         this.messageToName = messageToName;
         this.messageText = messageText;
         this.messageDate = messageDate;
+    }
+
+    public Integer getInvitedId() {
+        return InvitedId;
+    }
+
+    public void setInvitedId(Integer invitedId) {
+        InvitedId = invitedId;
     }
 }

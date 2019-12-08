@@ -227,8 +227,12 @@ public class IndexService {
     public List<MessageInfo> selectListBeInvited(Integer to_id) throws Exception {
         List<Integer> list=inviteInfoMapper.selectMessageIdsBeInvited(to_id);
         List<MessageInfo> messageInfos;
-        if(list!=null&&list.size()!=0){
-            messageInfos=messageMapper.selectListMessageByIds(list);
+        if(list!=null&&list.size()!=0) {
+            messageInfos = messageMapper.selectListMessageByIds(list);
+            for(int i=0;i<messageInfos.size();i++){
+                String id=messageInfos.get(i).getMessageText().substring(messageInfos.get(i).getMessageText().lastIndexOf('=')+1);
+                messageInfos.get(i).setInvitedId(Integer.valueOf(id));
+            }
             return messageInfos;
         }else{
             throw new Exception("没有任何被邀请信息");
