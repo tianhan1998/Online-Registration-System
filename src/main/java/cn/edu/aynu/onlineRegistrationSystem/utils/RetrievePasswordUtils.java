@@ -57,7 +57,7 @@ public class RetrievePasswordUtils {
                     list.add(uuid);
                     map.put(mail,list);
                 }
-                String h = "https://47.75.143.53:8080/ORS/setNewPassowrd?mail="+mail+"&uuid="+uuid+"&type="+type;
+                String h = "http://47.75.143.53:8080/ORS/api/setNewPassowrd?mail="+mail+"&uuid="+uuid+"&type="+type;
                 mailUtils.sendMail(mail,"报名系统","<h1>请点击下面链接修改密码</h1><a href=\'"+h+"\'>"+h+"</a>");
                 jsonObject.put("code","200");
                 jsonObject.put("msg","发送成功!");
