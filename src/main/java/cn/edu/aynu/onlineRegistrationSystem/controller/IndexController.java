@@ -263,7 +263,7 @@ public class IndexController {
                         InviteInfo invite=new InviteInfo(teamId,memId);
                         if (service.insertInvite(invite) > 0) {
                             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                            String text = "您有一条来自" + team.getTeamName() + "队伍的邀请，如果您同意，请点击同意链接，否则请点击拒绝链接\r\n同意链接:http://localhost:8080/ORS/acceptInvite?Id="+invite.getInviteId()+"\r\n拒绝连接:http://localhost:8080/ORS/denyInvite?Id="+invite.getInviteId();
+                            String text = "http://localhost:8080/ORS/acceptInvite?Id="+invite.getInviteId()+"||http://localhost:8080/ORS/denyInvite?Id="+invite.getInviteId();
                             MessageInfo newMessage = new MessageInfo(teamId, memId, team.getTeamName(), user.getMemName(), text, simpleDateFormat.parse(simpleDateFormat.format(new Date())));
                             if (MessageUtils.sendMessage(newMessage)) {
                                 if(service.updateInviteMessageId(invite,newMessage.getMessageId())>0){
