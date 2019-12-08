@@ -140,7 +140,7 @@
 	$(function () {
 		//获取RSA公钥
 		$.ajax({
-			url:"./api/getPublicKey",
+			url:"./api/getPublicKey&id="+new Date().getTime(),
 			dataType:"json",
 			type:"get",
 			success:function (result) {
