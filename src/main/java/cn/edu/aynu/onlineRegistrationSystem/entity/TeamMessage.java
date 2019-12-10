@@ -34,11 +34,11 @@ public class TeamMessage {
             this.memId1 = users.get(0).getMemId();
             this.memName1 = users.get(0).getMemName();
             this.memSex1=users.get(0).getMemSex();
-        }else if(users.get(1)!=null){
+        }if(users.size()>1&&users.get(1)!=null){
             this.memId2 = users.get(1).getMemId();
             this.memName2 = users.get(1).getMemName();
             this.memSex2=users.get(1).getMemSex();
-        }else if(users.get(2)!=null){
+        }if(users.size()>2&&users.get(2)!=null){
             this.memId3 = users.get(2).getMemId();
             this.memName3 = users.get(2).getMemName();
             this.memSex3=users.get(2).getMemSex();
