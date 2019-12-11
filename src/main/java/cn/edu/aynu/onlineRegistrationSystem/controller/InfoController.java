@@ -143,16 +143,21 @@ public class InfoController {
 
         HttpSession session=request.getSession();
         try {
-            Integer id=(Integer) session.getAttribute("team_id");
-            teamInfo teamInfo=new teamInfo();
-            teamInfo.setTeamName(teamName);
-            int rel=infoService.setTeamInfo(id,teamInfo);
-            if(rel!=0){//修改成功
+            if(teamName!=null&&!teamName.equals("")) {
+                Integer id=(Integer) session.getAttribute("team_id");
+                teamInfo teamInfo=new teamInfo();
+                teamInfo.setTeamName(teamName);
+                int rel=infoService.setTeamInfo(id,teamInfo);
+                if(rel!=0){//修改成功
+                    jsonObject.put("code",200);
+                    jsonObject.put("msg","修改成功");
+                }else{//修改失败
+                    jsonObject.put("code",400);
+                    jsonObject.put("msg","修改失败,请重新登录稍后在尝试");
+                }
+            }else{
                 jsonObject.put("code",200);
-                jsonObject.put("msg","修改成功");
-            }else{//修改失败
-                jsonObject.put("code",400);
-                jsonObject.put("msg","修改失败,请重新登录稍后在尝试");
+                jsonObject.put("msg","团队名不能为空");
             }
         }catch (Exception e){
             jsonObject.put("code",500);
@@ -172,18 +177,23 @@ public class InfoController {
     public JSONObject setMemInfo(String memSex,String memName,HttpServletRequest request){
         JSONObject jsonObject=new JSONObject();
         try {
-            HttpSession session=request.getSession();
-            Integer id=(Integer) session.getAttribute("mem_id");
-            memInfo memInfo=new memInfo();
-            memInfo.setMemSex(memSex);
-            memInfo.setMemName(memName);
-            int rel=infoService.setMemInfo(id,memInfo);
-            if(rel!=0){//修改成功
-                jsonObject.put("code",200);
-                jsonObject.put("msg","修改成功");
-            }else{//修改失败
+            if(memSex!=null&&memName!=null&&!memSex.equals("")&&!memName.equals("")){
+                HttpSession session=request.getSession();
+                Integer id=(Integer) session.getAttribute("mem_id");
+                memInfo memInfo=new memInfo();
+                memInfo.setMemSex(memSex);
+                memInfo.setMemName(memName);
+                int rel=infoService.setMemInfo(id,memInfo);
+                if(rel!=0){//修改成功
+                    jsonObject.put("code",200);
+                    jsonObject.put("msg","修改成功");
+                }else{//修改失败
+                    jsonObject.put("code",400);
+                    jsonObject.put("msg","修改失败,请重新登录稍后在尝试");
+                }
+            }else{
                 jsonObject.put("code",400);
-                jsonObject.put("msg","修改失败,请重新登录稍后在尝试");
+                jsonObject.put("msg","性别和姓名均不能为空");
             }
         }catch (Exception e){
             jsonObject.put("code",500);
@@ -194,7 +204,7 @@ public class InfoController {
     }
 
     /**
-     * 获取当前个人账号加入团队的列表 //TODO 获取这个人加入过的团队列表
+     * 获取当前个人账号加入团队的列表
      * @return
      */
     @GetMapping(value = "/getJoinTeamList")
@@ -232,38 +242,44 @@ public class InfoController {
         JSONObject jsonObject=new JSONObject();
         HttpSession session=request.getSession();
         try{
-            if(session.getAttribute("type").toString().equals("mem")){//个人账号
-                Integer id=(Integer)session.getAttribute("mem_id");
-                if(signService.signInMem(id, lastPassword).size()!=0){//验证密码通过
-                    int rel=infoService.setMemPassword(id,newPassword);
-                    if(rel!=0){
-                        jsonObject.put("code",200);
-                        jsonObject.put("msg","修改成功");
-                    }else{
-                        jsonObject.put("code",400);
-                        jsonObject.put("msg","密码未成功修改请刷新页面重试");
-                    }
-                }else{
-                    jsonObject.put("code",400);
-                    jsonObject.put("msg","原密码错误");
-                }
-            }else{//团队账号
+            if(lastPassword!=null&&newPassword!=null&&!lastPassword.equals("")&&!newPassword.equals("")){
 
-                Integer id=(Integer)session.getAttribute("team_id");
-                String accound=session.getAttribute("team_account").toString();
-                if(signService.signInTeam(accound, lastPassword).size()!=0){//验证密码通过
-                    int rel=infoService.setTeamPassword(id,newPassword);
-                    if(rel!=0){
-                        jsonObject.put("code",200);
-                        jsonObject.put("msg","修改失败");
+                if(session.getAttribute("type").toString().equals("mem")){//个人账号
+                    Integer id=(Integer)session.getAttribute("mem_id");
+                    if(signService.signInMem(id, lastPassword).size()!=0){//验证密码通过
+                        int rel=infoService.setMemPassword(id,newPassword);
+                        if(rel!=0){
+                            jsonObject.put("code",200);
+                            jsonObject.put("msg","修改成功");
+                        }else{
+                            jsonObject.put("code",400);
+                            jsonObject.put("msg","密码未成功修改请刷新页面重试");
+                        }
                     }else{
                         jsonObject.put("code",400);
-                        jsonObject.put("msg","密码未成功修改请刷新页面重试");
+                        jsonObject.put("msg","原密码错误");
                     }
-                }else{
-                    jsonObject.put("code",400);
-                    jsonObject.put("msg","原密码错误");
+                }else{//团队账号
+
+                    Integer id=(Integer)session.getAttribute("team_id");
+                    String accound=session.getAttribute("team_account").toString();
+                    if(signService.signInTeam(accound, lastPassword).size()!=0){//验证密码通过
+                        int rel=infoService.setTeamPassword(id,newPassword);
+                        if(rel!=0){
+                            jsonObject.put("code",200);
+                            jsonObject.put("msg","修改失败");
+                        }else{
+                            jsonObject.put("code",400);
+                            jsonObject.put("msg","密码未成功修改请刷新页面重试");
+                        }
+                    }else{
+                        jsonObject.put("code",400);
+                        jsonObject.put("msg","密码不能为空");
+                    }
                 }
+            }else{
+                jsonObject.put("code",400);
+                jsonObject.put("msg","原密码错误");
             }
         }catch (Exception e){
             jsonObject.put("code",500);

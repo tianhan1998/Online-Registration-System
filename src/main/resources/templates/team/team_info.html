@@ -199,14 +199,13 @@
             success:function (data) {
                 if(data['code']==200){
                     swal({
-                        text:"修改成功！"
+                        text:data['msg']
                     }).then(function () {
                         window.location.reload();
                     })
                 }else{
-                    swal("修改失败！");
+                    swal(data[msg]);
                 }
-
             }
         })
     }

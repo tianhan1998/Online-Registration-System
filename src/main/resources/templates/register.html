@@ -350,10 +350,10 @@
 			var code=$("#code1").val();
 
 			if(reg.test(code)){
-				flagyzm=1;
+				flagTeamCode=1;
 			}else{
 				swal("验证码不合法");
-				flagyzm=0;
+				flagTeamCode=0;
 			}
 		});
 
@@ -407,10 +407,14 @@
 			}
 		});
 
-
+		// var falgTeamAccound=0;
+		// var falgTeamPwd=0;
+		// var flagTeamName=0;
+		// var flagTeamEmail=0;
+		// var flagTeamCode=0;
 		//提交团队注册
 		$("#team-submit").click(function () {
-			if(falgTeamAccound==1&&falgTeamPwd==1){
+			if(falgTeamAccound==1&&falgTeamPwd==1&&flagTeamName==1&&flagTeamEmail==1&&flagTeamCode==1){
 				var password=$('#team_pwd').val();
 				var item=password;
 
